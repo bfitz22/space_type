@@ -4,9 +4,9 @@ var base = document.createElement('img');
 var ufo = document.createElement('img');
 var saucer = document.createElement('img');
 var ctx = canvas.getContext("2d");
-base.src = "./images/base.png";
-ufo.src = "./images/ufo.png";
-saucer.src = "./images/ufo-y.png";
+base.src = "images/base.png";
+ufo.src = "images/ufo.png";
+saucer.src = "images/ufo-y.png";
 
 
 var x = canvas.width/2;
@@ -21,38 +21,37 @@ var color = "blue";
 function drawBase() {
     ctx.beginPath();
     ctx.drawImage(base, canvas.width * 0.425, 525, canvas.width * 0.15, canvas.height * 0.25);
-    // ctx.arc(canvas.width * 0.475, 630, 160, 0, Math.PI , true);
-    // ctx.strokeStyle = "rgba(204, 255, 255, 0.5)";
-    // ctx.stroke();
     ctx.drawImage(ufo, 20, 1, 30, 30);
-    ctx.drawImage(saucer, 1150, 1, 30, 30);
+    ctx.drawImage(saucer, 1150, 1, 50, 50);
     ctx.closePath();
 }
 
 function drawShield() {
     ctx.beginPath();
-    ctx.moveTo(canvas.width * 0.475, 630);
-    ctx.quadraticCurveTo(25, 25, 25, 62.5);
-    ctx.quadraticCurveTo(25, 100, 50, 100);
-    ctx.quadraticCurveTo(50, 120, 30, 125);
-    ctx.quadraticCurveTo(60, 120, 65, 100);
-    ctx.quadraticCurveTo(125, 100, 125, 62.5);
-    ctx.quadraticCurveTo(125, 25, 75, 25);
-    ctx.strokeStyle = "rgba(204, 255, 255, 0.5)";
+    ctx.moveTo(450, 700);
+    ctx.bezierCurveTo(465, 425, 730, 425, 750, 700);
+    ctx.strokeStyle = "rgba(0, 128, 255)";
+    ctx.fillStyle = "rgba(0, 0, 51)";
+    // ctx.strokeStyle = "rgba(255, 128, 0";
+    // ctx.fillStyle = "rgba(51, 25, 0)";
+    // ctx.strokeStyle = "red";
+    // ctx.fillStyle = "rgba(51, 0, 0)";
     ctx.stroke();
+    ctx.fill();
+    ctx.lineWidth = 8;
     ctx.closePath();
 }
 
-function drawMarkers() {
-    ctx.beginPath();
-    ctx.moveTo(600, 0);
-    ctx.lineTo(600, 700);
-    ctx.moveTo(0, 350);
-    ctx.lineTo(1200, 350);
-    ctx.strokeStyle = "rgb(255, 255, 255)";
-    ctx.stroke();
-    ctx.closePath();
-}
+// function drawMarkers() {
+//     ctx.beginPath();
+//     ctx.moveTo(600, 0);
+//     ctx.lineTo(600, 700);
+//     ctx.moveTo(0, 350);
+//     ctx.lineTo(1200, 350);
+//     ctx.strokeStyle = "rgb(255, 255, 255)";
+//     ctx.stroke();
+//     ctx.closePath();
+// }
 
 // function draw() {
     

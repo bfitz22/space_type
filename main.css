@@ -15,8 +15,9 @@ html {
 
 body {
     display: flex;
-    align-items: flex-end;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
     height: 100%;
     width: 100%;
     background-image: url("images/giphy.gif")
@@ -24,10 +25,17 @@ body {
 }
 
 canvas {
-    border: 1px solid white;
+    border: 2px solid white;
     background-image: url("images/background.png"); 
     display: block; 
-    margin: 100px; 
-    margin-right: 200px; 
+    margin: 0px 100px 50px 100px; 
+    /* margin-top: 0px;
+    margin-right: 200px;  */
     background-size: cover; 
+}
+
+.title { 
+    font-size: 54px;
+    margin-top: 50px;
+    color: white;
 }

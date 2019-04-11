@@ -19,7 +19,7 @@ body {
     justify-content: center;
     height: 100%;
     width: 100%;
-    background: black;
+    background-image: url("images/giphy.gif")
     /* background-repeat: no-repeat;  */
 }
 
@@ -28,5 +28,6 @@ canvas {
     background-image: url("images/background.png"); 
     display: block; 
     margin: 100px; 
+    margin-right: 200px; 
     background-size: cover; 
 }

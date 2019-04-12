@@ -1,15 +1,21 @@
-import Alien from './alien.js';
+function drawMarkers() {
+    ctx.beginPath();
+    ctx.moveTo(600, 0);
+    ctx.lineTo(600, 700);
+    // ctx.moveTo(0, 350);
+    // ctx.lineTo(1200, 350);
+    ctx.strokeStyle = "rgb(255, 255, 255)";
+    ctx.stroke();
+    ctx.closePath();
+}
+import UFO from './ufo';
+import Saucer from './saucer';
+import Wing from './wing';
 
-var canvas = document.getElementById("canvas");
-var base = document.createElement('img');
-// var ufo = document.createElement('img');
-// var saucer = document.createElement('img');
-var ctx = canvas.getContext("2d");
-var source = ["./images/ufo-x.gif", "./images/ufo-y.png"];
+const canvas = document.getElementById("canvas");
+const base = document.createElement('img');
+const ctx = canvas.getContext("2d");
 base.src = "images/base.png";
-// ufo.src = "images/ufo.png";
-// saucer.src = "images/ufo-y.png";
-
 
 function distance(pos1, pos2) {
     return sqrt((pos1[0] - pos2[0]) ** 2 + (pos1[1] - pos2[1]) ** 2)
@@ -18,8 +24,6 @@ function distance(pos1, pos2) {
 function drawBase() {
     ctx.beginPath();
     ctx.drawImage(base, canvas.width * 0.425, 525, canvas.width * 0.15, canvas.height * 0.25);
-    // ctx.drawImage(ufo, 20, 1, 30, 30);
-    // ctx.drawImage(saucer, 1150, 1, 50, 50);
     ctx.closePath();
 }
 
@@ -41,55 +45,91 @@ function drawShield() {
     ctx.closePath();
 }
 
-function spawnAliens() {
-    const UFO = new Alien(ctx, "type", [20, 1]);
-    const saucer = new Alien(ctx, "bigword", [1150, 1]);
-    UFO.drawUFO();
-    saucer.drawSaucer();
-
+function randomStart() {
+    return Math.floor(Math.random() * canvas.width - 42) + 42;
 }
 
-// function drawMarkers() {
-//     ctx.beginPath();
-//     ctx.moveTo(600, 0);
-//     ctx.lineTo(600, 700);
-//     ctx.moveTo(0, 350);
-//     ctx.lineTo(1200, 350);
-//     ctx.strokeStyle = "rgb(255, 255, 255)";
-//     ctx.stroke();
-//     ctx.closePath();
-// }
+let x = randomStart();
+let a = randomStart();
+let c = randomStart();
+let y = 1;
+let b = 1;
+let d = 1;
 
-// var x = canvas.width/2;
-// var y = canvas.height/2;
-// var dx = -1;
-// var dy = 1;
+function spawnUFOs() {
+    let dx = (x - 550) / (y - 700);
+    let dy = 1;
+    ctx.beginPath();
+    const ufo = new UFO(ctx, x, y);
+    ufo.drawUFO();
+    ufo.drawUFOBlink();
+    x += dx;
+    y += dy;
+}
 
-// function draw() {
-//     drawBall();
-//     x += dx;
-//     y += dy;
-//     if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
-//         dx = -dx;
-//         changeColor();
-//         clear();
-//     }
+function spawnSaucers() {
+    let dx = (a - 550) / (y - 700);
+    let dy = 1;
+    ctx.beginPath();
+    const saucer = new Saucer(ctx, a, b);
+    saucer.drawSaucer();
+    saucer.drawSaucerBlink();
+    a += dx;
+    b += dy;
+}
 
-//     if(y + dy > canvas.height-ballRadius || y + dy < ballRadius) {
-//         dy = -dy;
-//         changeColor();
-//         clear();
-//     }
-// }
+function spawnWings() {
+    let dx = (c - 550) / (d - 700);
+    let dy = 1;
+    ctx.beginPath();
+    const wing = new Wing(ctx, c, d);
+    wing.drawWing();
+    wing.drawWingBlink();
+    c += dx;
+    d += dy;
+}
 
 function clear() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-function changeColor() {
-    color = colors[Math.floor(Math.random()*colors.length)];
+// window.requestAnimationFrame(spawnUFOs());
+setInterval(function() {clear(), drawMarkers(), drawShield(), drawBase(), spawnUFOs(), spawnSaucers(), spawnWings()}, 10);
+
+
+
+
+
+
+function drawFrame(frameX, frameY, canvasX, canvasY) {
+        
+    this.ctx.drawImage(this.UFOImg,
+    frameX * this.width, frameY * this.height, this.width, this.height,
+    canvasX, canvasY, this.scaledSize, this.scaledSize);
+    
+}
+    
+function init(img, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight) {
+    requestAnimationFrame(this.step);
 }
 
-setInterval(function() {drawShield(), drawBase(), spawnAliens()}, 1000);
+function step() {
+    let cycleLoop = [0, 1];
+    let currentIndex = 0;
 
-
+    this.frameCount++;
+    if (this.frameCount < 15) {
+        this.init();
+        return;
+    }
+    this.frameCount = 0;
+    
+    // while( currentIndex < 2 ) {
+        this.drawFrame(0, cycleLoop[currentIndex], 0, 0);
+        console.log(currentIndex);
+        currentIndex ++;
+    if (currentIndex >= cycleLoop.length) {
+        currentIndex = 0;
+    }
+    // }
+}

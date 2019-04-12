@@ -6,15 +6,14 @@ class UFO {
         this.scaledSize = 64;
         this.width = 32;
         this.height = 32;
-
         // this.word = word;
         // this.vel = vel;
     }
     
-    drawUFO() {
+    drawUFO(index) {
         const UFOImg = new Image();
         UFOImg.src = "./images/mod-ufo.png";
-        this.ctx.drawImage(UFOImg, 0, 0, 32, 32, this.x, this.y, 42, 42);
+        this.ctx.drawImage(UFOImg, 0, index, 32, 32, this.x, this.y, 42, 42);
     }
 
     drawUFOBlink() {

@@ -11,10 +11,10 @@ class Saucer {
         // this.vel = vel;
     }
     
-    drawSaucer() {
+    drawSaucer(index) {
         const saucerImg = new Image();
         saucerImg.src = "./images/mod-saucer.png";
-        this.ctx.drawImage(saucerImg, 0, 0, 32, 32, this.x, this.y, 42, 42);
+        this.ctx.drawImage(saucerImg, 0, index, 32, 32, this.x, this.y, 42, 42);
     }
 
     drawSaucerBlink() {

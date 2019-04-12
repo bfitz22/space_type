@@ -11,10 +11,10 @@ class Wing {
         // this.vel = vel;
     }
     
-    drawWing() {
+    drawWing(index) {
         const wingImg = new Image();
         wingImg.src = "./images/mod-wing.png";
-        this.ctx.drawImage(wingImg, 0, 0, 32, 32, this.x, this.y, 42, 42);
+        this.ctx.drawImage(wingImg, 0, index, 32, 32, this.x, this.y, 42, 42);
     }
 
     drawWingBlink() {

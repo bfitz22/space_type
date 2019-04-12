@@ -52,39 +52,45 @@ function randomStart() {
 let x = randomStart();
 let a = randomStart();
 let c = randomStart();
-let y = 1;
+let y = 10;
 let b = 1;
 let d = 1;
+let index = 0;
+// let blink = [0, 32];
+
+
 
 function spawnUFOs() {
+    index = index >= 2 ? 0 : 32;
+    index++;
     let dx = (x - 550) / (y - 700);
     let dy = 1;
     ctx.beginPath();
     const ufo = new UFO(ctx, x, y);
-    ufo.drawUFO();
-    ufo.drawUFOBlink();
+    ufo.drawUFO(index);
     x += dx;
     y += dy;
 }
 
 function spawnSaucers() {
+    index = index >= 2 ? 0 : 32;
+    index++;
     let dx = (a - 550) / (y - 700);
     let dy = 1;
     ctx.beginPath();
     const saucer = new Saucer(ctx, a, b);
-    saucer.drawSaucer();
-    saucer.drawSaucerBlink();
+    saucer.drawSaucer(index);
     a += dx;
     b += dy;
 }
 
 function spawnWings() {
+    index = index >= 2 ? 0 : 32;
     let dx = (c - 550) / (d - 700);
     let dy = 1;
     ctx.beginPath();
     const wing = new Wing(ctx, c, d);
-    wing.drawWing();
-    wing.drawWingBlink();
+    wing.drawWing(index);
     c += dx;
     d += dy;
 }
@@ -94,7 +100,7 @@ function clear() {
 }
 
 // window.requestAnimationFrame(spawnUFOs());
-setInterval(function() {clear(), drawMarkers(), drawShield(), drawBase(), spawnUFOs(), spawnSaucers(), spawnWings()}, 10);
+setInterval(function() {clear(), drawShield(), drawBase(), spawnUFOs(), spawnSaucers(), spawnWings()}, 80);
 
 
 

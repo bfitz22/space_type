@@ -3,11 +3,12 @@ import Alien from './alien.js';
 var canvas = document.getElementById("canvas");
 var base = document.createElement('img');
 // var ufo = document.createElement('img');
-var saucer = document.createElement('img');
+// var saucer = document.createElement('img');
 var ctx = canvas.getContext("2d");
+var source = ["./images/ufo-x.gif", "./images/ufo-y.png"];
 base.src = "images/base.png";
 // ufo.src = "images/ufo.png";
-saucer.src = "images/ufo-y.png";
+// saucer.src = "images/ufo-y.png";
 
 
 function distance(pos1, pos2) {
@@ -18,9 +19,8 @@ function drawBase() {
     ctx.beginPath();
     ctx.drawImage(base, canvas.width * 0.425, 525, canvas.width * 0.15, canvas.height * 0.25);
     // ctx.drawImage(ufo, 20, 1, 30, 30);
-    ctx.drawImage(saucer, 1150, 1, 50, 50);
+    // ctx.drawImage(saucer, 1150, 1, 50, 50);
     ctx.closePath();
-    // drawUFO(ctx, [20, 1])
 }
 
 function drawShield() {
@@ -42,7 +42,11 @@ function drawShield() {
 }
 
 function spawnAliens() {
-    Alien.new(ctx, "type", [20, 1])
+    const UFO = new Alien(ctx, "type", [20, 1]);
+    const saucer = new Alien(ctx, "bigword", [1150, 1]);
+    UFO.drawUFO();
+    saucer.drawSaucer();
+
 }
 
 // function drawMarkers() {
@@ -86,6 +90,6 @@ function changeColor() {
     color = colors[Math.floor(Math.random()*colors.length)];
 }
 
-setInterval(function() {drawShield(), drawBase(), spawnAliens()}, 10);
+setInterval(function() {drawShield(), drawBase(), spawnAliens()}, 1000);
 
 

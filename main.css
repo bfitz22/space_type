@@ -34,9 +34,14 @@ canvas {
     background-size: cover; 
 }
 
+@font-face {
+    font-family: myFont;
+    src: url(images/PolandCannedIntoFuture.ttf);
+}
+
 .title { 
     font-size: 54px;
     margin: 25px 0px 35px 0px;
     color: white;
-    font-family: 
+    font-family: myFont;
 }

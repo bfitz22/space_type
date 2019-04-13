@@ -38,6 +38,13 @@ canvas {
     background-size: cover; 
 }
 
+.typing-box {
+    position: relative;
+    bottom: 75px;
+    left: 225px; 
+    width: 250px;
+}
+
 @font-face {
     font-family: myFont;
     src: url(images/PolandCannedIntoFuture.ttf);

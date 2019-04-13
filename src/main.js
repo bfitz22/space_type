@@ -1,25 +1,20 @@
-function drawMarkers() {
-    ctx.beginPath();
-    ctx.moveTo(600, 0);
-    ctx.lineTo(600, 700);
-    // ctx.moveTo(0, 350);
-    // ctx.lineTo(1200, 350);
-    ctx.strokeStyle = "rgb(255, 255, 255)";
-    ctx.stroke();
-    ctx.closePath();
-}
 import UFO from './ufo';
 import Saucer from './saucer';
 import Wing from './wing';
+import randomWords from 'random-words';
 
 const canvas = document.getElementById("canvas");
 const base = document.createElement('img');
-const ctx = canvas.getContext("2d");
 base.src = "images/base.png";
+const ctx = canvas.getContext("2d");
 
-function distance(pos1, pos2) {
-    return sqrt((pos1[0] - pos2[0]) ** 2 + (pos1[1] - pos2[1]) ** 2)
-}
+const alienRadius = 32;
+const shieldHeight = 460;
+const shieldLeft = 105;
+const shieldRight = 115;
+
+var stroke = "rgba(0, 128, 255)";
+var fill = "rgba(0, 0, 51)";
 
 function drawBase() {
     ctx.beginPath();
@@ -27,12 +22,13 @@ function drawBase() {
     ctx.closePath();
 }
 
+
 function drawShield() {
     ctx.beginPath();
     ctx.moveTo(450, 700);
     ctx.bezierCurveTo(465, 425, 730, 425, 750, 700);
-    ctx.strokeStyle = "rgba(0, 128, 255)";
-    ctx.fillStyle = "rgba(0, 0, 51)";
+    ctx.strokeStyle = stroke;
+    ctx.fillStyle = fill;
     // orange
     // ctx.strokeStyle = "rgba(255, 128, 0";
     // ctx.fillStyle = "rgba(51, 25, 0)";
@@ -41,6 +37,7 @@ function drawShield() {
     // ctx.fillStyle = "rgba(51, 0, 0)";
     ctx.stroke();
     ctx.fill();
+    ctx.shadowColor = 100;
     ctx.lineWidth = 8;
     ctx.closePath();
 }
@@ -55,19 +52,34 @@ let c = randomStart();
 let y = 10;
 let b = 1;
 let d = 1;
+let l = randomWords(1);
+let m = randomWords(1);
+let n = randomWords(1);
 let index = 0;
+let dy = 2;
 // let blink = [0, 32];
 
 
 
 function spawnUFOs() {
+    // if ((y + dy > shieldHeight && (x === 600 )) || 
+    // ((y + dy > canvas.height) && (x > 590 && x < 610))) {
+    if (x === canvas.width / 2 && y === shieldHeight ||
+    (x > canvas.width + 10 && x < canvas.width - 10 ) && y === shieldHeight + 10 ||
+    (x > canvas.width + 20 && x < canvas.width - 20) && y === shieldHeight + 20) {
+    dy = 0;
+        stroke = "rgba(255, 128, 0";
+        fill = "rgba(51, 25, 0)";
+        ufo.drawExplosion();
+    }
     index = index >= 2 ? 0 : 32;
     index++;
-    let dx = (x - 550) / (y - 700);
-    let dy = 1;
+    let dx = (x - 550) / (y - 600);
+    
     ctx.beginPath();
-    const ufo = new UFO(ctx, x, y);
+    const ufo = new UFO(ctx, x, y, l);
     ufo.drawUFO(index);
+    ufo.drawText();
     x += dx;
     y += dy;
 }
@@ -76,10 +88,10 @@ function spawnSaucers() {
     index = index >= 2 ? 0 : 32;
     index++;
     let dx = (a - 550) / (y - 700);
-    let dy = 1;
     ctx.beginPath();
-    const saucer = new Saucer(ctx, a, b);
+    const saucer = new Saucer(ctx, a, b, m);
     saucer.drawSaucer(index);
+    saucer.drawText();
     a += dx;
     b += dy;
 }
@@ -87,10 +99,10 @@ function spawnSaucers() {
 function spawnWings() {
     index = index >= 2 ? 0 : 32;
     let dx = (c - 550) / (d - 700);
-    let dy = 1;
     ctx.beginPath();
-    const wing = new Wing(ctx, c, d);
+    const wing = new Wing(ctx, c, d, n);
     wing.drawWing(index);
+    wing.drawText();
     c += dx;
     d += dy;
 }
@@ -100,7 +112,7 @@ function clear() {
 }
 
 // window.requestAnimationFrame(spawnUFOs());
-setInterval(function() {clear(), drawShield(), drawBase(), spawnUFOs(), spawnSaucers(), spawnWings()}, 80);
+setInterval(function() {clear(), drawShield(), drawBase(), spawnUFOs()}, 10);
 
 
 

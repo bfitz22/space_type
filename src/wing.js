@@ -1,21 +1,17 @@
+import randomWords from 'random-words';
+
 class Wing {
-    constructor(ctx, x, y, word) {
+    constructor(ctx) {
         this.ctx = ctx;
-        this.x = x;
-        this.y = y;
+        this.x = Math.floor(Math.random() * canvas.width - 42) + 42;
+        this.y = 1;
         this.scaledSize = 64;
-        this.width = 32;
-        this.height = 32;
-        this.word = word;
+        this.width = 42;
+        this.height = 42;
+        this.word = randomWords(1);
 
         // this.word = word;
         // this.vel = vel;
-    }
-    
-    drawWing(index) {
-        const wingImg = new Image();
-        wingImg.src = "./images/mod-wing.png";
-        this.ctx.drawImage(wingImg, 0, index, 32, 32, this.x, this.y, 42, 42);
     }
 
     drawText() {

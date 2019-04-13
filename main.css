@@ -39,10 +39,20 @@ canvas {
 }
 
 .typing-box {
+    font-weight: bold;
+    text-align: center; 
+    border: 1px solid white;
+    background-image: url("images/background.png"); 
+    color: white;
     position: relative;
-    bottom: 75px;
-    left: 225px; 
+    bottom: 100px;
+    left: 150px; 
     width: 250px;
+    height: 30px; 
+}
+
+.typing-box:focus {
+    border: 3px solid white; 
 }
 
 @font-face {

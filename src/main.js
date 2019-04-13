@@ -1,17 +1,23 @@
 import UFO from './ufo';
 import Saucer from './saucer';
 import Wing from './wing';
-import randomWords from 'random-words';
+
 
 const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
 const base = document.createElement('img');
 base.src = "images/base.png";
-const ctx = canvas.getContext("2d");
 
 const alienRadius = 32;
 const shieldHeight = 460;
 const shieldLeft = 105;
 const shieldRight = 115;
+
+const ufos = [new UFO(ctx), new UFO(ctx), new UFO(ctx)];
+const ufoForce = ["x", "x", "x"];
+const saucers = [new Saucer(ctx)];
+const saucerForce = ["x"]
+const wings = [];
 
 var stroke = "rgba(0, 128, 255)";
 var fill = "rgba(0, 0, 51)";
@@ -42,69 +48,84 @@ function drawShield() {
     ctx.closePath();
 }
 
-function randomStart() {
-    return Math.floor(Math.random() * canvas.width - 42) + 42;
+let lights = 0;
+function flash() {
+    if (lights === 0) {
+        lights = 32;
+    } else if (lights === 32) {
+        lights = 0;
+    }
 }
 
-let x = randomStart();
-let a = randomStart();
-let c = randomStart();
-let y = 10;
-let b = 1;
-let d = 1;
-let l = randomWords(1);
-let m = randomWords(1);
-let n = randomWords(1);
-let index = 0;
-let dy = 2;
-// let blink = [0, 32];
-
-
-
 function spawnUFOs() {
-    // if ((y + dy > shieldHeight && (x === 600 )) || 
-    // ((y + dy > canvas.height) && (x > 590 && x < 610))) {
-    if (x === canvas.width / 2 && y === shieldHeight ||
-    (x > canvas.width + 10 && x < canvas.width - 10 ) && y === shieldHeight + 10 ||
-    (x > canvas.width + 20 && x < canvas.width - 20) && y === shieldHeight + 20) {
-    dy = 0;
-        stroke = "rgba(255, 128, 0";
-        fill = "rgba(51, 25, 0)";
-        ufo.drawExplosion();
-    }
-    index = index >= 2 ? 0 : 32;
-    index++;
-    let dx = (x - 550) / (y - 600);
-    
-    ctx.beginPath();
-    const ufo = new UFO(ctx, x, y, l);
-    ufo.drawUFO(index);
-    ufo.drawText();
-    x += dx;
-    y += dy;
+    let i = 0;
+    let squadSize = ufoForce.length;
+    const spawnInterval = setInterval(() => {
+        ufos.push(new UFO(ctx));
+        i++;
+        if (i > squadSize) {
+            clearInterval(spawnInterval);
+        }
+    }, 1750)
+}
+
+function drawUFOs() {
+    let dy = 0.5;
+    const ufoImg = new Image();
+    ufoImg.src = "./images/mod-ufo.png";
+    ufo = ufos.forEach((ufo) => {
+        let dx = (ufo.x - 575) / (ufo.y - 1000);
+        ctx.drawImage(ufoImg, 0, lights, 32, 32, ufo.x, ufo.y, 42, 42),
+        ufo.x += dx,
+        ufo.y += dy,
+        ufo.drawText();
+    });
+}
+
+function addUFOs() {
+    ufoForce.push("x");
 }
 
 function spawnSaucers() {
-    index = index >= 2 ? 0 : 32;
-    index++;
-    let dx = (a - 550) / (y - 700);
-    ctx.beginPath();
-    const saucer = new Saucer(ctx, a, b, m);
-    saucer.drawSaucer(index);
-    saucer.drawText();
-    a += dx;
-    b += dy;
+    saucers.push(new Saucer(ctx));
+}
+
+function drawSaucers() {
+    let dy = 1;
+    const saucerImg = new Image();
+    saucerImg.src = "./images/mod-saucer.png";
+    saucers.map((saucer) => {
+        let dx = (saucer.x - 575) / (saucer.y - 1000);
+        ctx.drawImage(saucerImg, 0, lights, 32, 32, saucer.x, saucer.y, 42, 42),
+        saucer.x += dx,
+        saucer.y += dy,
+        saucer.drawText();
+    });
+}
+
+function addSaucers() {
+    saucerForce.push("x");
 }
 
 function spawnWings() {
-    index = index >= 2 ? 0 : 32;
-    let dx = (c - 550) / (d - 700);
-    ctx.beginPath();
-    const wing = new Wing(ctx, c, d, n);
-    wing.drawWing(index);
-    wing.drawText();
-    c += dx;
-    d += dy;
+    wings.push(new Wing(ctx));
+}
+
+function drawWings() {
+    let dy = 1.5;
+    const wingImg = new Image();
+    wingImg.src = "./images/mod-wing.png";
+    wings.map((wing) => {
+        let dx = (wing.x - 575) / (wing.y - 600);
+        ctx.drawImage(wingImg, 0, lights, 32, 32, wing.x, wing.y, 42, 42),
+        wing.x += dx,
+        wing.y += dy,
+        wing.drawText();
+    });
+}
+
+function addWings() {
+    wingForce.push("x");
 }
 
 function clear() {
@@ -112,42 +133,8 @@ function clear() {
 }
 
 // window.requestAnimationFrame(spawnUFOs());
-setInterval(function() {clear(), drawShield(), drawBase(), spawnUFOs()}, 10);
-
-
-
-
-
-
-function drawFrame(frameX, frameY, canvasX, canvasY) {
-        
-    this.ctx.drawImage(this.UFOImg,
-    frameX * this.width, frameY * this.height, this.width, this.height,
-    canvasX, canvasY, this.scaledSize, this.scaledSize);
-    
-}
-    
-function init(img, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight) {
-    requestAnimationFrame(this.step);
-}
-
-function step() {
-    let cycleLoop = [0, 1];
-    let currentIndex = 0;
-
-    this.frameCount++;
-    if (this.frameCount < 15) {
-        this.init();
-        return;
-    }
-    this.frameCount = 0;
-    
-    // while( currentIndex < 2 ) {
-        this.drawFrame(0, cycleLoop[currentIndex], 0, 0);
-        console.log(currentIndex);
-        currentIndex ++;
-    if (currentIndex >= cycleLoop.length) {
-        currentIndex = 0;
-    }
-    // }
-}
+setInterval(function() {clear(), drawShield(), drawBase(), drawUFOs(), drawSaucers(), drawWings()}, 15);
+setInterval(spawnUFOs, 10000);
+setInterval(function() {spawnSaucers(), addUFOs()}, 30000);
+setInterval(spawnWings, 60000);
+setInterval(flash, 200);

@@ -1,21 +1,16 @@
+import randomWords from 'random-words';
+
 class Saucer {
-    constructor(ctx, x, y, word) {
+    constructor(ctx) {
         this.ctx = ctx;
-        this.x = x;
-        this.y = y;
-        this.scaledSize = 64;
-        this.width = 32;
-        this.height = 32;
-        this.word = word;
+        this.x = Math.floor(Math.random() * canvas.width - 42) + 42;
+        this.y = 1;
+        this.width = 42;
+        this.height = 42;
+        this.word = randomWords(1);
 
         // this.word = word;
         // this.vel = vel;
-    }
-    
-    drawSaucer(index) {
-        const saucerImg = new Image();
-        saucerImg.src = "./images/mod-saucer.png";
-        this.ctx.drawImage(saucerImg, 0, index, 32, 32, this.x, this.y, 42, 42);
     }
 
     drawText() {

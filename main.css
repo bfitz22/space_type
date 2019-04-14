@@ -42,7 +42,8 @@ canvas {
     font-weight: bold;
     text-align: center; 
     border: 1px solid white;
-    background-image: url("images/background.png"); 
+    background-image: url("images/background.png");
+    background-position: 50% 25%; 
     color: white;
     position: relative;
     bottom: 100px;

@@ -20,10 +20,10 @@ class UFO {
         this.ctx.closePath();
     }
 
-    drawExplosion() {
+    drawExplosion(x, y) {
         const boomImg = new Image();
         boomImg.src = "./images/explosion.png";
-        this.ctx.drawImage(boomImg, 0, 0, 32, 32, this.x, this.y, 42, 42);
+        this.ctx.drawImage(boomImg, 0, 0, 32, 32, x, y, 42, 42);
     }
 }
 

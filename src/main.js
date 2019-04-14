@@ -67,7 +67,7 @@ function spawnUFOs() {
         if (i > squadSize) {
             clearInterval(spawnInterval);
         }
-    }, 1750)
+    }, 1500)
 }
 
 function drawUFOs() {
@@ -96,7 +96,7 @@ function spawnSaucers() {
         if (i > squadSize) {
             clearInterval(spawnInterval);
         }
-    }, 1750)
+    }, 1500)
 }
 
 function drawSaucers() {
@@ -125,7 +125,7 @@ function spawnWings() {
         if (i > squadSize) {
             clearInterval(spawnInterval);
         }
-    }, 1750)
+    }, 1500)
 }
 
 function drawWings() {
@@ -154,17 +154,42 @@ function typeWord() {
     typer.addEventListener('keypress', function(e) {
         var key = e.which || e.keyCode;
         if (key === 13 || key === 32) {
+            var ufo = ufos.find(ufo => ufo.word === e.target.value);
             ufos = ufos.filter(ufo => ufo.word !== e.target.value),
             saucers = saucers.filter(saucer => saucer.word !== e.target.value),
             wings = wings.filter(wing => wing.word !== e.target.value)
             e.target.value = "";
+            // laser(ufo.x + 21, ufo.y + 21);
+            ufo.drawExplosion(ufo.x + 21, ufo.y + 21);
         }
     })
 }
 
-// window.requestAnimationFrame(spawnUFOs());
-setInterval(function() {clear(), typeWord(), drawShield(), drawBase(), drawUFOs(), drawSaucers(), drawWings()}, 15);
-setInterval(spawnUFOs, 15000);
-setInterval(function() {spawnSaucers(), addUFOs()}, 23000);
+function laser(x, y) {
+    ctx.beginPath();
+    ctx.moveTo(canvas.width * 0.5, 525);
+    ctx.lineTo(x, y);
+    ctx.stroke();
+    ctx.closePath();
+}
+
+let wave = 1; 
+function updateWave() {
+    wave++;
+}
+
+function displayWave() {
+    ctx.beginPath();
+    ctx.fillStyle = "white";
+    ctx.font = 'bold 30px Arial';
+    ctx.fillText(`Wave ${wave}`, 1000, 670);
+    ctx.fill();
+    ctx.closePath();
+}
+
+
+setInterval(function() {clear(), displayWave(), typeWord(), drawShield(), drawBase(), drawUFOs(), drawSaucers(), drawWings()}, 25);
+setInterval(function() {spawnUFOs(), updateWave()}, 10000);
+setInterval(function() {spawnSaucers(), addUFOs()}, 20000);
 setInterval(function() {spawnWings(), addSaucers(), addWings()}, 30000);
 setInterval(flash, 200);

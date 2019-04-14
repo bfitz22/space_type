@@ -1,17 +1,19 @@
 import UFO from './ufo';
 import Saucer from './saucer';
 import Wing from './wing';
+import { gameOver, finalWaveCount, finalExplosion } from './game_over';
 
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const base = document.createElement('img');
 base.src = "images/base.png";
+let baseAlive = true;
 
-const alienRadius = 32;
+const alienRadius = 42;
 const shieldHeight = 460;
-const shieldLeft = 105;
-const shieldRight = 115;
+const shieldCenter = 580;
+const shieldRadius = 220;
 
 let ufos = [new UFO(ctx), new UFO(ctx), new UFO(ctx)];
 const ufoForce = ["x", "x", "x"];
@@ -20,28 +22,44 @@ const saucerForce = ["x"];
 let wings = [];
 const wingForce = [];
 
-var stroke = ["rgba(0, 128, 255)", "rgba(255, 128, 0", "red", "rgba(0, 0, 0, 0)"];
-var fill = ["rgba(0, 0, 51)", "rgba(51, 25, 0)", "rgba(51, 0, 0)", "rgba(0, 0, 0, 0)"];
-let shieldIndex = 2;
+var stroke = ["rgba(0, 128, 255)", "rgba(255, 128, 0", "red", "rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0)"];
+var fill = ["rgba(0, 0, 51)", "rgba(51, 25, 0)", "rgba(51, 0, 0)", "rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0)"];
+let shieldIndex = 0;
 
 function drawBase() {
-    ctx.beginPath();
-    ctx.drawImage(base, canvas.width * 0.425, 525, canvas.width * 0.15, canvas.height * 0.25);
-    ctx.closePath();
+    if (baseAlive) {
+        ctx.beginPath();
+        ctx.drawImage(base, canvas.width * 0.425, 525, canvas.width * 0.15, canvas.height * 0.25);
+        ctx.closePath();
+    }
 }
 
 
 function drawShield() {
-    ctx.beginPath();
-    ctx.moveTo(450, 700);
-    ctx.bezierCurveTo(465, 425, 730, 425, 750, 700);
-    ctx.strokeStyle = stroke[shieldIndex];
-    ctx.fillStyle = fill[shieldIndex];
-    ctx.stroke();
-    ctx.fill();
-    ctx.shadowColor = 100;
-    ctx.lineWidth = 8;
-    ctx.closePath();
+    if (baseAlive) {
+        ctx.beginPath();
+        ctx.moveTo(450, 700);
+        ctx.bezierCurveTo(465, 425, 730, 425, 750, 700);
+        ctx.strokeStyle = stroke[shieldIndex];
+        ctx.fillStyle = fill[shieldIndex];
+        ctx.stroke();
+        ctx.fill();
+        ctx.shadowColor = 100;
+        ctx.lineWidth = 8;
+        ctx.closePath();
+    }
+    if (shieldIndex >= 4) {
+        gameOver(ctx);
+        finalWaveCount(ctx, wave);
+        finalExplosion(ctx, canvas);
+        baseAlive = false;
+    }
+}
+
+function rechargeShield() {
+    if (shieldIndex > 0 && baseAlive) {
+        shieldIndex -= 1;
+    }
 }
 
 let lights = 0;
@@ -69,16 +87,27 @@ function drawUFOs() {
     let dy = 0.5;
     const ufoImg = new Image();
     ufoImg.src = "./images/mod-ufo.png";
-    ufos.forEach((ufo) => {
+    ufos.forEach((ufo, i) => {
         let dx = (ufo.x - 575) / (ufo.y - 1000);
         ctx.drawImage(ufoImg, 0, lights, 32, 32, ufo.x, ufo.y, 42, 42),
         ufo.x += dx,
         ufo.y += dy,
         ufo.drawText();
-        // if ((y + dy > shieldHeight && (x === 600 )) || 
-        //     ((y + dy > canvas.height) && (x > 590 && x < 610))) {
-
-        //     }
+    
+        if ((ufo.y > shieldHeight ) && 
+            ((ufo.x > shieldCenter - (shieldRadius + 40)) && 
+            (ufo.x < shieldCenter + (shieldRadius - 40))) ||
+            (ufo.y > shieldHeight + 30) && 
+            ((ufo.x > shieldCenter - (shieldRadius + 20)) && 
+            (ufo.x < shieldCenter + (shieldRadius - 20))) || 
+            (ufo.y > shieldHeight + 50) && 
+            ((ufo.x > shieldCenter - (shieldRadius + 10)) && 
+            (ufo.x < shieldCenter + (shieldRadius - 10))))
+            {
+                ufo.drawExplosion();
+                delete ufos[i];
+                shieldIndex++;
+            }
     });
 }
 
@@ -102,12 +131,27 @@ function drawSaucers() {
     let dy = 1;
     const saucerImg = new Image();
     saucerImg.src = "./images/mod-saucer.png";
-    saucers.map((saucer) => {
-        let dx = (saucer.x - 575) / (saucer.y - 1000);
+    saucers.forEach((saucer, i) => {
+        let dx = (saucer.x - 575) / (saucer.y - 500);
         ctx.drawImage(saucerImg, 0, lights, 32, 32, saucer.x, saucer.y, 42, 42),
         saucer.x += dx,
         saucer.y += dy,
         saucer.drawText();
+
+        if ((saucer.y > shieldHeight ) && 
+            ((saucer.x > shieldCenter - (shieldRadius + 40)) && 
+            (saucer.x < shieldCenter + (shieldRadius - 40))) ||
+            (saucer.y > shieldHeight + 30) && 
+            ((saucer.x > shieldCenter - (shieldRadius + 20)) && 
+            (saucer.x < shieldCenter + (shieldRadius - 20))) || 
+            (saucer.y > shieldHeight + 50) && 
+            ((saucer.x > shieldCenter - (shieldRadius + 10)) && 
+            (saucer.x < shieldCenter + (shieldRadius - 10))))
+            {
+                saucer.drawExplosion();
+                delete saucers[i];
+                shieldIndex++;
+            }
     });
 }
 
@@ -131,12 +175,27 @@ function drawWings() {
     let dy = 1.5;
     const wingImg = new Image();
     wingImg.src = "./images/mod-wing.png";
-    wings.map((wing) => {
+    wings.forEach((wing, i) => {
         let dx = (wing.x - 575) / (wing.y - 600);
         ctx.drawImage(wingImg, 0, lights, 32, 32, wing.x, wing.y, 42, 42),
         wing.x += dx,
         wing.y += dy,
         wing.drawText();
+
+        if ((wing.y > shieldHeight ) && 
+            ((wing.x > shieldCenter - (shieldRadius + 40)) && 
+            (wing.x < shieldCenter + (shieldRadius - 40))) ||
+            (wing.y > shieldHeight + 30) && 
+            ((wing.x > shieldCenter - (shieldRadius + 20)) && 
+            (wing.x < shieldCenter + (shieldRadius - 20))) || 
+            (wing.y > shieldHeight + 50) && 
+            ((wing.x > shieldCenter - (shieldRadius + 10)) && 
+            (wing.x < shieldCenter + (shieldRadius - 10))))
+            {
+                wing.drawExplosion();
+                delete wings[i];
+                shieldIndex++;
+            }
     });
 }
 
@@ -177,8 +236,6 @@ function typeWord() {
                 }
             });
             e.target.value = "";
-            // laser(ufo.x + 21, ufo.y + 21);
-            // ufo.drawExplosion(ufo.x, ufo.y);
         }
     })
 }
@@ -203,8 +260,10 @@ function laser(x, y) {
 let wave = 1; 
 let waveInterval = 10000;
 function updateWave() {
-    wave++;
-    waveInterval += 1500;
+    if (baseAlive) {
+        wave++;
+        waveInterval += 1500;
+    }
 }
 
 function displayWave() {
@@ -216,10 +275,11 @@ function displayWave() {
     ctx.closePath();
 }
 
-
+if (baseAlive) {
 setInterval(function() {clear(), displayWave(), typeWord(), drawShield(), drawBase()}, 25);
-setInterval(function() {drawUFOs(), drawSaucers(), drawWings()}, 25)
+setInterval(function() {drawUFOs(), drawSaucers(), drawWings()}, 15)
 setInterval(function() {spawnUFOs(), updateWave()}, waveInterval);
-setInterval(function() {spawnSaucers(), addUFOs()}, waveInterval * 2);
+setInterval(function() {spawnSaucers(), addUFOs(), rechargeShield()}, waveInterval * 2);
 setInterval(function() {spawnWings(), addSaucers(), addWings()}, waveInterval * 3);
 setInterval(flash, 200);
+}

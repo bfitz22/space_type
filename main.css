@@ -28,6 +28,14 @@ body {
     /* background-repeat: no-repeat;  */
 }
 
+.start {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 12;
+    background: "rgba (0, 0, 0)";
+}
+
 canvas {
     border: 2px solid white;
     background-image: url("images/background.png"); 
@@ -39,6 +47,7 @@ canvas {
 }
 
 .typing-box {
+    font-size: 18px;
     font-weight: bold;
     text-align: center; 
     border: 1px solid white;

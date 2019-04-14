@@ -17,10 +17,27 @@ class Wing {
     drawText() {
         this.ctx.beginPath();
         this.ctx.fillStyle = "white";
-        this.ctx.font = 'bold 18px "Roboto Slab"';
+        this.ctx.font = 'bold 18px "Arial"';
         this.ctx.fillText(this.word, this.x, this.y - 7);
         this.ctx.fill();
         this.ctx.closePath();
+    }
+
+    drawExplosion(x, y) {
+        let i = 0;
+        let j = 0;
+        const boomImg = new Image();
+        boomImg.src = "./images/explosion.png";
+        const explosion = setInterval(() => {
+            this.ctx.drawImage(boomImg, 0, i, 32, 32, x, y, 42, 42);
+            j++;
+            if (j % 25 === 0) {
+            i += 32 
+            }
+            if (i > 64) {
+                clearInterval(explosion);
+            }
+        }, 25)
     }
 }
 

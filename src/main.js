@@ -20,8 +20,9 @@ const saucerForce = ["x"];
 let wings = [];
 const wingForce = [];
 
-var stroke = "rgba(0, 128, 255)";
-var fill = "rgba(0, 0, 51)";
+var stroke = ["rgba(0, 128, 255)", "rgba(255, 128, 0", "red", "rgba(0, 0, 0, 0)"];
+var fill = ["rgba(0, 0, 51)", "rgba(51, 25, 0)", "rgba(51, 0, 0)", "rgba(0, 0, 0, 0)"];
+let shieldIndex = 2;
 
 function drawBase() {
     ctx.beginPath();
@@ -34,14 +35,8 @@ function drawShield() {
     ctx.beginPath();
     ctx.moveTo(450, 700);
     ctx.bezierCurveTo(465, 425, 730, 425, 750, 700);
-    ctx.strokeStyle = stroke;
-    ctx.fillStyle = fill;
-    // orange
-    // ctx.strokeStyle = "rgba(255, 128, 0";
-    // ctx.fillStyle = "rgba(51, 25, 0)";
-    // red 
-    // ctx.strokeStyle = "red";
-    // ctx.fillStyle = "rgba(51, 0, 0)";
+    ctx.strokeStyle = stroke[shieldIndex];
+    ctx.fillStyle = fill[shieldIndex];
     ctx.stroke();
     ctx.fill();
     ctx.shadowColor = 100;
@@ -80,6 +75,10 @@ function drawUFOs() {
         ufo.x += dx,
         ufo.y += dy,
         ufo.drawText();
+        // if ((y + dy > shieldHeight && (x === 600 )) || 
+        //     ((y + dy > canvas.height) && (x > 590 && x < 610))) {
+
+        //     }
     });
 }
 
@@ -154,28 +153,58 @@ function typeWord() {
     typer.addEventListener('keypress', function(e) {
         var key = e.which || e.keyCode;
         if (key === 13 || key === 32) {
-            var ufo = ufos.find(ufo => ufo.word === e.target.value);
-            ufos = ufos.filter(ufo => ufo.word !== e.target.value),
-            saucers = saucers.filter(saucer => saucer.word !== e.target.value),
-            wings = wings.filter(wing => wing.word !== e.target.value)
+            // var ufo = ufos.find(ufo => ufo.word === e.target.value);
+            // ufos = ufos.filter(ufo => ufo.word !== e.target.value),
+            ufos.forEach((ufo, i) => {
+                if (ufo.word === e.target.value) {
+                    delete ufos[i];
+                    laser(ufo.x + 21, ufo.y + 21);
+                    ufo.drawExplosion(ufo.x, ufo.y);
+                }
+            });
+            saucers.forEach((saucer, i) => {
+                if (saucer.word === e.target.value) {
+                    delete saucers[i];
+                    laser(saucer.x + 21, saucer.y + 21);
+                    saucer.drawExplosion(saucer.x, saucer.y);
+                }
+            });
+            wings.forEach((wing, i) => {
+                if (wing.word === e.target.value) {
+                    delete wings[i];
+                    laser(wing.x + 21, wing.y + 21);
+                    wing.drawExplosion(wing.x, wing.y);
+                }
+            });
             e.target.value = "";
             // laser(ufo.x + 21, ufo.y + 21);
-            ufo.drawExplosion(ufo.x + 21, ufo.y + 21);
+            // ufo.drawExplosion(ufo.x, ufo.y);
         }
     })
 }
 
 function laser(x, y) {
-    ctx.beginPath();
-    ctx.moveTo(canvas.width * 0.5, 525);
-    ctx.lineTo(x, y);
-    ctx.stroke();
-    ctx.closePath();
+    let i = 0;
+    const laser = setInterval(() => {
+        if (i < 25) {
+            ctx.beginPath();
+            ctx.moveTo(canvas.width * 0.5, 525);
+            ctx.lineTo(x, y);
+            ctx.strokeStyle = "rgba(0, 128, 255)";
+            ctx.stroke();
+            ctx.closePath();
+        } else {
+            clearInterval(laser);
+        }
+        i++;
+    })
 }
 
 let wave = 1; 
+let waveInterval = 10000;
 function updateWave() {
     wave++;
+    waveInterval += 1500;
 }
 
 function displayWave() {
@@ -188,8 +217,9 @@ function displayWave() {
 }
 
 
-setInterval(function() {clear(), displayWave(), typeWord(), drawShield(), drawBase(), drawUFOs(), drawSaucers(), drawWings()}, 25);
-setInterval(function() {spawnUFOs(), updateWave()}, 10000);
-setInterval(function() {spawnSaucers(), addUFOs()}, 20000);
-setInterval(function() {spawnWings(), addSaucers(), addWings()}, 30000);
+setInterval(function() {clear(), displayWave(), typeWord(), drawShield(), drawBase()}, 25);
+setInterval(function() {drawUFOs(), drawSaucers(), drawWings()}, 25)
+setInterval(function() {spawnUFOs(), updateWave()}, waveInterval);
+setInterval(function() {spawnSaucers(), addUFOs()}, waveInterval * 2);
+setInterval(function() {spawnWings(), addSaucers(), addWings()}, waveInterval * 3);
 setInterval(flash, 200);

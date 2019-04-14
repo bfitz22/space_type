@@ -13,11 +13,12 @@ const shieldHeight = 460;
 const shieldLeft = 105;
 const shieldRight = 115;
 
-const ufos = [new UFO(ctx), new UFO(ctx), new UFO(ctx)];
+let ufos = [new UFO(ctx), new UFO(ctx), new UFO(ctx)];
 const ufoForce = ["x", "x", "x"];
-const saucers = [new Saucer(ctx)];
-const saucerForce = ["x"]
-const wings = [];
+let saucers = [new Saucer(ctx)];
+const saucerForce = ["x"];
+let wings = [];
+const wingForce = [];
 
 var stroke = "rgba(0, 128, 255)";
 var fill = "rgba(0, 0, 51)";
@@ -73,7 +74,7 @@ function drawUFOs() {
     let dy = 0.5;
     const ufoImg = new Image();
     ufoImg.src = "./images/mod-ufo.png";
-    ufo = ufos.forEach((ufo) => {
+    ufos.forEach((ufo) => {
         let dx = (ufo.x - 575) / (ufo.y - 1000);
         ctx.drawImage(ufoImg, 0, lights, 32, 32, ufo.x, ufo.y, 42, 42),
         ufo.x += dx,
@@ -87,7 +88,15 @@ function addUFOs() {
 }
 
 function spawnSaucers() {
-    saucers.push(new Saucer(ctx));
+    let i = 0;
+    let squadSize = saucerForce.length;
+    const spawnInterval = setInterval(() => {
+        saucers.push(new Saucer(ctx));
+        i++;
+        if (i > squadSize) {
+            clearInterval(spawnInterval);
+        }
+    }, 1750)
 }
 
 function drawSaucers() {
@@ -108,7 +117,15 @@ function addSaucers() {
 }
 
 function spawnWings() {
-    wings.push(new Wing(ctx));
+    let i = 0;
+    let squadSize = wingForce.length;
+    const spawnInterval = setInterval(() => {
+        wings.push(new Wing(ctx));
+        i++;
+        if (i > squadSize) {
+            clearInterval(spawnInterval);
+        }
+    }, 1750)
 }
 
 function drawWings() {
@@ -132,9 +149,22 @@ function clear() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
+function typeWord() {
+    let typer = document.getElementById("typing-box");
+    typer.addEventListener('keypress', function(e) {
+        var key = e.which || e.keyCode;
+        if (key === 13 || key === 32) {
+            ufos = ufos.filter(ufo => ufo.word !== e.target.value),
+            saucers = saucers.filter(saucer => saucer.word !== e.target.value),
+            wings = wings.filter(wing => wing.word !== e.target.value)
+            e.target.value = "";
+        }
+    })
+}
+
 // window.requestAnimationFrame(spawnUFOs());
-setInterval(function() {clear(), drawShield(), drawBase(), drawUFOs(), drawSaucers(), drawWings()}, 15);
-setInterval(spawnUFOs, 10000);
-setInterval(function() {spawnSaucers(), addUFOs()}, 30000);
-setInterval(spawnWings, 60000);
+setInterval(function() {clear(), typeWord(), drawShield(), drawBase(), drawUFOs(), drawSaucers(), drawWings()}, 15);
+setInterval(spawnUFOs, 15000);
+setInterval(function() {spawnSaucers(), addUFOs()}, 23000);
+setInterval(function() {spawnWings(), addSaucers(), addWings()}, 30000);
 setInterval(flash, 200);

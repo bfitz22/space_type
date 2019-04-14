@@ -7,7 +7,7 @@ class Saucer {
         this.y = 1;
         this.width = 42;
         this.height = 42;
-        this.word = randomWords(1);
+        this.word = randomWords();
 
         // this.word = word;
         // this.vel = vel;

@@ -26,6 +26,7 @@ var stroke = ["rgba(0, 128, 255)", "rgba(255, 128, 0", "red", "rgba(0, 0, 0, 0)"
 var fill = ["rgba(0, 0, 51)", "rgba(51, 25, 0)", "rgba(51, 0, 0)", "rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0)"];
 let shieldIndex = 0;
 
+
 function drawBase() {
     if (baseAlive) {
         ctx.beginPath();
@@ -124,7 +125,7 @@ function spawnSaucers() {
         if (i > squadSize) {
             clearInterval(spawnInterval);
         }
-    }, 1500)
+    }, 2000)
 }
 
 function drawSaucers() {
@@ -168,7 +169,7 @@ function spawnWings() {
         if (i > squadSize) {
             clearInterval(spawnInterval);
         }
-    }, 1500)
+    }, 3000)
 }
 
 function drawWings() {
@@ -209,9 +210,9 @@ function clear() {
 
 function typeWord() {
     let typer = document.getElementById("typing-box");
-    typer.addEventListener('keypress', function(e) {
+    typer.addEventListener('keypress', (e) => {
         var key = e.which || e.keyCode;
-        if (key === 13 || key === 32) {
+        if (key === 13) {
             // var ufo = ufos.find(ufo => ufo.word === e.target.value);
             // ufos = ufos.filter(ufo => ufo.word !== e.target.value),
             ufos.forEach((ufo, i) => {
@@ -219,6 +220,7 @@ function typeWord() {
                     delete ufos[i];
                     laser(ufo.x + 21, ufo.y + 21);
                     ufo.drawExplosion(ufo.x, ufo.y);
+                    updatePoints(1);
                 }
             });
             saucers.forEach((saucer, i) => {
@@ -226,6 +228,7 @@ function typeWord() {
                     delete saucers[i];
                     laser(saucer.x + 21, saucer.y + 21);
                     saucer.drawExplosion(saucer.x, saucer.y);
+                    updatePoints(3);
                 }
             });
             wings.forEach((wing, i) => {
@@ -233,11 +236,28 @@ function typeWord() {
                     delete wings[i];
                     laser(wing.x + 21, wing.y + 21);
                     wing.drawExplosion(wing.x, wing.y);
+                    updatePoints(5);
                 }
             });
             e.target.value = "";
         }
     })
+}
+
+let totalPoints = 0;
+function updatePoints(num) {
+    if (baseAlive) {
+        totalPoints += num;
+    }
+}
+
+function displayPoints() {
+    ctx.beginPath();
+    ctx.fillStyle = "white";
+    ctx.font = 'bold 30px Arial';
+    ctx.fillText(`${totalPoints} points`, 800, 670);
+    ctx.fill();
+    ctx.closePath();
 }
 
 function laser(x, y) {
@@ -275,11 +295,13 @@ function displayWave() {
     ctx.closePath();
 }
 
-if (baseAlive) {
-setInterval(function() {clear(), displayWave(), typeWord(), drawShield(), drawBase()}, 25);
-setInterval(function() {drawUFOs(), drawSaucers(), drawWings()}, 15)
+
+setInterval(function() {clear(), displayWave(), displayPoints(), typeWord(), drawShield(), drawBase()}, 25);
+const drawEnemies = setInterval(function() {drawUFOs(), drawSaucers(), drawWings()}, 15)
 setInterval(function() {spawnUFOs(), updateWave()}, waveInterval);
 setInterval(function() {spawnSaucers(), addUFOs(), rechargeShield()}, waveInterval * 2);
 setInterval(function() {spawnWings(), addSaucers(), addWings()}, waveInterval * 3);
 setInterval(flash, 200);
-}
+if (!baseAlive) {
+    clearInterval(drawEnemies);
+};

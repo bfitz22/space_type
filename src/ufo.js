@@ -28,7 +28,7 @@ class UFO {
         const explosion = setInterval(() => {
             this.ctx.drawImage(boomImg, 0, i, 32, 32, x, y, 42, 42);
             j++;
-            if (j % 15 === 0) {
+            if (j % 3 === 0) {
             i += 32 
             }
             if (i > 64) {

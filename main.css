@@ -29,11 +29,23 @@ body {
 }
 
 .start {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: absolute;
     height: 100%;
     width: 100%;
-    z-index: 12;
-    background: "rgba (0, 0, 0)";
+    z-index: 100;
+    text-align: center;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.4);
+    text-decoration: bold;
+    font-family: myFont;
+    font-size: 60px; 
+}
+
+.hidden {
+    display: none; 
 }
 
 canvas {

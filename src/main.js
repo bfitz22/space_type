@@ -8,9 +8,8 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const base = document.createElement('img');
 base.src = "images/base.png";
-let baseAlive = true;
+let baseAlive = false;
 
-const alienRadius = 42;
 const shieldHeight = 460;
 const shieldCenter = 580;
 const shieldRadius = 220;
@@ -26,6 +25,23 @@ var stroke = ["rgba(0, 128, 255)", "rgba(255, 128, 0", "red", "rgba(0, 0, 0, 0)"
 var fill = ["rgba(0, 0, 51)", "rgba(51, 25, 0)", "rgba(51, 0, 0)", "rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0)"];
 let shieldIndex = 0;
 
+let paused = false; 
+
+const typer = document.getElementById("typing-box");
+const startScreen = document.getElementById("start");
+startScreen.addEventListener("click", (e) => {
+    baseAlive = true; 
+    startScreen.classList.add("hidden");
+    if (!paused) {
+    renderGame();
+    }
+    typer.focus();
+})
+
+canvas.addEventListener("click", (e) => {
+    // clearInterval(gameEvents);
+    paused = true; 
+})
 
 function drawBase() {
     if (baseAlive) {
@@ -81,7 +97,7 @@ function spawnUFOs() {
         if (i > squadSize) {
             clearInterval(spawnInterval);
         }
-    }, 1500)
+    }, 3000)
 }
 
 function drawUFOs() {
@@ -96,16 +112,16 @@ function drawUFOs() {
         ufo.drawText();
     
         if ((ufo.y > shieldHeight ) && 
-            ((ufo.x > shieldCenter - (shieldRadius + 40)) && 
-            (ufo.x < shieldCenter + (shieldRadius - 40))) ||
+            ((ufo.x > shieldCenter - (shieldRadius + 10)) && 
+            (ufo.x < shieldCenter + (shieldRadius - 10))) ||
             (ufo.y > shieldHeight + 30) && 
             ((ufo.x > shieldCenter - (shieldRadius + 20)) && 
             (ufo.x < shieldCenter + (shieldRadius - 20))) || 
             (ufo.y > shieldHeight + 50) && 
-            ((ufo.x > shieldCenter - (shieldRadius + 10)) && 
-            (ufo.x < shieldCenter + (shieldRadius - 10))))
+            ((ufo.x > shieldCenter - (shieldRadius + 40)) && 
+            (ufo.x < shieldCenter + (shieldRadius - 40))))
             {
-                ufo.drawExplosion();
+                ufo.drawExplosion(ufo.x, ufo.y);
                 delete ufos[i];
                 shieldIndex++;
             }
@@ -125,7 +141,7 @@ function spawnSaucers() {
         if (i > squadSize) {
             clearInterval(spawnInterval);
         }
-    }, 2000)
+    }, 4000)
 }
 
 function drawSaucers() {
@@ -133,23 +149,23 @@ function drawSaucers() {
     const saucerImg = new Image();
     saucerImg.src = "./images/mod-saucer.png";
     saucers.forEach((saucer, i) => {
-        let dx = (saucer.x - 575) / (saucer.y - 500);
+        let dx = (saucer.x - 575) / (saucer.y - 600);
         ctx.drawImage(saucerImg, 0, lights, 32, 32, saucer.x, saucer.y, 42, 42),
         saucer.x += dx,
         saucer.y += dy,
         saucer.drawText();
 
         if ((saucer.y > shieldHeight ) && 
-            ((saucer.x > shieldCenter - (shieldRadius + 40)) && 
-            (saucer.x < shieldCenter + (shieldRadius - 40))) ||
+            ((saucer.x > shieldCenter - (shieldRadius + 10)) && 
+            (saucer.x < shieldCenter + (shieldRadius - 10))) ||
             (saucer.y > shieldHeight + 30) && 
             ((saucer.x > shieldCenter - (shieldRadius + 20)) && 
             (saucer.x < shieldCenter + (shieldRadius - 20))) || 
             (saucer.y > shieldHeight + 50) && 
-            ((saucer.x > shieldCenter - (shieldRadius + 10)) && 
-            (saucer.x < shieldCenter + (shieldRadius - 10))))
+            ((saucer.x > shieldCenter - (shieldRadius + 40)) && 
+            (saucer.x < shieldCenter + (shieldRadius - 40))))
             {
-                saucer.drawExplosion();
+                saucer.drawExplosion(saucer.x, saucer.y);
                 delete saucers[i];
                 shieldIndex++;
             }
@@ -169,7 +185,7 @@ function spawnWings() {
         if (i > squadSize) {
             clearInterval(spawnInterval);
         }
-    }, 3000)
+    }, 5000)
 }
 
 function drawWings() {
@@ -177,23 +193,25 @@ function drawWings() {
     const wingImg = new Image();
     wingImg.src = "./images/mod-wing.png";
     wings.forEach((wing, i) => {
-        let dx = (wing.x - 575) / (wing.y - 600);
+        let dx = (wing.x - 575) / (wing.y - 500);
         ctx.drawImage(wingImg, 0, lights, 32, 32, wing.x, wing.y, 42, 42),
         wing.x += dx,
         wing.y += dy,
         wing.drawText();
 
         if ((wing.y > shieldHeight ) && 
-            ((wing.x > shieldCenter - (shieldRadius + 40)) && 
-            (wing.x < shieldCenter + (shieldRadius - 40))) ||
+            ((wing.x > shieldCenter - (shieldRadius + 10)) && 
+            (wing.x < shieldCenter + (shieldRadius - 10))) 
+            ||
             (wing.y > shieldHeight + 30) && 
             ((wing.x > shieldCenter - (shieldRadius + 20)) && 
-            (wing.x < shieldCenter + (shieldRadius - 20))) || 
+            (wing.x < shieldCenter + (shieldRadius - 20))) 
+            || 
             (wing.y > shieldHeight + 50) && 
-            ((wing.x > shieldCenter - (shieldRadius + 10)) && 
-            (wing.x < shieldCenter + (shieldRadius - 10))))
+            ((wing.x > shieldCenter - (shieldRadius + 40)) && 
+            (wing.x < shieldCenter + (shieldRadius - 40))))
             {
-                wing.drawExplosion();
+                wing.drawExplosion(wing.x, wing.y);
                 delete wings[i];
                 shieldIndex++;
             }
@@ -209,7 +227,7 @@ function clear() {
 }
 
 function typeWord() {
-    let typer = document.getElementById("typing-box");
+    
     typer.addEventListener('keypress', (e) => {
         var key = e.which || e.keyCode;
         if (key === 13) {
@@ -265,7 +283,7 @@ function laser(x, y) {
     const laser = setInterval(() => {
         if (i < 25) {
             ctx.beginPath();
-            ctx.moveTo(canvas.width * 0.5, 525);
+            ctx.moveTo(canvas.width * 0.5, 530);
             ctx.lineTo(x, y);
             ctx.strokeStyle = "rgba(0, 128, 255)";
             ctx.stroke();
@@ -278,7 +296,7 @@ function laser(x, y) {
 }
 
 let wave = 1; 
-let waveInterval = 10000;
+let waveInterval = 15000;
 function updateWave() {
     if (baseAlive) {
         wave++;
@@ -295,13 +313,15 @@ function displayWave() {
     ctx.closePath();
 }
 
-
-setInterval(function() {clear(), displayWave(), displayPoints(), typeWord(), drawShield(), drawBase()}, 25);
-const drawEnemies = setInterval(function() {drawUFOs(), drawSaucers(), drawWings()}, 15)
+const renderGame = () => { 
+const gameEvents = setInterval(function() {clear(), displayWave(), displayPoints(), typeWord(), drawShield(), drawBase()}, 40);
+const gameEnemies = setInterval(function() {drawUFOs(), drawSaucers(), drawWings()}, 40)
 setInterval(function() {spawnUFOs(), updateWave()}, waveInterval);
 setInterval(function() {spawnSaucers(), addUFOs(), rechargeShield()}, waveInterval * 2);
 setInterval(function() {spawnWings(), addSaucers(), addWings()}, waveInterval * 3);
 setInterval(flash, 200);
-if (!baseAlive) {
-    clearInterval(drawEnemies);
-};
+if (paused) {
+    clearInterval(gameEvents);
+    clearInterval(gameEnemies);
+}
+}

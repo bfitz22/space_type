@@ -4,11 +4,24 @@ import Wing from './wing';
 import { gameOver, finalWaveCount, finalExplosion } from './game_over';
 
 
+
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const base = document.createElement('img');
 base.src = "images/base.png";
 let baseAlive = false;
+
+const mainTheme = new Audio();
+mainTheme.src = "./audio/main-theme.mp3";
+const gameOverMusic = new Audio();
+gameOverMusic.src = "./audio/game_over.mp3";
+const laserSound = new Audio();
+laserSound.src = "./audio/laser.mp3";
+const powerDown = new Audio();
+powerDown.src = "./audio/power-down.mp3";
+const powerUp = new Audio();
+powerUp.src = "./audio/power-up.mp3";
+
 
 const shieldHeight = 460;
 const shieldCenter = 580;
@@ -25,22 +38,24 @@ var stroke = ["rgba(0, 128, 255)", "rgba(255, 128, 0", "red", "rgba(0, 0, 0, 0)"
 var fill = ["rgba(0, 0, 51)", "rgba(51, 25, 0)", "rgba(51, 0, 0)", "rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0)"];
 let shieldIndex = 0;
 
-let paused = false; 
 
 const typer = document.getElementById("typing-box");
 const startScreen = document.getElementById("start");
 startScreen.addEventListener("click", (e) => {
-    baseAlive = true; 
     startScreen.classList.add("hidden");
-    if (!paused) {
-    renderGame();
-    }
+    mainTheme.play();
+    mainTheme.loop = true; 
     typer.focus();
+    baseAlive = true; 
+    
+    setTimeout(() => {
+    renderGame();
+    }, 4000)
 })
 
+let paused = false; 
 canvas.addEventListener("click", (e) => {
-    // clearInterval(gameEvents);
-    paused = true; 
+    
 })
 
 function drawBase() {
@@ -67,6 +82,8 @@ function drawShield() {
     }
     if (shieldIndex >= 4) {
         gameOver(ctx);
+        mainTheme.pause();
+        gameOverMusic.play();
         finalWaveCount(ctx, wave);
         finalExplosion(ctx, canvas);
         baseAlive = false;
@@ -76,6 +93,7 @@ function drawShield() {
 function rechargeShield() {
     if (shieldIndex > 0 && baseAlive) {
         shieldIndex -= 1;
+        powerUp.play();
     }
 }
 
@@ -112,15 +130,19 @@ function drawUFOs() {
         ufo.drawText();
     
         if ((ufo.y > shieldHeight ) && 
-            ((ufo.x > shieldCenter - (shieldRadius + 10)) && 
-            (ufo.x < shieldCenter + (shieldRadius - 10))) ||
+            ((ufo.x > shieldCenter - (shieldRadius + 40)) && 
+            (ufo.x < shieldCenter + (shieldRadius - 40))) ||
             (ufo.y > shieldHeight + 30) && 
             ((ufo.x > shieldCenter - (shieldRadius + 20)) && 
             (ufo.x < shieldCenter + (shieldRadius - 20))) || 
             (ufo.y > shieldHeight + 50) && 
-            ((ufo.x > shieldCenter - (shieldRadius + 40)) && 
-            (ufo.x < shieldCenter + (shieldRadius - 40))))
+            ((ufo.x > shieldCenter - (shieldRadius + 10)) && 
+            (ufo.x < shieldCenter + (shieldRadius - 10))))
             {
+                setTimeout( () => {
+                    rechargeShield();
+                }, 10000)
+                powerDown.play();
                 ufo.drawExplosion(ufo.x, ufo.y);
                 delete ufos[i];
                 shieldIndex++;
@@ -156,15 +178,19 @@ function drawSaucers() {
         saucer.drawText();
 
         if ((saucer.y > shieldHeight ) && 
-            ((saucer.x > shieldCenter - (shieldRadius + 10)) && 
-            (saucer.x < shieldCenter + (shieldRadius - 10))) ||
+            ((saucer.x > shieldCenter - (shieldRadius + 40)) && 
+            (saucer.x < shieldCenter + (shieldRadius - 40))) ||
             (saucer.y > shieldHeight + 30) && 
             ((saucer.x > shieldCenter - (shieldRadius + 20)) && 
             (saucer.x < shieldCenter + (shieldRadius - 20))) || 
             (saucer.y > shieldHeight + 50) && 
-            ((saucer.x > shieldCenter - (shieldRadius + 40)) && 
-            (saucer.x < shieldCenter + (shieldRadius - 40))))
+            ((saucer.x > shieldCenter - (shieldRadius + 10)) && 
+            (saucer.x < shieldCenter + (shieldRadius - 10))))
             {
+                setTimeout( () => {
+                    rechargeShield();
+                }, 10000)
+                powerDown.play();
                 saucer.drawExplosion(saucer.x, saucer.y);
                 delete saucers[i];
                 shieldIndex++;
@@ -200,17 +226,21 @@ function drawWings() {
         wing.drawText();
 
         if ((wing.y > shieldHeight ) && 
-            ((wing.x > shieldCenter - (shieldRadius + 10)) && 
-            (wing.x < shieldCenter + (shieldRadius - 10))) 
+            ((wing.x > shieldCenter - (shieldRadius + 40)) && 
+            (wing.x < shieldCenter + (shieldRadius - 40))) 
             ||
             (wing.y > shieldHeight + 30) && 
             ((wing.x > shieldCenter - (shieldRadius + 20)) && 
             (wing.x < shieldCenter + (shieldRadius - 20))) 
             || 
             (wing.y > shieldHeight + 50) && 
-            ((wing.x > shieldCenter - (shieldRadius + 40)) && 
-            (wing.x < shieldCenter + (shieldRadius - 40))))
+            ((wing.x > shieldCenter - (shieldRadius + 10)) && 
+            (wing.x < shieldCenter + (shieldRadius - 10))))
             {
+                setTimeout( () => {
+                    rechargeShield();
+                }, 10000)
+                powerDown.play();
                 wing.drawExplosion(wing.x, wing.y);
                 delete wings[i];
                 shieldIndex++;
@@ -229,12 +259,14 @@ function clear() {
 function typeWord() {
     
     typer.addEventListener('keypress', (e) => {
+        
         var key = e.which || e.keyCode;
         if (key === 13) {
             // var ufo = ufos.find(ufo => ufo.word === e.target.value);
             // ufos = ufos.filter(ufo => ufo.word !== e.target.value),
             ufos.forEach((ufo, i) => {
                 if (ufo.word === e.target.value) {
+                    laserSound.play();
                     delete ufos[i];
                     laser(ufo.x + 21, ufo.y + 21);
                     ufo.drawExplosion(ufo.x, ufo.y);
@@ -243,6 +275,7 @@ function typeWord() {
             });
             saucers.forEach((saucer, i) => {
                 if (saucer.word === e.target.value) {
+                    laserSound.play();
                     delete saucers[i];
                     laser(saucer.x + 21, saucer.y + 21);
                     saucer.drawExplosion(saucer.x, saucer.y);
@@ -251,6 +284,7 @@ function typeWord() {
             });
             wings.forEach((wing, i) => {
                 if (wing.word === e.target.value) {
+                    laserSound.play();
                     delete wings[i];
                     laser(wing.x + 21, wing.y + 21);
                     wing.drawExplosion(wing.x, wing.y);
@@ -296,7 +330,7 @@ function laser(x, y) {
 }
 
 let wave = 1; 
-let waveInterval = 15000;
+let waveInterval = 10000;
 function updateWave() {
     if (baseAlive) {
         wave++;
@@ -313,15 +347,19 @@ function displayWave() {
     ctx.closePath();
 }
 
-const renderGame = () => { 
-const gameEvents = setInterval(function() {clear(), displayWave(), displayPoints(), typeWord(), drawShield(), drawBase()}, 40);
-const gameEnemies = setInterval(function() {drawUFOs(), drawSaucers(), drawWings()}, 40)
+
+
+function renderGame() { 
+setInterval(function() {clear(), drawShield(),  drawBase(), displayWave(), 
+    displayPoints(), typeWord(), drawUFOs(), drawSaucers(), drawWings()}, 40);
 setInterval(function() {spawnUFOs(), updateWave()}, waveInterval);
-setInterval(function() {spawnSaucers(), addUFOs(), rechargeShield()}, waveInterval * 2);
+setInterval(function() {spawnSaucers(), addUFOs()}, waveInterval * 2);
 setInterval(function() {spawnWings(), addSaucers(), addWings()}, waveInterval * 3);
 setInterval(flash, 200);
-if (paused) {
-    clearInterval(gameEvents);
-    clearInterval(gameEnemies);
+// if (paused) {
+//     clearInterval(gameEvents);
+//     clearInterval(gameEnemies);
+// }
 }
-}
+// 
+// , rechargeShield()

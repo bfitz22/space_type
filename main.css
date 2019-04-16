@@ -52,7 +52,7 @@ canvas {
     border: 2px solid white;
     background-image: url("images/background.png"); 
     display: block; 
-    margin: 0px 100px 40px 100px; 
+    margin: 0px 100px 0px 100px; 
     /* margin-top: 0px;
     margin-right: 200px;  */
     background-size: cover; 
@@ -74,7 +74,8 @@ canvas {
 }
 
 .typing-box:focus {
-    border: 3px solid white; 
+    outline: none; 
+    border: 1px solid white; 
 }
 
 @font-face {
@@ -87,4 +88,31 @@ canvas {
     margin: 35px 0px 35px 0px;
     color: white;
     font-family: myFont;
+}
+
+.author {
+    width: 60%;
+}
+
+p {
+    font-weight: bold; 
+    font-family: Arial;
+    color: white; 
+}
+
+.links {
+    display: flex; 
+    justify-content: space-around;
+    width: 50%;
+    height: 50px; 
+}
+
+.fa-github, .fa-linkedin{
+    color: white; 
+    font-size: 70px;
+}
+
+.fa-github:hover, .fa-linkedin:hover{
+    cursor: pointer;
+    color: rgba(78, 56, 157); 
 }

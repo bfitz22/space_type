@@ -17,6 +17,7 @@ const gameOverMusic = new Audio();
 gameOverMusic.src = "./audio/game_over.mp3";
 const laserSound = new Audio();
 laserSound.src = "./audio/laser.mp3";
+const laserSoundClone = laserSound.cloneNode();
 const powerDown = new Audio();
 powerDown.src = "./audio/power-down.mp3";
 const powerUp = new Audio();
@@ -47,8 +48,11 @@ startScreen.addEventListener("click", (e) => {
     mainTheme.loop = true; 
     typer.focus();
     baseAlive = true; 
+    const startInt = setInterval(function() {clear(), drawShieldIntro(),  drawBase(), displayWave(), 
+    displayPoints()}, 40);
     
     setTimeout(() => {
+    clearInterval(startInt);
     renderGame();
     }, 4000)
 })
@@ -64,6 +68,19 @@ function drawBase() {
         ctx.drawImage(base, canvas.width * 0.425, 525, canvas.width * 0.15, canvas.height * 0.25);
         ctx.closePath();
     }
+}
+
+function drawShieldIntro() {
+    ctx.beginPath();
+    ctx.moveTo(450, 700);
+    ctx.bezierCurveTo(465, 425, 730, 425, 750, 700);
+    ctx.strokeStyle = stroke[shieldIndex];
+    ctx.fillStyle = fill[shieldIndex];
+    ctx.stroke();
+    ctx.fill();
+    ctx.shadowColor = 100;
+    ctx.lineWidth = 8;
+    ctx.closePath();
 }
 
 
@@ -266,7 +283,7 @@ function typeWord() {
             // ufos = ufos.filter(ufo => ufo.word !== e.target.value),
             ufos.forEach((ufo, i) => {
                 if (ufo.word === e.target.value) {
-                    laserSound.play();
+                    laserSoundClone.play();
                     delete ufos[i];
                     laser(ufo.x + 21, ufo.y + 21);
                     ufo.drawExplosion(ufo.x, ufo.y);
@@ -275,7 +292,7 @@ function typeWord() {
             });
             saucers.forEach((saucer, i) => {
                 if (saucer.word === e.target.value) {
-                    laserSound.play();
+                    laserSoundClone.play();
                     delete saucers[i];
                     laser(saucer.x + 21, saucer.y + 21);
                     saucer.drawExplosion(saucer.x, saucer.y);
@@ -284,7 +301,7 @@ function typeWord() {
             });
             wings.forEach((wing, i) => {
                 if (wing.word === e.target.value) {
-                    laserSound.play();
+                    laserSoundClone.play();
                     delete wings[i];
                     laser(wing.x + 21, wing.y + 21);
                     wing.drawExplosion(wing.x, wing.y);
@@ -330,7 +347,7 @@ function laser(x, y) {
 }
 
 let wave = 1; 
-let waveInterval = 10000;
+let waveInterval = 9000;
 function updateWave() {
     if (baseAlive) {
         wave++;
@@ -352,9 +369,9 @@ function displayWave() {
 function renderGame() { 
 setInterval(function() {clear(), drawShield(),  drawBase(), displayWave(), 
     displayPoints(), typeWord(), drawUFOs(), drawSaucers(), drawWings()}, 40);
-setInterval(function() {spawnUFOs(), updateWave()}, waveInterval);
-setInterval(function() {spawnSaucers(), addUFOs()}, waveInterval * 2);
-setInterval(function() {spawnWings(), addSaucers(), addWings()}, waveInterval * 3);
+setInterval(function() {spawnUFOs(), updateWave()}, waveInterval + 1);
+setInterval(function() {spawnSaucers()}, (waveInterval + 1) * 2);
+setInterval(function() {spawnWings(), addUFOs(), addSaucers(), addWings()}, (waveInterval + 1) * 3);
 setInterval(flash, 200);
 // if (paused) {
 //     clearInterval(gameEvents);

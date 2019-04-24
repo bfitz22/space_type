@@ -18,7 +18,8 @@ const gameOverMusic = new Audio();
 gameOverMusic.src = "./audio/game_over.mp3";
 const laserSound = new Audio();
 laserSound.src = "./audio/laser.mp3";
-const laserSoundClone = laserSound.cloneNode();
+laserSound.volume = 0.5;
+// const laserSoundClone = laserSound.cloneNode();
 const powerDown = new Audio();
 powerDown.src = "./audio/power-down.mp3";
 const powerUp = new Audio();
@@ -108,6 +109,8 @@ function drawShield() {
         finalWaveCount(ctx, wave);
         finalExplosion(ctx, canvas);
         baseAlive = false;
+        paused = true; 
+        renderGame();
     }
 }
 
@@ -341,18 +344,6 @@ function typeWord() {
                         ufo.drawExplosion(ufo.x, ufo.y);
                         updatePoints(1);
                     })
-                    saucers.forEach((saucer, i) => {
-                        delete saucers[i];
-                        bonusLaser(bonus.x + 21, bonus.y + 21, saucer.x + 21, saucer.y + 21);
-                        saucer.drawExplosion(saucer.x, saucer.y);
-                        updatePoints(3);
-                    })
-                    wings.forEach((wing, i) => {
-                        delete wings[i];
-                        bonusLaser(bonus.x + 21, bonus.y + 21, wing.x + 21, wing.y + 21);
-                        wing.drawExplosion(wing.x, wing.y);
-                        updatePoints(5);
-                    })
                 }
             })
             e.target.value = "";
@@ -394,7 +385,7 @@ function bonusLaser(x1, y1, x2, y2) {
 }
 
 function laser(x, y) {
-    laserSoundClone.play();
+    laserSound.play();
     let i = 0;
     const laser = setInterval(() => {
         if (i < 25) {
@@ -432,6 +423,7 @@ function displayWave() {
 
 
 function renderGame() { 
+if (!paused) {
 setInterval(function() {clear(), drawBonus(); drawShield(),  drawBase(), displayWave(), 
     displayPoints(), typeWord(), drawUFOs(), drawSaucers(), drawWings()}, 25);
 setInterval(function() {spawnUFOs(), updateWave()}, waveInterval);
@@ -439,6 +431,9 @@ setInterval(function() {spawnSaucers(), spawnWings()}, (waveInterval) * 2);
 setInterval(function() {addUFOs(), addSaucers(), addWings()}, (waveInterval) * 5);
 setInterval(clearEnemies, 30000)
 setInterval(flash, 200);
+} else {
+    null
+}
 // if (paused) {
 //     clearInterval(gameEvents);
 //     clearInterval(gameEnemies);

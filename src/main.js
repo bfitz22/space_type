@@ -19,7 +19,6 @@ gameOverMusic.src = "./audio/game_over.mp3";
 const laserSound = new Audio();
 laserSound.src = "./audio/laser.mp3";
 laserSound.volume = 0.5;
-// const laserSoundClone = laserSound.cloneNode();
 const powerDown = new Audio();
 powerDown.src = "./audio/power-down.mp3";
 const powerUp = new Audio();

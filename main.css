@@ -116,3 +116,23 @@ p {
     cursor: pointer;
     color: rgba(78, 56, 157); 
 }
+
+.fa-volume-up {
+    position: relative;
+    bottom: 50px;
+    left: 125px; 
+    font-size: 30px; 
+    color: white;     
+}
+
+.fa-volume-up:hover {
+    cursor: pointer;
+}
+
+.fa-volume-mute {
+    position: relative;
+    bottom: 50px;
+    left: 125px; 
+    font-size: 30px; 
+    color: white;     
+}

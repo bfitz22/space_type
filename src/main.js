@@ -16,9 +16,7 @@ const mainTheme = new Audio();
 mainTheme.src = "./audio/main-theme.mp3";
 const gameOverMusic = new Audio();
 gameOverMusic.src = "./audio/game_over.mp3";
-const laserSound = new Audio();
-laserSound.src = "./audio/laser.mp3";
-laserSound.volume = 0.5;
+
 const powerDown = new Audio();
 powerDown.src = "./audio/power-down.mp3";
 const powerUp = new Audio();
@@ -41,7 +39,7 @@ const bonuses = [];
 
 var stroke = ["rgba(0, 128, 255)", "rgba(255, 128, 0", "red", "rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0)"];
 var fill = ["rgba(0, 0, 51)", "rgba(51, 25, 0)", "rgba(51, 0, 0)", "rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0)"];
-let shieldIndex = 0;
+let shieldIndex = 3;
 
 
 const typer = document.getElementById("typing-box");
@@ -56,6 +54,18 @@ startScreen.addEventListener("click", (e) => {
     displayPoints()}, 40);
     
     setTimeout(() => {
+        shieldIndex -= 1;
+    }, 1960)
+
+    setTimeout(() => {
+        shieldIndex -= 1;
+    }, 2740)
+
+    setTimeout(() => {
+        shieldIndex -= 1;
+    }, 3520)
+
+    setTimeout(() => {
     clearInterval(startInt);
     renderGame();
     }, 4000)
@@ -65,6 +75,20 @@ let paused = false;
 canvas.addEventListener("click", (e) => {
     
 })
+
+const speaker = document.getElementById("speaker");
+var isPlaying = true; 
+speaker.addEventListener('click', () => {
+    if (isPlaying) {
+        mainTheme.muted = true;
+        isPlaying = false;
+    } else {
+        mainTheme.muted = false; 
+        isPlaying = true; 
+    }
+})
+
+
 
 function drawBase() {
     if (baseAlive) {
@@ -142,7 +166,7 @@ function spawnUFOs() {
 }
 
 function drawUFOs() {
-    let dy = 0.5;
+    let dy = 0.75;
     const ufoImg = new Image();
     ufoImg.src = "./images/mod-ufo.png";
     ufos.forEach((ufo, i) => {
@@ -190,7 +214,7 @@ function spawnSaucers() {
 }
 
 function drawSaucers() {
-    let dy = 1;
+    let dy = 1.25;
     const saucerImg = new Image();
     saucerImg.src = "./images/mod-saucer.png";
     saucers.forEach((saucer, i) => {
@@ -238,7 +262,7 @@ function spawnWings() {
 }
 
 function drawWings() {
-    let dy = 1.5;
+    let dy = 1.75;
     const wingImg = new Image();
     wingImg.src = "./images/mod-wing.png";
     wings.forEach((wing, i) => {
@@ -302,7 +326,6 @@ function typeWord() {
         
         var key = e.which || e.keyCode;
         if (key === 13) {
-            // if ()
             ufos.forEach((ufo, i) => {
                 if (ufo.word === e.target.value) {
                     delete ufos[i];
@@ -384,7 +407,12 @@ function bonusLaser(x1, y1, x2, y2) {
 }
 
 function laser(x, y) {
-    laserSound.play();
+    if (isPlaying) {
+        const laserSound = new Audio();
+        laserSound.src = "./audio/laser.mp3";
+        laserSound.volume = 0.5;
+        laserSound.play();
+    }
     let i = 0;
     const laser = setInterval(() => {
         if (i < 25) {

@@ -16,14 +16,23 @@ const mainTheme = new Audio();
 mainTheme.src = "./audio/main-theme.mp3";
 const gameOverMusic = new Audio();
 gameOverMusic.src = "./audio/game_over.mp3";
-
-const powerDown = new Audio();
-powerDown.src = "./audio/power-down.mp3";
 const powerUp = new Audio();
 powerUp.src = "./audio/power-up.mp3";
-const bonusLaserSound = new Audio();
-bonusLaserSound.src = './audio/big-laser.mp3';
 
+const renderGame = setInterval(function() {clear(), drawBonus(); drawShield(),  drawBase(), displayWave(), 
+    displayPoints(), typeWord(), drawUFOs(), drawSaucers(), drawWings()}, 25);
+const renderGame2 = setInterval(function() {spawnUFOs(), updateWave()}, waveInterval);
+const renderGame3 = setInterval(function() {spawnSaucers(), spawnWings()}, (waveInterval) * 2);
+const renderGame4 = setInterval(function() {addUFOs(), addSaucers(), addWings()}, (waveInterval) * 5);
+const renderGame5 = setInterval(clearEnemies, 30000)
+const renderGame6 = setInterval(flash, 200);
+
+clearInterval(renderGame)
+clearInterval(renderGame2)
+clearInterval(renderGame3)
+clearInterval(renderGame4)
+clearInterval(renderGame5)
+clearInterval(renderGame6)
 
 const shieldHeight = 460;
 const shieldCenter = 580;
@@ -41,10 +50,30 @@ var stroke = ["rgba(0, 128, 255)", "rgba(255, 128, 0", "red", "rgba(0, 0, 0, 0)"
 var fill = ["rgba(0, 0, 51)", "rgba(51, 25, 0)", "rgba(51, 0, 0)", "rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0)"];
 let shieldIndex = 3;
 
+let paused = false; 
+    canvas.addEventListener("click", () => {
+    if (paused) {
+        paused = false;
+       setTimeout(() => { renderGame }, 0)
+        setTimeout(() => { renderGame2 }, 0)
+        setTimeout(() => { renderGame3 }, 0)
+        setTimeout(() => { renderGame4 }, 0)
+        setTimeout(() => { renderGame5 }, 0)
+        setTimeout(() => { renderGame6 }, 0)
+    } else {
+        paused = true; 
+        clearInterval(renderGame)
+        clearInterval(renderGame2)
+        clearInterval(renderGame3)
+        clearInterval(renderGame4)
+        clearInterval(renderGame5)
+        clearInterval(renderGame6)
+    }
+})
 
 const typer = document.getElementById("typing-box");
 const startScreen = document.getElementById("start");
-startScreen.addEventListener("click", (e) => {
+startScreen.addEventListener("click", () => {
     startScreen.classList.add("hidden");
     mainTheme.play();
     mainTheme.loop = true; 
@@ -67,25 +96,30 @@ startScreen.addEventListener("click", (e) => {
 
     setTimeout(() => {
     clearInterval(startInt);
-    renderGame();
+        renderGame
+        renderGame2
+        renderGame3
+        renderGame4
+        renderGame5
+        renderGame6
     }, 4000)
-})
-
-let paused = false; 
-canvas.addEventListener("click", (e) => {
-    
 })
 
 const speaker = document.getElementById("speaker");
 var isPlaying = true; 
 speaker.addEventListener('click', () => {
     if (isPlaying) {
+        speaker.classList.remove("fa-volume-up");
+        speaker.classList.add("fa-volume-mute");
         mainTheme.muted = true;
         isPlaying = false;
     } else {
+        speaker.classList.remove("fa-volume-mute");
+        speaker.classList.add("fa-volume-up");
         mainTheme.muted = false; 
         isPlaying = true; 
     }
+    typer.focus();
 })
 
 
@@ -133,14 +167,13 @@ function drawShield() {
         finalExplosion(ctx, canvas);
         baseAlive = false;
         paused = true; 
-        renderGame();
     }
 }
 
 function rechargeShield() {
     if (shieldIndex > 0 && baseAlive) {
         shieldIndex -= 1;
-        powerUp.play();
+        isPlaying ? powerUp.play() : null; 
     }
 }
 
@@ -189,7 +222,11 @@ function drawUFOs() {
                 setTimeout( () => {
                     rechargeShield();
                 }, 10000)
-                powerDown.play();
+                if (isPlaying) {
+                    const powerDown = new Audio();
+                    powerDown.src = "./audio/power-down.mp3";
+                    powerDown.play();
+                }
                 ufo.drawExplosion(ufo.x, ufo.y);
                 delete ufos[i];
                 shieldIndex++;
@@ -237,7 +274,11 @@ function drawSaucers() {
                 setTimeout( () => {
                     rechargeShield();
                 }, 10000)
-                powerDown.play();
+                if (isPlaying) {
+                    const powerDown = new Audio();
+                    powerDown.src = "./audio/power-down.mp3";
+                    powerDown.play();
+                }
                 saucer.drawExplosion(saucer.x, saucer.y);
                 delete saucers[i];
                 shieldIndex++;
@@ -287,7 +328,11 @@ function drawWings() {
                 setTimeout( () => {
                     rechargeShield();
                 }, 10000)
-                powerDown.play();
+                if (isPlaying) {
+                    const powerDown = new Audio();
+                    powerDown.src = "./audio/power-down.mp3";
+                    powerDown.play();
+                }
                 wing.drawExplosion(wing.x, wing.y);
                 delete wings[i];
                 shieldIndex++;
@@ -308,10 +353,15 @@ function clearEnemies() {
 }
 
 function drawBonus() {
-    bonuses.forEach((bonus) => {
-        
-        bonus.bonusSound.play();
-        let dx = 5;
+    bonuses.forEach((bonus, i) => {
+        isPlaying ? bonus.bonusSound.play() : bonus.bonusSound.pause();
+
+        if (bonus.x > canvas.width) {
+            delete bonuses[i];
+            bonus.bonusSound.pause();
+        } 
+
+        let dx = 4;
         ctx.drawImage(bonus.bonusImg, 0, 0, 32, 32, bonus.x, bonus.y, 55, 55),
         bonus.x += dx,
         bonus.drawText();
@@ -351,11 +401,12 @@ function typeWord() {
                 }
             });
             bonuses.forEach((bonus, i) => {
-                if (bonus.x > canvas.width) {
-                    delete bonuses[i];
-                    bonus.bonusSound.pause();
-                } else if (bonus.word === e.target.value) {
-                    bonusLaserSound.play();
+                if (bonus.word === e.target.value) {
+                    if (isPlaying) {
+                        const bonusLaserSound = new Audio();
+                        bonusLaserSound.src = './audio/big-laser.mp3';
+                        bonusLaserSound.play();
+                    }
                     delete bonuses[i];
                     bonus.bonusSound.pause();
                     laser(bonus.x + 21, bonus.y + 21);
@@ -449,22 +500,20 @@ function displayWave() {
 
 
 
-function renderGame() { 
-if (!paused) {
-setInterval(function() {clear(), drawBonus(); drawShield(),  drawBase(), displayWave(), 
-    displayPoints(), typeWord(), drawUFOs(), drawSaucers(), drawWings()}, 25);
-setInterval(function() {spawnUFOs(), updateWave()}, waveInterval);
-setInterval(function() {spawnSaucers(), spawnWings()}, (waveInterval) * 2);
-setInterval(function() {addUFOs(), addSaucers(), addWings()}, (waveInterval) * 5);
-setInterval(clearEnemies, 30000)
-setInterval(flash, 200);
-} else {
-    null
-}
+// function renderGame() { 
+// if (!paused) {
+// setInterval(function() {clear(), drawBonus(); drawShield(),  drawBase(), displayWave(), 
+//     displayPoints(), typeWord(), drawUFOs(), drawSaucers(), drawWings()}, 25);
+// setInterval(function() {spawnUFOs(), updateWave()}, waveInterval);
+// setInterval(function() {spawnSaucers(), spawnWings()}, (waveInterval) * 2);
+// setInterval(function() {addUFOs(), addSaucers(), addWings()}, (waveInterval) * 5);
+// setInterval(clearEnemies, 30000)
+// setInterval(flash, 200);
+// } else {
+//     null
+// }
 // if (paused) {
 //     clearInterval(gameEvents);
 //     clearInterval(gameEnemies);
 // }
-}
-// 
-// , rechargeShield()
+// }

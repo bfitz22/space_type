@@ -136,3 +136,7 @@ p {
     font-size: 30px; 
     color: white;     
 }
+
+.fa-volume-mute:hover {
+    cursor: pointer;
+}

@@ -8,6 +8,12 @@
     margin: 0;
 }
 
+.canvas-div {
+    position: relative;
+    width: fit-content;
+    height: fit-content;
+}
+
 img {
     display: none;
 }
@@ -25,7 +31,6 @@ body {
     height: 100%;
     width: 100%;
     background-image: url("images/giphy.gif")
-    /* background-repeat: no-repeat;  */
 }
 
 .start {
@@ -42,6 +47,11 @@ body {
     text-decoration: bold;
     font-family: myFont;
     font-size: 60px; 
+    margin: none; 
+}
+
+.start:hover {
+    cursor: pointer;
 }
 
 .hidden {
@@ -52,13 +62,16 @@ canvas {
     border: 2px solid white;
     background-image: url("images/background.png"); 
     display: block; 
-    margin: 0px 100px 0px 100px; 
-    /* margin-top: 0px;
-    margin-right: 200px;  */
+    margin: 0px; 
     background-size: cover; 
 }
 
 .typing-box {
+    position: relative;
+    bottom: 100px;
+    left: 125px; 
+    width: 250px;
+    height: 30px; 
     font-size: 18px;
     font-weight: bold;
     text-align: center; 
@@ -66,11 +79,6 @@ canvas {
     background-image: url("images/background.png");
     background-position: 50% 25%; 
     color: white;
-    position: relative;
-    bottom: 100px;
-    left: 150px; 
-    width: 250px;
-    height: 30px; 
 }
 
 .typing-box:focus {
@@ -118,11 +126,11 @@ p {
 }
 
 .fa-volume-up {
-    position: relative;
+    position: absolute;
     bottom: 50px;
-    left: 125px; 
+    left: 25px; 
     font-size: 30px; 
-    color: white;     
+    color: white;      
 }
 
 .fa-volume-up:hover {
@@ -130,11 +138,11 @@ p {
 }
 
 .fa-volume-mute {
-    position: relative;
+    position: absolute;
     bottom: 50px;
-    left: 125px; 
+    left: 25px; 
     font-size: 30px; 
-    color: white;     
+    color: white;    
 }
 
 .fa-volume-mute:hover {

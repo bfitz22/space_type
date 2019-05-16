@@ -19,21 +19,6 @@ gameOverMusic.src = "./audio/game_over.mp3";
 const powerUp = new Audio();
 powerUp.src = "./audio/power-up.mp3";
 
-const renderGame = setInterval(function() {clear(), drawBonus(); drawShield(),  drawBase(), displayWave(), 
-    displayPoints(), typeWord(), drawUFOs(), drawSaucers(), drawWings()}, 25);
-const renderGame2 = setInterval(function() {spawnUFOs(), updateWave()}, waveInterval);
-const renderGame3 = setInterval(function() {spawnSaucers(), spawnWings()}, (waveInterval) * 2);
-const renderGame4 = setInterval(function() {addUFOs(), addSaucers(), addWings()}, (waveInterval) * 5);
-const renderGame5 = setInterval(clearEnemies, 30000)
-const renderGame6 = setInterval(flash, 200);
-
-clearInterval(renderGame)
-clearInterval(renderGame2)
-clearInterval(renderGame3)
-clearInterval(renderGame4)
-clearInterval(renderGame5)
-clearInterval(renderGame6)
-
 const shieldHeight = 460;
 const shieldCenter = 580;
 const shieldRadius = 220;
@@ -54,20 +39,8 @@ let paused = false;
     canvas.addEventListener("click", () => {
     if (paused) {
         paused = false;
-       setTimeout(() => { renderGame }, 0)
-        setTimeout(() => { renderGame2 }, 0)
-        setTimeout(() => { renderGame3 }, 0)
-        setTimeout(() => { renderGame4 }, 0)
-        setTimeout(() => { renderGame5 }, 0)
-        setTimeout(() => { renderGame6 }, 0)
     } else {
         paused = true; 
-        clearInterval(renderGame)
-        clearInterval(renderGame2)
-        clearInterval(renderGame3)
-        clearInterval(renderGame4)
-        clearInterval(renderGame5)
-        clearInterval(renderGame6)
     }
 })
 
@@ -95,13 +68,8 @@ startScreen.addEventListener("click", () => {
     }, 3520)
 
     setTimeout(() => {
-    clearInterval(startInt);
-        renderGame
-        renderGame2
-        renderGame3
-        renderGame4
-        renderGame5
-        renderGame6
+        clearInterval(startInt);
+        renderGame();
     }, 4000)
 })
 
@@ -500,20 +468,20 @@ function displayWave() {
 
 
 
-// function renderGame() { 
-// if (!paused) {
-// setInterval(function() {clear(), drawBonus(); drawShield(),  drawBase(), displayWave(), 
-//     displayPoints(), typeWord(), drawUFOs(), drawSaucers(), drawWings()}, 25);
-// setInterval(function() {spawnUFOs(), updateWave()}, waveInterval);
-// setInterval(function() {spawnSaucers(), spawnWings()}, (waveInterval) * 2);
-// setInterval(function() {addUFOs(), addSaucers(), addWings()}, (waveInterval) * 5);
-// setInterval(clearEnemies, 30000)
-// setInterval(flash, 200);
-// } else {
-//     null
-// }
+function renderGame() { 
+if (!paused) {
+setInterval(function() {clear(), drawBonus(); drawShield(),  drawBase(), displayWave(), 
+    displayPoints(), typeWord(), drawUFOs(), drawSaucers(), drawWings()}, 25);
+setInterval(function() {spawnUFOs(), updateWave()}, waveInterval);
+setInterval(function() {spawnSaucers(), spawnWings()}, (waveInterval) * 2);
+setInterval(function() {addUFOs(), addSaucers(), addWings()}, (waveInterval) * 5);
+setInterval(clearEnemies, 30000)
+setInterval(flash, 200);
+} else {
+    null
+}
 // if (paused) {
 //     clearInterval(gameEvents);
 //     clearInterval(gameEnemies);
 // }
-// }
+}

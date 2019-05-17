@@ -8,6 +8,7 @@ class Saucer {
         this.width = 42;
         this.height = 42;
         this.word = randomWords();
+        this.type = "saucer";
 
         // this.word = word;
         // this.vel = vel;

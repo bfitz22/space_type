@@ -8,6 +8,7 @@ class UFO {
         this.width = 42;
         this.height = 42;
         this.word = randomWords();
+        this.type = "ufo";
         // this.vel = vel;
     }
 

@@ -2,9 +2,8 @@ import UFO from './ufo';
 import Saucer from './saucer';
 import Wing from './wing';
 import BonusSaucer from './bonus_saucer';
+import { typeWord } from './typing';
 import { gameOver, finalWaveCount, finalExplosion } from './game_over';
-
-
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
@@ -31,7 +30,7 @@ let wings = [];
 const wingForce = [];
 const bonuses = [];
 
-var stroke = ["rgba(0, 128, 255)", "rgba(255, 128, 0", "red", "rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0)"];
+var stroke = ["rgba(0, 128, 255)", "rgba(255, 128, 0", "red", "white", "rgba(0, 0, 0, 0)"];
 var fill = ["rgba(0, 0, 51)", "rgba(51, 25, 0)", "rgba(51, 0, 0)", "rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0)"];
 let shieldIndex = 3;
 
@@ -42,9 +41,11 @@ let paused = false;
     } else {
         paused = true; 
     }
+    typer.focus();
 })
 
 const typer = document.getElementById("typing-box");
+
 const startScreen = document.getElementById("start");
 startScreen.addEventListener("click", () => {
     startScreen.classList.add("hidden");
@@ -171,7 +172,7 @@ function drawUFOs() {
     const ufoImg = new Image();
     ufoImg.src = "./images/mod-ufo.png";
     ufos.forEach((ufo, i) => {
-        let dx = (ufo.x - 575) / (ufo.y - 1000);
+        let dx = (ufo.x - 575) / (ufo.y - 800);
         ctx.drawImage(ufoImg, 0, lights, 32, 32, ufo.x, ufo.y, 42, 42),
         ufo.x += dx,
         ufo.y += dy,
@@ -338,60 +339,6 @@ function drawBonus() {
 
 
 
-function typeWord() {
-    
-    typer.addEventListener('keypress', (e) => {
-        
-        var key = e.which || e.keyCode;
-        if (key === 13) {
-            ufos.forEach((ufo, i) => {
-                if (ufo.word === e.target.value) {
-                    delete ufos[i];
-                    laser(ufo.x + 21, ufo.y + 21);
-                    ufo.drawExplosion(ufo.x, ufo.y);
-                    updatePoints(1);
-                }
-            });
-            saucers.forEach((saucer, i) => {
-                if (saucer.word === e.target.value) {
-                    delete saucers[i];
-                    laser(saucer.x + 21, saucer.y + 21);
-                    saucer.drawExplosion(saucer.x, saucer.y);
-                    updatePoints(3);
-                }
-            });
-            wings.forEach((wing, i) => {
-                if (wing.word === e.target.value) {
-                    delete wings[i];
-                    laser(wing.x + 21, wing.y + 21);
-                    wing.drawExplosion(wing.x, wing.y);
-                    updatePoints(5);
-                }
-            });
-            bonuses.forEach((bonus, i) => {
-                if (bonus.word === e.target.value) {
-                    if (isPlaying) {
-                        const bonusLaserSound = new Audio();
-                        bonusLaserSound.src = './audio/big-laser.mp3';
-                        bonusLaserSound.play();
-                    }
-                    delete bonuses[i];
-                    bonus.bonusSound.pause();
-                    laser(bonus.x + 21, bonus.y + 21);
-                    bonus.drawExplosion(bonus.x, bonus.y);
-                    ufos.forEach((ufo, i) => {
-                        delete ufos[i];
-                        bonusLaser(bonus.x + 21, bonus.y + 21, ufo.x + 21, ufo.y + 21);
-                        ufo.drawExplosion(ufo.x, ufo.y);
-                        updatePoints(1);
-                    })
-                }
-            })
-            e.target.value = "";
-        }
-    })
-}
-
 let totalPoints = 0;
 function updatePoints(num) {
     if (baseAlive) {
@@ -408,48 +355,8 @@ function displayPoints() {
     ctx.closePath();
 }
 
-function bonusLaser(x1, y1, x2, y2) {
-    let i = 0;
-    const laser = setInterval(() => {
-        if (i < 100) {
-            ctx.beginPath();
-            ctx.moveTo(x1, y1);
-            ctx.lineTo(x2, y2);
-            ctx.strokeStyle = "red";
-            ctx.stroke();
-            ctx.closePath();
-        } else {
-            clearInterval(laser);
-        }
-        i++;
-    })
-}
-
-function laser(x, y) {
-    if (isPlaying) {
-        const laserSound = new Audio();
-        laserSound.src = "./audio/laser.mp3";
-        laserSound.volume = 0.5;
-        laserSound.play();
-    }
-    let i = 0;
-    const laser = setInterval(() => {
-        if (i < 25) {
-            ctx.beginPath();
-            ctx.moveTo(canvas.width * 0.5, 530);
-            ctx.lineTo(x, y);
-            ctx.strokeStyle = "rgba(0, 128, 255)";
-            ctx.stroke();
-            ctx.closePath();
-        } else {
-            clearInterval(laser);
-        }
-        i++;
-    })
-}
-
 let wave = 1; 
-let waveInterval = 9000;
+let waveInterval = 6000;
 function updateWave() {
     if (baseAlive) {
         wave++;
@@ -471,7 +378,7 @@ function displayWave() {
 function renderGame() { 
 if (!paused) {
 setInterval(function() {clear(), drawBonus(); drawShield(),  drawBase(), displayWave(), 
-    displayPoints(), typeWord(), drawUFOs(), drawSaucers(), drawWings()}, 25);
+    displayPoints(), typeWord(ctx, ufos, saucers, wings, bonuses, isPlaying), drawUFOs(), drawSaucers(), drawWings()}, 25);
 setInterval(function() {spawnUFOs(), updateWave()}, waveInterval);
 setInterval(function() {spawnSaucers(), spawnWings()}, (waveInterval) * 2);
 setInterval(function() {addUFOs(), addSaucers(), addWings()}, (waveInterval) * 5);

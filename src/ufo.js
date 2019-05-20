@@ -8,8 +8,6 @@ class UFO {
         this.width = 42;
         this.height = 42;
         this.word = randomWords();
-        this.type = "ufo";
-        // this.vel = vel;
     }
 
     drawText() {
@@ -30,7 +28,7 @@ class UFO {
             this.ctx.drawImage(boomImg, 0, i, 32, 32, x, y, 42, 42);
             j++;
             if (j % 3 === 0) {
-            i += 32 
+                i += 32 
             }
             if (i > 64) {
                 clearInterval(explosion);

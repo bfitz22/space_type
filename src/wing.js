@@ -9,10 +9,6 @@ class Wing {
         this.width = 42;
         this.height = 42;
         this.word = randomWords();
-        this.type = "wing";
-
-        // this.word = word;
-        // this.vel = vel;
     }
 
     drawText() {

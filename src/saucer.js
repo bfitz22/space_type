@@ -9,9 +9,6 @@ class Saucer {
         this.height = 42;
         this.word = randomWords();
         this.type = "saucer";
-
-        // this.word = word;
-        // this.vel = vel;
     }
 
     drawText() {

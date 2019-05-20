@@ -8,7 +8,7 @@ export function typeWord(ctx, ufos, saucers, wings, bonuses, isPlaying) {
                     delete ufos[i];
                     laser(ctx, ufo.x + 21, ufo.y + 21, isPlaying);
                     ufo.drawExplosion(ufo.x, ufo.y);
-                    // updatePoints(1);
+                    updatePoints(1);
                 }
             });
             saucers.forEach((saucer, i) => {
@@ -16,7 +16,7 @@ export function typeWord(ctx, ufos, saucers, wings, bonuses, isPlaying) {
                     delete saucers[i];
                     laser(ctx, saucer.x + 21, saucer.y + 21, isPlaying);
                     saucer.drawExplosion(saucer.x, saucer.y);
-                    // updatePoints(3);
+                    updatePoints(3);
                 }
             });
             wings.forEach((wing, i) => {
@@ -24,7 +24,7 @@ export function typeWord(ctx, ufos, saucers, wings, bonuses, isPlaying) {
                     delete wings[i];
                     laser(ctx, wing.x + 21, wing.y + 21, isPlaying);
                     wing.drawExplosion(wing.x, wing.y);
-                    // updatePoints(5);
+                    updatePoints(5);
                 }
             });
             bonuses.forEach((bonus, i) => {
@@ -40,9 +40,9 @@ export function typeWord(ctx, ufos, saucers, wings, bonuses, isPlaying) {
                     bonus.drawExplosion(bonus.x, bonus.y);
                     ufos.forEach((ufo, i) => {
                         delete ufos[i];
-                        bonusLaser(bonus.x + 21, bonus.y + 21, ufo.x + 21, ufo.y + 21, ctx);
+                        bonusLaser(ufo.x + 21, ufo.y + 21, ctx);
                         ufo.drawExplosion(ufo.x, ufo.y);
-                        // updatePoints(1);
+                        updatePoints(1);
                     })
                 }
             })
@@ -62,7 +62,7 @@ const laser = (ctx, x, y, isPlaying) => {
     const laser = setInterval(() => {
         if (i < 25) {
             ctx.beginPath();
-            ctx.moveTo(1200 * 0.5, 530);
+            ctx.moveTo(600, 530);
             ctx.lineTo(x, y); 
             ctx.stroke();
             ctx.closePath();
@@ -73,14 +73,14 @@ const laser = (ctx, x, y, isPlaying) => {
     })
 }
 
-function bonusLaser(x1, y1, x2, y2, ctx) {
+function bonusLaser(x2, y2, ctx) {
     let i = 0;
     const laser = setInterval(() => {
         if (i < 100) {
             ctx.beginPath();
-            ctx.moveTo(x1, y1);
+            ctx.moveTo(600, 530);
             ctx.lineTo(x2, y2);
-            ctx.strokeStyle = "red";
+            ctx.strokeStyle = "yellow";
             ctx.stroke();
             ctx.closePath();
         } else {
@@ -88,4 +88,18 @@ function bonusLaser(x1, y1, x2, y2, ctx) {
         }
         i++;
     })
+}
+
+var totalPoints = 0;
+function updatePoints(num) {
+    totalPoints += num;
+}
+
+export function displayPoints(ctx) {
+    ctx.beginPath();
+    ctx.fillStyle = "white";
+    ctx.font = 'bold 30px Arial';
+    ctx.fillText(`${totalPoints} points`, 800, 670);
+    ctx.fill();
+    ctx.closePath();
 }

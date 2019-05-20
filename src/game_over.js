@@ -1,10 +1,14 @@
-export const gameOver = (ctx) => {
+export const gameOverEvents = (ctx) => {
     ctx.beginPath();
     ctx.fillStyle = "white";
     ctx.font = 'bold 100px Arial';
     ctx.fillText("Game Over", 330, 100);
     ctx.fill();
     ctx.closePath();
+    const gameOverMusic = new Audio();
+    gameOverMusic.src = "./audio/game_over.mp3";
+    gameOverMusic.loop = false; 
+    gameOverMusic.play();
 }
 
 export const finalWaveCount = (ctx, wave) => {
@@ -12,7 +16,7 @@ export const finalWaveCount = (ctx, wave) => {
     ctx.beginPath();
     ctx.fillStyle = "white";
     ctx.font = 'bold 50px Arial';
-    ctx.fillText(`you survived ${finalWaveCount} waves`, 350, 300);
+    ctx.fillText(`you survived ${finalWaveCount} waves`, 335, 300);
     ctx.fillText("click anywhere to restart", 325, 400);
     ctx.fill();
     ctx.closePath();

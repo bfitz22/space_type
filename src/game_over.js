@@ -1,4 +1,4 @@
-export const gameOverEvents = (ctx) => {
+export const gameOverEvents = (ctx, isPlaying) => {
     ctx.beginPath();
     ctx.fillStyle = "white";
     ctx.font = 'bold 100px Arial';
@@ -8,7 +8,7 @@ export const gameOverEvents = (ctx) => {
     const gameOverMusic = new Audio();
     gameOverMusic.src = "./audio/game_over.mp3";
     gameOverMusic.loop = false; 
-    gameOverMusic.play();
+    isPlaying ? gameOverMusic.play() : null;
 }
 
 export const finalWaveCount = (ctx, wave) => {

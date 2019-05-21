@@ -1,4 +1,5 @@
 export function typeWord(ctx, ufos, saucers, wings, bonuses, isPlaying) {
+    debugger
     let typer = document.getElementById("typing-box");
     typer.addEventListener('keypress', (e) => {
         var key = e.which || e.keyCode;
@@ -89,8 +90,7 @@ function bonusLaser(x2, y2, ctx) {
         i++;
     })
 }
-
-var totalPoints = 0;
+let totalPoints = 0; 
 function updatePoints(num) {
     totalPoints += num;
 }
@@ -102,4 +102,8 @@ export function displayPoints(ctx) {
     ctx.fillText(`${totalPoints} points`, 800, 670);
     ctx.fill();
     ctx.closePath();
+}
+
+export function resetPoints() {
+    totalPoints = 0;
 }

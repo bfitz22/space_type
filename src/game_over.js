@@ -1,3 +1,6 @@
+const gameOverMusic = new Audio();
+gameOverMusic.src = "./audio/game_over.mp3";
+
 export const gameOverEvents = (ctx, isPlaying) => {
     ctx.beginPath();
     ctx.fillStyle = "white";
@@ -5,10 +8,12 @@ export const gameOverEvents = (ctx, isPlaying) => {
     ctx.fillText("Game Over", 330, 100);
     ctx.fill();
     ctx.closePath();
-    const gameOverMusic = new Audio();
-    gameOverMusic.src = "./audio/game_over.mp3";
     gameOverMusic.loop = false; 
     isPlaying ? gameOverMusic.play() : null;
+}
+
+export const pauseEndMusic = () => {
+    gameOverMusic.pause();
 }
 
 export const finalWaveCount = (ctx, wave) => {

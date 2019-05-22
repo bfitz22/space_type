@@ -1,4 +1,4 @@
-import randomWords from 'random-words';
+import { saucerWords } from './saucer_words';
 
 class Saucer {
     constructor(ctx) {
@@ -7,7 +7,7 @@ class Saucer {
         this.y = 1;
         this.width = 42;
         this.height = 42;
-        this.word = randomWords();
+        this.word = saucerWords[Math.floor(Math.random() * 50)];
         this.type = "saucer";
     }
 

@@ -1,4 +1,4 @@
-import randomWords from 'random-words';
+import { ufoWords } from './ufo_words';
 
 class UFO {
     constructor(ctx) {
@@ -7,7 +7,7 @@ class UFO {
         this.y = 1;
         this.width = 42;
         this.height = 42;
-        this.word = randomWords();
+        this.word = ufoWords[Math.floor(Math.random() * 63)];
     }
 
     drawText() {

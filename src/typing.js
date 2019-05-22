@@ -1,10 +1,10 @@
 export function typeWord(ctx, ufos, saucers, wings, bonuses, isPlaying) {
-    debugger
     let typer = document.getElementById("typing-box");
     typer.addEventListener('keypress', (e) => {
         var key = e.which || e.keyCode;
         if (key === 13) {
             ufos.forEach((ufo, i) => {
+                debugger
                 if (ufo.word === e.target.value) {
                     delete ufos[i];
                     laser(ctx, ufo.x + 21, ufo.y + 21, isPlaying);

@@ -1,4 +1,4 @@
-import randomWords from 'random-words';
+import { wingWords } from './wing_words';
 
 class Wing {
     constructor(ctx) {
@@ -8,7 +8,7 @@ class Wing {
         this.scaledSize = 64;
         this.width = 42;
         this.height = 42;
-        this.word = randomWords();
+        this.word = wingWords[Math.floor(Math.random() * 50)];
     }
 
     drawText() {

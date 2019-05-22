@@ -4,7 +4,7 @@ import Wing from './wing';
 import BonusSaucer from './bonus_saucer';
 import { typeWord, displayPoints, resetPoints } from './typing';
 import { drawShield } from './shield';
-import { gameOverEvents, finalWaveCount, finalExplosion } from './game_over';
+import { gameOverEvents, finalWaveCount, finalExplosion, pauseEndMusic } from './game_over';
 
 
 const canvas = document.getElementById("canvas");
@@ -82,16 +82,21 @@ function endScreen() {
         gameOver = true; 
 
         canvas.addEventListener('click', () => {
-            restartGame();
-        })
-    }
+            if (gameOver) {
+                restartGame();
+                pauseEndMusic();
+            } else {
+             null;
+            }
+        }
+    )}
 }; 
 
 function restartGame() {
-    gameOver = false; 
-    ufos = [new UFO(ctx), new UFO(ctx)];
+    gameOver = false;  
+    ufos = [];
     ufoForce = ["x", "x"];
-    saucers = [new Saucer(ctx)];
+    saucers = [];
     saucerForce.length = 0;
     wings.length = 0;
     wingForce.length = 0;
@@ -99,6 +104,7 @@ function restartGame() {
     shieldIndex = 3;
     waveInterval = 6000;
     wave = 1;
+    debugger
     resetPoints();
 
     mainTheme.currentTime = 0;
@@ -122,9 +128,10 @@ function restartGame() {
     }, 3420)
 
     setTimeout(() => {
-        clearInterval(startInt);
+        debugger
         paused = false; 
         renderGame();
+        clearInterval(startInt);
     }, 4000)
 }
 

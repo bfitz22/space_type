@@ -80,6 +80,13 @@ function endScreen() {
         paused = true; 
         renderGame();
         gameOver = true; 
+        ufos.length = 0;
+        ufoForce.lenght = 0;
+        saucers.lenght = 0;
+        saucerForce.length = 0;
+        wings.length = 0;
+        wingForce.length = 0;
+        bonuses.length = 0;
 
         canvas.addEventListener('click', () => {
             if (gameOver) {
@@ -97,10 +104,10 @@ function restartGame() {
     ufos = [];
     ufoForce = ["x", "x"];
     saucers = [];
-    saucerForce.length = 0;
-    wings.length = 0;
-    wingForce.length = 0;
-    bonuses.length = 0;
+    saucerForce = [];
+    wings = [];
+    wingForce = [];
+    bonuses = [];
     shieldIndex = 3;
     waveInterval = 6000;
     wave = 1;

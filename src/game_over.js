@@ -9,6 +9,7 @@ export const gameOverEvents = (ctx, isPlaying) => {
     ctx.fill();
     ctx.closePath();
     gameOverMusic.loop = false; 
+    gameOverMusic.currentTime = 0;
     isPlaying ? gameOverMusic.play() : null;
 }
 

@@ -35,7 +35,7 @@ var stroke = ["rgba(0, 128, 255)", "rgba(255, 128, 0", "red", "white", "rgba(0, 
 var fill = ["rgba(0, 0, 51)", "rgba(51, 25, 0)", "rgba(51, 0, 0)", "rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0)"];
 let shieldIndex = 3;
 
-let paused = true; 
+let paused = true
 let gameOver = false; 
 
 const typer = document.getElementById("typing-box");

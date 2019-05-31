@@ -1,6 +1,6 @@
 export const saucerWords = [
     "basic", "theft", "close", "brink", "block", "ghost", 
-    "flash", "rider", "Koran", "stand", "crash", "elect", 
+    "flash", "rider", "touch", "stand", "crash", "elect", 
     "equip", "think", "amuse", "final", "clock", "outer", 
     "cover","pluck", "solid", "frame", "giant", "voter", 
     "strip", "lesson", "memory", "pledge", "facade", "borrow",

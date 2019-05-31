@@ -1,4 +1,4 @@
-export function drawShield(ctx, baseAlive, shieldIndex, stroke, fill, mainTheme, wave) {
+export const drawShield = (ctx, baseAlive, shieldIndex, stroke, fill, mainTheme, wave) => {
     const gameOverMusic = new Audio();
     gameOverMusic.src = "./audio/game_over.mp3";
     gameOverMusic.loop = false; 

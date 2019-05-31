@@ -1,10 +1,12 @@
-export function typeWord(ctx, ufos, saucers, wings, bonuses, isPlaying) {
+import { gameOverEvents } from "./game_over";
+
+export const typeWord = (ctx, ufos, saucers, wings, bonuses, isPlaying) => {
     let typer = document.getElementById("typing-box");
     typer.addEventListener('keypress', (e) => {
         var key = e.which || e.keyCode;
+        console.log(key)
         if (key === 13) {
             ufos.forEach((ufo, i) => {
-                debugger
                 if (ufo.word === e.target.value) {
                     delete ufos[i];
                     laser(ctx, ufo.x + 21, ufo.y + 21, isPlaying);
@@ -45,6 +47,18 @@ export function typeWord(ctx, ufos, saucers, wings, bonuses, isPlaying) {
                         ufo.drawExplosion(ufo.x, ufo.y);
                         updatePoints(1);
                     })
+                    saucers.forEach((ufo, i) => {
+                        delete saucers[i];
+                        bonusLaser(ufo.x + 21, ufo.y + 21, ctx);
+                        ufo.drawExplosion(ufo.x, ufo.y);
+                        updatePoints(3);
+                    })
+                    wings.forEach((ufo, i) => {
+                        delete wings[i];
+                        bonusLaser(ufo.x + 21, ufo.y + 21, ctx);
+                        ufo.drawExplosion(ufo.x, ufo.y);
+                        updatePoints(5);
+                    })
                 }
             })
             e.target.value = "";
@@ -74,7 +88,7 @@ const laser = (ctx, x, y, isPlaying) => {
     })
 }
 
-function bonusLaser(x2, y2, ctx) {
+const bonusLaser = (x2, y2, ctx) => {
     let i = 0;
     const laser = setInterval(() => {
         if (i < 100) {
@@ -91,11 +105,12 @@ function bonusLaser(x2, y2, ctx) {
     })
 }
 let totalPoints = 0; 
-function updatePoints(num) {
+const updatePoints = (num) => {
     totalPoints += num;
 }
 
-export function displayPoints(ctx) {
+export const displayPoints = (ctx) => {
+    debugger
     ctx.beginPath();
     ctx.fillStyle = "white";
     ctx.font = 'bold 30px Arial';
@@ -104,6 +119,6 @@ export function displayPoints(ctx) {
     ctx.closePath();
 }
 
-export function resetPoints() {
+export const resetPoints = () => {
     totalPoints = 0;
 }

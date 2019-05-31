@@ -47,8 +47,7 @@ startScreen.addEventListener("click", () => {
     mainTheme.loop = true; 
     typer.focus();
     baseAlive = true; 
-    const startInt = setInterval(function() {clear(), drawShieldIntro(),  drawBase(), displayWave(), 
-    displayPoints()}, 40);
+    const startInt = setInterval(function() {clear(), drawShieldIntro(),  drawBase(), displayWave()}, 40);
     
     setTimeout(() => {
         shieldIndex -= 1;
@@ -69,7 +68,7 @@ startScreen.addEventListener("click", () => {
     }, 4000)
 })
 
-function endScreen() {
+const endScreen = () => {
     if (shieldIndex >= 4) {
         clear();
         gameOverEvents(ctx, isPlaying);
@@ -99,7 +98,7 @@ function endScreen() {
     )}
 }; 
 
-function restartGame() {
+const restartGame = () => {
     gameOver = false;  
     ufos = [];
     ufoForce = ["x", "x"];
@@ -163,7 +162,7 @@ speaker.addEventListener('click', () => {
 
 
 
-function drawBase() {
+const drawBase = () => {
     if (baseAlive) {
         ctx.beginPath();
         ctx.drawImage(base, canvas.width * 0.425, 525, canvas.width * 0.15, canvas.height * 0.25);
@@ -171,7 +170,7 @@ function drawBase() {
     }
 }
 
-function drawShieldIntro() {
+const drawShieldIntro = () => {
     ctx.beginPath();
     ctx.moveTo(450, 700);
     ctx.bezierCurveTo(465, 425, 730, 425, 750, 700);
@@ -184,7 +183,7 @@ function drawShieldIntro() {
     ctx.closePath();
 }
 
-function rechargeShield() {
+const rechargeShield = () => {
     const powerUp = new Audio();
     powerUp.src = "./audio/power-up.mp3";
     if (shieldIndex > 0 && baseAlive) {
@@ -196,7 +195,7 @@ function rechargeShield() {
 
 
 let lights = 0;
-function flash() {
+const flash = () => {
     if (lights === 0) {
         lights = 32;
     } else if (lights === 32) {
@@ -204,7 +203,7 @@ function flash() {
     }
 }
 
-function spawnUFOs() {
+const spawnUFOs = () => {
     let i = 0;
     let squadSize = ufoForce.length;
     const spawnInterval = setInterval(() => {
@@ -216,26 +215,26 @@ function spawnUFOs() {
     }, 3000)
 }
 
-function drawUFOs() {
+const drawUFOs = () => {
     let dy = 0.75;
     const ufoImg = new Image();
     ufoImg.src = "./images/mod-ufo.png";
     ufos.forEach((ufo, i) => {
-        let dx = (ufo.x - 575) / (ufo.y - 800);
+        let dx = (ufo.x - 575) / (ufo.y - shieldHeight - 140);
         ctx.drawImage(ufoImg, 0, lights, 32, 32, ufo.x, ufo.y, 42, 42),
         ufo.x += dx,
         ufo.y += dy,
         ufo.drawText();
     
         if ((ufo.y > shieldHeight ) && 
-            ((ufo.x > shieldCenter - (shieldRadius + 40)) && 
-            (ufo.x < shieldCenter + (shieldRadius - 40))) ||
+            ((ufo.x > shieldCenter - (shieldRadius + 10)) && 
+            (ufo.x < shieldCenter + (shieldRadius - 10))) ||
             (ufo.y > shieldHeight + 30) && 
             ((ufo.x > shieldCenter - (shieldRadius + 20)) && 
             (ufo.x < shieldCenter + (shieldRadius - 20))) || 
             (ufo.y > shieldHeight + 50) && 
-            ((ufo.x > shieldCenter - (shieldRadius + 10)) && 
-            (ufo.x < shieldCenter + (shieldRadius - 10))))
+            ((ufo.x > shieldCenter - (shieldRadius + 40)) && 
+            (ufo.x < shieldCenter + (shieldRadius - 40))))
             {
 
                 if (isPlaying) {
@@ -248,11 +247,11 @@ function drawUFOs() {
     });
 }
 
-function addUFOs() {
+const addUFOs = () => {
     ufoForce.push("x");
 }
 
-function spawnSaucers() {
+const spawnSaucers = () => {
     let i = 0;
     let squadSize = saucerForce.length;
     const spawnInterval = setInterval(() => {
@@ -264,42 +263,33 @@ function spawnSaucers() {
     }, 3000)
 }
 
-function drawSaucers() {
+const drawSaucers = () => {
     let dy = 1.25;
     const saucerImg = new Image();
     saucerImg.src = "./images/mod-saucer.png";
     saucers.forEach((saucer, i) => {
-        let dx = (saucer.x - 575) / (saucer.y - 600);
+        let dx = (saucer.x - 575) / (saucer.y - shieldHeight);
         ctx.drawImage(saucerImg, 0, lights, 32, 32, saucer.x, saucer.y, 42, 42),
         saucer.x += dx,
         saucer.y += dy,
         saucer.drawText();
 
-        if ((saucer.y > shieldHeight ) && 
-            ((saucer.x > shieldCenter - (shieldRadius + 40)) && 
-            (saucer.x < shieldCenter + (shieldRadius - 40))) ||
-            (saucer.y > shieldHeight + 30) && 
-            ((saucer.x > shieldCenter - (shieldRadius + 20)) && 
-            (saucer.x < shieldCenter + (shieldRadius - 20))) || 
-            (saucer.y > shieldHeight + 50) && 
-            ((saucer.x > shieldCenter - (shieldRadius + 10)) && 
-            (saucer.x < shieldCenter + (shieldRadius - 10))))
-            {
-                if (isPlaying) {
-                    powerDown.play();
-                }
-                saucer.drawExplosion(saucer.x, saucer.y);
-                delete saucers[i];
-                shieldIndex++;
+        if (saucer.y > shieldHeight ) {
+            if (isPlaying) {
+                powerDown.play();
             }
+            saucer.drawExplosion(saucer.x, saucer.y);
+            delete saucers[i];
+            shieldIndex++;
+        }
     });
 }
 
-function addSaucers() {
+const addSaucers = () => {
     saucerForce.push("x");
 }
 
-function spawnWings() {
+const spawnWings = () => {
     let i = 0;
     let squadSize = wingForce.length;
     const spawnInterval = setInterval(() => {
@@ -311,52 +301,41 @@ function spawnWings() {
     }, 6000)
 }
 
-function drawWings() {
+const drawWings = () => {
     let dy = 1.75;
     const wingImg = new Image();
     wingImg.src = "./images/mod-wing.png";
     wings.forEach((wing, i) => {
-        let dx = (wing.x - 575) / (wing.y - 500);
+        let dx = (wing.x - 575) / (wing.y - shieldHeight - 25);
         ctx.drawImage(wingImg, 0, lights, 32, 32, wing.x, wing.y, 42, 42),
         wing.x += dx,
         wing.y += dy,
         wing.drawText();
 
-        if ((wing.y > shieldHeight ) && 
-            ((wing.x > shieldCenter - (shieldRadius + 40)) && 
-            (wing.x < shieldCenter + (shieldRadius - 40))) 
-            ||
-            (wing.y > shieldHeight + 30) && 
-            ((wing.x > shieldCenter - (shieldRadius + 20)) && 
-            (wing.x < shieldCenter + (shieldRadius - 20))) 
-            || 
-            (wing.y > shieldHeight + 50) && 
-            ((wing.x > shieldCenter - (shieldRadius + 10)) && 
-            (wing.x < shieldCenter + (shieldRadius - 10))))
-            {
-                if (isPlaying) {
-                    powerDown.play();
-                }
-                wing.drawExplosion(wing.x, wing.y);
-                delete wings[i];
-                shieldIndex++;
+        if (wing.y > shieldHeight ) {
+            if (isPlaying) {
+                powerDown.play();
             }
+            wing.drawExplosion(wing.x, wing.y);
+            delete wings[i];
+            shieldIndex++;
+        }
     });
 }
 
-function addWings() {
+const addWings = () => {
     wingForce.push("x");
 }
 
-function clear() {
+const clear = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-function clearEnemies() {
+const clearEnemies = () => {
     bonuses.push(new BonusSaucer(ctx));
 }
 
-function drawBonus() {
+const drawBonus = () => {
     bonuses.forEach((bonus, i) => {
         isPlaying ? bonus.bonusSound.play() : bonus.bonusSound.pause();
 
@@ -375,14 +354,14 @@ function drawBonus() {
 
 let wave = 1; 
 let waveInterval = 6000;
-function updateWave() {
+const updateWave = () => {
     if (baseAlive && (ufos.every(el => el === "") <= 1 && saucers.every(el => el === "") <= 1 && wings.every(el => el === "") <= 1)) {
         wave++;
         waveInterval += 6000;
     }
 }
 
-function displayWave() {
+const displayWave = () => {
     ctx.beginPath();
     ctx.fillStyle = "white";
     ctx.font = 'bold 30px Arial';
@@ -392,17 +371,18 @@ function displayWave() {
 }
 
 let gameEvents; let gameEnemies; let gameEnemiesTwo; let drawEverything; let theRecharge; let theBonus; let theFlash;
-function renderGame() {
+const renderGame = () => {
+    debugger
     if (!paused) { 
         gameEvents = setInterval(function() {spawnUFOs(), updateWave()}, waveInterval);
         gameEnemies = setInterval(function() {spawnSaucers(), spawnWings()}, waveInterval * 2);
         gameEnemiesTwo = setInterval(function() {addUFOs(), addSaucers(), addWings()}, waveInterval * 5);
         drawEverything = setInterval(function() {clear(), drawBonus(); drawShield(ctx, baseAlive, shieldIndex, stroke, fill, mainTheme, wave),  
-            drawBase(), displayWave(), displayPoints(ctx), typeWord(ctx, ufos, saucers, wings, bonuses, isPlaying),
-            drawUFOs(), drawSaucers(), drawWings(), endScreen()}, 25);
-        theRecharge = setInterval(rechargeShield, 12000)
+            drawBase(), displayWave(), displayPoints(ctx), drawUFOs(), drawSaucers(), drawWings(), endScreen()}, 25);
+        theRecharge = setInterval(rechargeShield, 10000)
         theBonus = setInterval(clearEnemies, 30000);
         theFlash = setInterval(flash, 200);
+        typeWord(ctx, ufos, saucers, wings, bonuses, isPlaying);
 
     } else {
         clearInterval(gameEvents);

@@ -18,7 +18,7 @@ mainTheme.src = "./audio/main-theme.mp3";
 const powerDown = new Audio();
 powerDown.src = "./audio/power-down.mp3"
 
-const shieldHeight = 460;
+const shieldHeight = 460
 const shieldCenter = 580;
 const shieldRadius = 220;
 

@@ -2,8 +2,8 @@
 // import Saucer from './saucer';
 // import Wing from './wing';
 // import BonusSaucer from './bonus_saucer';
-import { drawShield } from './shield';
-import { gameOverEvents, finalWaveCount, finalExplosion, pauseEndMusic } from './game_over';
+import Shield from './shield';
+import GameOver from './game_over';
 import Game from './game_objects';
 import Typing from './typing';
 import Sound from './sound';
@@ -38,51 +38,55 @@ var fill = ["rgba(0, 0, 51)", "rgba(51, 25, 0)", "rgba(51, 0, 0)", "rgba(0, 0, 0
 
 let paused = true
 let gameOver = false; 
+// let wave = 1; 
 
 let sound = new Sound;
-let game = new Game(ctx, lights, sound);
-let typing = new Typing(ctx, game.ufos, game.saucers, game.wings, game.bonuses, sound.isPlaying);
+sound.toggleMusic();
+let shield = new Shield(ctx, baseAlive, stroke, fill, sound);
+let game = new Game(ctx, sound, shield);
+let typing = new Typing(ctx, game.ufos, game.saucers, game.wings, game.bonuses, sound);
+let ending = new GameOver(ctx, canvas, sound)
 // const typer = document.getElementById("typing-box");
 
 const startScreen = document.getElementById("start");
 startScreen.addEventListener("click", () => { 
     startScreen.classList.add("hidden");
-    game.shieldIndex = 3;
+    shield.shieldIndex = 3;
     sound.mainTheme.play();
     sound.mainTheme.loop = true; 
     typing.typer.focus();
     baseAlive = true; 
-    const startInt = setInterval(function() {clear(), drawShieldIntro(),  drawBase(), displayWave()}, 40);
+    shield.baseAlive = true; 
+    const startInt = setInterval(function() {clear(), shield.drawShield(),  drawBase(), ending.displayWave()}, 40);
     
     setTimeout(() => {
-        game.shieldIndex -= 1;
+        shield.shieldIndex -= 1;
     }, 2060)
 
     setTimeout(() => {
-        game.shieldIndex -= 1;
+        shield.shieldIndex -= 1;
     }, 2740)
 
     setTimeout(() => {
-        game.shieldIndex -= 1;
+        shield.shieldIndex -= 1;
     }, 3420)
 
     setTimeout(() => {
         clearInterval(startInt);
         paused = false; 
-        sound = new Sound;
-        game = new Game(ctx, lights, sound);
-        typing = new Typing(ctx, game.ufos, game.saucers, game.wings, game.bonuses, sound.isPlaying);
+        game = new Game(ctx, sound, shield);
+        typing = new Typing(ctx, game, sound);
         renderGame();
     }, 4000)
 })
 
 const endScreen = () => {
-    if (game.shieldIndex >= 4) {
+    if (shield.shieldIndex >= 4) {
         clear();
-        gameOverEvents(ctx, sound.isPlaying);
+        ending.gameOverEvents();
         sound.mainTheme.pause();
-        finalWaveCount(ctx, wave);
-        finalExplosion(ctx, canvas);
+        ending.finalWaveDisplay();
+        ending.finalExplosion();
         baseAlive = false;
         paused = true; 
         renderGame();
@@ -98,7 +102,7 @@ const endScreen = () => {
         canvas.addEventListener('click', () => {
             if (gameOver) {
                 restartGame();
-                pauseEndMusic();
+                sound.gameOverMusic.pause();
             } else {
              null;
             }
@@ -115,10 +119,9 @@ const restartGame = () => {
     // game.wings = [];
     // game.wingForce = [];
     // game.bonuses = [];
-    game = new Game(ctx, lights, sound);
-    game.shieldIndex = 3;
-    waveInterval = 6000;
-    wave = 1;
+    shield.shieldIndex = 3;
+    ending.waveInterval = 6000;
+    
     
     typing.resetPoints();
 
@@ -127,25 +130,25 @@ const restartGame = () => {
     sound.mainTheme.loop = true; 
     typing.typer.focus();
     baseAlive = true; 
-    const startInt = setInterval(function() {clear(), drawShieldIntro(),  drawBase(), displayWave(), 
-    displayPoints()}, 40);
+    const startInt = setInterval(function() {clear(), shield.drawShieldisplayWaved(), drawBase(), ending.displayWave(), 
+    typing.displayPoints()}, 40);
     
     setTimeout(() => {
-        game.shieldIndex -= 1;
+        shield.shieldIndex -= 1;
     }, 2060)
 
     setTimeout(() => {
-        game.shieldIndex -= 1;
+        shield.shieldIndex -= 1;
     }, 2740)
 
     setTimeout(() => {
-        game.shieldIndex -= 1;
+        shield.shieldIndex -= 1;
     }, 3420)
 
     setTimeout(() => {
-        debugger
         paused = false;
-        game = new Game(ctx, lights, sound); 
+        game = new Game(ctx, sound, shield); 
+        typing.game = game; 
         renderGame();
         clearInterval(startInt);
     }, 4000)
@@ -180,38 +183,23 @@ const drawBase = () => {
     }
 }
 
-const drawShieldIntro = () => {
-    ctx.beginPath();
-    ctx.moveTo(450, 700);
-    ctx.bezierCurveTo(465, 425, 730, 425, 750, 700);
-    ctx.strokeStyle = stroke[game.shieldIndex];
-    ctx.fillStyle = fill[game.shieldIndex];
-    ctx.stroke();
-    ctx.fill();
-    ctx.shadowColor = 100;
-    ctx.lineWidth = 8;
-    ctx.closePath();
-}
-
-const rechargeShield = () => {
-    const powerUp = new Audio();
-    powerUp.src = "./audio/power-up.mp3";
-    if (game.shieldIndex > 0 && baseAlive) {
-        game.shieldIndex -= 1;
-        sound.isPlaying ? powerUp.play() : null; 
-    }
-}
+// const rechargeShield = () => {
+//     if (shield.shieldIndex > 0 && baseAlive) {
+//         shield.shieldIndex -= 1;
+//         sound.powerUp.play(); 
+//     }
+// }
 
 
 
-let lights = 0;
-const flash = () => {
-    if (lights === 0) {
-        lights = 32;
-    } else if (lights === 32) {
-        lights = 0;
-    }
-}
+// let lights = 0;
+// const flash = () => {
+//     if (lights === 0) {
+//         lights = 32;
+//     } else if (lights === 32) {
+//         lights = 0;
+//     }
+// }
 
 // const spawnUFOs = () => {
 //     let i = 0;
@@ -341,9 +329,9 @@ const clear = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-const clearEnemies = () => {
-    game.bonuses.push(new BonusSaucer(ctx));
-}
+// const clearEnemies = () => {
+//     game.bonuses.push(new BonusSaucer(ctx));
+// }
 
 // const drawBonus = () => {
 //     bonuses.forEach((bonus, i) => {
@@ -362,35 +350,35 @@ const clearEnemies = () => {
 // }
 
 
-let wave = 1; 
-let waveInterval = 6000;
-const updateWave = () => {
-    if (baseAlive && (game.ufos.every(el => el === "") && game.saucers.every(el => el === "") && game.wings.every(el => el === ""))) {
-        wave++;
-        waveInterval += 6000;
-    }
-}
 
-const displayWave = () => {
-    ctx.beginPath();
-    ctx.fillStyle = "white";
-    ctx.font = 'bold 30px Arial';
-    ctx.fillText(`Wave ${wave}`, 1000, 670);
-    ctx.fill();
-    ctx.closePath();
-}
+// let waveInterval = 6000;
+// const updateWave = () => {
+//     if (baseAlive && (game.ufos.every(el => el === "") && game.saucers.every(el => el === "") && game.wings.every(el => el === ""))) {
+//         wave++;
+//         waveInterval += 6000;
+//     }
+// }
+
+// const displayWave = () => {
+//     ctx.beginPath();
+//     ctx.fillStyle = "white";
+//     ctx.font = 'bold 30px Arial';
+//     ctx.fillText(`Wave ${ending.wave}`, 1000, 670);
+//     ctx.fill();
+//     ctx.closePath();
+// }
 
 let gameEvents; let gameEnemies; let gameEnemiesTwo; let drawEverything; let theRecharge; let theBonus; let theFlash;
 const renderGame = () => {
     if (!paused) { 
-        gameEvents = setInterval(function() {game.spawnUFOs(), updateWave()}, waveInterval);
-        gameEnemies = setInterval(function() {game.spawnSaucers(), game.spawnWings()}, waveInterval * 2);
-        gameEnemiesTwo = setInterval(function() {game.addUFOs(), game.addSaucers(), game.addWings()}, waveInterval * 5);
-        drawEverything = setInterval(function() {clear(), game.drawBonus(); drawShield(ctx, baseAlive, game.shieldIndex, stroke, fill, sound.mainTheme, wave),  
-            drawBase(), displayWave(), typing.displayPoints(), game.drawUFOs(), game.drawSaucers(), game.drawWings(), endScreen()}, 25);
-        theRecharge = setInterval(rechargeShield, 10000)
-        theBonus = setInterval(clearEnemies, 30000);
-        theFlash = setInterval(flash, 200);
+        gameEvents = setInterval(function() {game.spawnUFOs(), ending.updateWave()}, ending.waveInterval);
+        gameEnemies = setInterval(function() {game.spawnSaucers(), game.spawnWings()}, ending.waveInterval * 2);
+        gameEnemiesTwo = setInterval(function() {game.addUFOs(), game.addSaucers(), game.addWings()}, ending.waveInterval * 5);
+        drawEverything = setInterval(function() {clear(), game.drawBonus(); shield.drawShield(),  
+            drawBase(), ending.displayWave(), typing.displayPoints(), game.drawUFOs(), game.drawSaucers(), game.drawWings(), endScreen()}, 25);
+        theRecharge = setInterval(shield.rechargeShield, 10000)
+        theBonus = setInterval(game.createBonus, 30000);
+        theFlash = setInterval(game.flash, 200);
         typing.typeWord();
 
     } else {

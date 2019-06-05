@@ -24,8 +24,6 @@ class BonusSaucer {
         this.word = this.bonusWords[Math.floor(Math.random() * 15)];
         this.bonusImg = new Image();
         this.bonusImg.src = "./images/big_saucer.png";
-        this.bonusSound = new Audio();
-        this.bonusSound.src = "./audio/big_saucer.mp3";
     }
 
     drawText() {

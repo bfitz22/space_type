@@ -1,37 +1,58 @@
-export const drawShield = (ctx, baseAlive, shieldIndex, stroke, fill, mainTheme, wave) => {
-    const gameOverMusic = new Audio();
-    gameOverMusic.src = "./audio/game_over.mp3";
-    gameOverMusic.loop = false; 
+class Shield {
 
-    if (baseAlive) {
-        ctx.beginPath();
-        ctx.moveTo(450, 700);
-        ctx.bezierCurveTo(465, 425, 730, 425, 750, 700);
-        ctx.strokeStyle = stroke[shieldIndex];
-        ctx.fillStyle = fill[shieldIndex];
-        ctx.stroke();
-        ctx.fill();
-        ctx.shadowColor = 100;
-        ctx.lineWidth = 8;
-        ctx.closePath();
+    constructor(ctx, baseAlive, stroke, fill, sound) {
+        this.ctx = ctx;
+        this.baseAlive = baseAlive;
+        this.stroke = stroke;
+        this.fill = fill;
+        this.shieldIndex = 0;
+        this.shieldHeight = 460;
+        this.shieldCenter = 580;
+        this.shieldRadius = 220;
+        this.sound = sound;
+        // this.rechargeInterval = null; 
+        this.rechargeShield = this.rechargeShield.bind(this);
     }
-    // if (shieldIndex >= 4) {
-    //     gameOver(ctx);
-    //     mainTheme.pause();
-    //     gameOverMusic.play();
-    //     finalWaveCount(ctx, wave);
-    //     finalExplosion(ctx, canvas);
-    //     baseAlive = false;
-    //     paused = true; 
-    // }
+
+    drawShield() { 
+        if (this.baseAlive) {
+            this.ctx.beginPath();
+            this.ctx.moveTo(450, 700);
+            this.ctx.bezierCurveTo(465, 425, 730, 425, 750, 700);
+            this.ctx.strokeStyle = this.stroke[this.shieldIndex];
+            this.ctx.fillStyle = this.fill[this.shieldIndex];
+            this.ctx.stroke();
+            this.ctx.fill();
+            this.ctx.shadowColor = 100;
+            this.ctx.lineWidth = 8;
+            this.ctx.closePath();
+        }
+        // if (shieldIndex >= 4) {
+        //     gameOver(ctx);
+        //     mainTheme.pause();
+        //     gameOverMusic.play();
+        //     finalWaveCount(ctx, wave);
+        //     finalExplosion(ctx, canvas);
+        //     baseAlive = false;
+        //     paused = true; 
+        // }
+    }
+
+    rechargeShield() {
+        if (this.shieldIndex > 0 && this.baseAlive) {
+            // if (this.rechargeInterval || this.shieldIndex <= 0) {
+            //      clearInterval(this.rechargeInterval); 
+            // } else {
+            //     null;
+            // }
+            // this.rechargeInterval = setInterval(() => {
+            //     this.shieldIndex -= 1;
+            //     this.sound.powerUp.play(); 
+            // }, 10000)
+            this.shieldIndex -= 1;
+            this.sound.powerUp.play(); 
+        }
+    }
 }
 
-// export function rechargeShield(baseAlive, shieldIndex, isPlaying) {
-//     const powerUp = new Audio();
-//     powerUp.src = "./audio/power-up.mp3";
-
-//     if (shieldIndex > 0 && baseAlive) {
-//         shieldIndex -= 1;
-//         isPlaying ? powerUp.play() : null; 
-//     }
-// }
+export default Shield;

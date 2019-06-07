@@ -1,17 +1,26 @@
-class Shield {
-
-    constructor(ctx, baseAlive, stroke, fill, sound) {
+class Base {
+    constructor(ctx, sound) {
         this.ctx = ctx;
-        this.baseAlive = baseAlive;
-        this.stroke = stroke;
-        this.fill = fill;
+        this.baseAlive = false;
+        this.stroke = ["rgba(0, 128, 255)", "rgba(255, 128, 0", "red", "white", "rgba(0, 0, 0, 0)"];
+        this.fill = ["rgba(0, 0, 51)", "rgba(51, 25, 0)", "rgba(51, 0, 0)", "rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0)"];
         this.shieldIndex = 0;
         this.shieldHeight = 460;
         this.shieldCenter = 580;
         this.shieldRadius = 220;
         this.sound = sound;
+        this.base = document.createElement('img');
+        this.base.src = "images/base.png";
         // this.rechargeInterval = null; 
         this.rechargeShield = this.rechargeShield.bind(this);
+    }
+
+    drawBase() {
+        if (this.baseAlive) {
+            this.ctx.beginPath();
+            this.ctx.drawImage(this.base, canvas.width * 0.425, 525, canvas.width * 0.15, canvas.height * 0.25);
+            this.ctx.closePath();
+        }
     }
 
     drawShield() { 
@@ -55,4 +64,4 @@ class Shield {
     }
 }
 
-export default Shield;
+export default Base;

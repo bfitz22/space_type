@@ -1,27 +1,39 @@
 class GameOver {
 
-    constructor(ctx, canvas, sound) {
+    constructor(ctx, game, canvas, sound, base, wave) {
         this.ctx = ctx;
+        this.game = game; 
         this.canvas = canvas; 
-        this.wave = 1;
-        this.waveInterval = 6000;
         this.sound = sound; 
+        this.base = base;
+        this.wave = wave;
+        this.endScreen = this.endScreen.bind(this);
         this.finalWaveDisplay = this.finalWaveDisplay.bind(this);
     }
 
-    displayWave() {
-        this.ctx.beginPath();
-        this.ctx.fillStyle = "white";
-        this.ctx.font = 'bold 30px Arial';
-        this.ctx.fillText(`Wave ${this.wave}`, 1000, 670);
-        this.ctx.fill();
-        this.ctx.closePath();
-    }
-
-    updateWave() {
-        this.wave ++;
-        this.waveInterval += 6000;
-    }
+    endScreen() {
+        // if (this.base.shieldIndex >= 4) {
+            this.game.clear();
+            this.gameOverEvents();
+            this.sound.mainTheme.pause();
+            this.finalExplosion();
+            this.finalWaveDisplay();
+            this.base.baseAlive = false;
+            // this.action.paused = true; 
+            // this.action.renderGame();
+            // gameOver = true; 
+           
+    
+            // canvas.addEventListener('click', () => {
+            //     if (gameOver) {
+            //         restartGame();
+            //         sound.gameOverMusic.pause();
+            //     } else {
+            //         null;
+            //     }
+            // })
+        // }
+    }; 
 
      gameOverEvents() {
         this.ctx.beginPath();
@@ -66,3 +78,11 @@ class GameOver {
 
 
 export default GameOver;
+
+            // this.game.ufos.length = 0;
+            // this.game.ufoForce.lenght = 0;
+            // this.game.saucers.lenght = 0;
+            // this.game.saucerForce.length = 0;
+            // this.game.wings.length = 0;
+            // this.game.wingForce.length = 0;
+            // this.game.bonuses.length = 0;

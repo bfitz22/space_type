@@ -19,6 +19,22 @@ class UFO {
         this.ctx.closePath();
     }
 
+    drawPoints(x, y) {
+        let i = 0;
+        const pointFlash = setInterval(() => {
+            this.ctx.beginPath();
+            this.ctx.fillStyle = "green";
+            this.ctx.font = 'bold 10px Arial';
+            this.ctx.fillText('1', x, y);
+            this.ctx.fill();
+            this.ctx.closePath();
+            i++;
+            if (i % 9 === 0) {
+                clearInterval(pointFlash);
+            }
+        }, 25)
+    }
+
     drawExplosion(x, y) {
         let i = 0;
         let j = 0;

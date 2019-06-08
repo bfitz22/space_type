@@ -7,7 +7,7 @@ class Game {
     constructor(ctx, canvas, sound, base) {
         this.ufos = [new UFO(ctx), new UFO(ctx)];
         this.ufoForce = ["x", "x"];
-        this.saucers = [new Saucer(ctx), new Saucer(ctx), new Saucer(ctx), new Saucer(ctx)];
+        this.saucers = [new Saucer(ctx)];
         this.saucerForce = [];
         this.wings = [];
         this.wingForce = [];
@@ -43,7 +43,7 @@ class Game {
             if (i > squadSize) {
                 clearInterval(spawnInterval);
             }
-        }, 3000)
+        }, 1000)
     }
     
     drawUFOs() {
@@ -66,11 +66,10 @@ class Game {
                 ((ufo.x > this.base.shieldCenter - (this.base.shieldRadius + 40)) && 
                 (ufo.x < this.base.shieldCenter + (this.base.shieldRadius - 40))))
                 {
-                    this.sound.powerDown.play();
+                    this.sound.poweringDown();
                     ufo.drawExplosion(ufo.x, ufo.y);
                     delete this.ufos[i];
                     this.base.shieldIndex++;
-                    // this.base.rechargeShield();
                 }
         });
     }
@@ -88,7 +87,7 @@ class Game {
             if (i > squadSize) {
                 clearInterval(spawnInterval);
             }
-        }, 3000)
+        }, 2000)
     }
     
     drawSaucers() {
@@ -103,11 +102,10 @@ class Game {
             saucer.drawText();
     
             if (saucer.y > this.base.shieldHeight ) {
-                this.sound.powerDown.play();
+                this.sound.poweringDown();
                 saucer.drawExplosion(saucer.x, saucer.y);
                 delete this.saucers[i];
                 this.base.shieldIndex++;
-                // this.base.rechargeShield();
             }
         });
     }
@@ -125,7 +123,7 @@ class Game {
             if (i > squadSize) {
                 clearInterval(spawnInterval);
             }
-        }, 6000)
+        }, 3000)
     }
     
     drawWings() {
@@ -140,11 +138,10 @@ class Game {
             wing.drawText();
     
             if (wing.y > this.base.shieldHeight ) {
-                this.sound.powerDown.play();
+                this.sound.poweringDown();
                 wing.drawExplosion(wing.x, wing.y);
                 delete this.wings[i];
                 this.base.shieldIndex++;
-                // this.base.rechargeShield();
             }
         });
     }

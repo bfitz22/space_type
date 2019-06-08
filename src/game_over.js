@@ -1,45 +1,31 @@
 class GameOver {
 
-    constructor(ctx, game, canvas, sound, base, wave) {
+    constructor(ctx, game, canvas, sound, base, wave, points) {
         this.ctx = ctx;
         this.game = game; 
         this.canvas = canvas; 
         this.sound = sound; 
         this.base = base;
         this.wave = wave;
+        this.points = points;
         this.endScreen = this.endScreen.bind(this);
         this.finalWaveDisplay = this.finalWaveDisplay.bind(this);
     }
 
     endScreen() {
-        // if (this.base.shieldIndex >= 4) {
             this.game.clear();
             this.gameOverEvents();
             this.sound.mainTheme.pause();
             this.finalExplosion();
             this.finalWaveDisplay();
-            this.base.baseAlive = false;
-            // this.action.paused = true; 
-            // this.action.renderGame();
-            // gameOver = true; 
-           
-    
-            // canvas.addEventListener('click', () => {
-            //     if (gameOver) {
-            //         restartGame();
-            //         sound.gameOverMusic.pause();
-            //     } else {
-            //         null;
-            //     }
-            // })
-        // }
+            this.base.baseAlive = false; 
     }; 
 
      gameOverEvents() {
         this.ctx.beginPath();
         this.ctx.fillStyle = "white";
         this.ctx.font = 'bold 100px Arial';
-        this.ctx.fillText("Game Over", 330, 100);
+        this.ctx.fillText("Game Over", 330, 125);
         this.ctx.fill();
         this.ctx.closePath();
         this.sound.gameOverMusic.currentTime = 0;
@@ -48,11 +34,13 @@ class GameOver {
     
      finalWaveDisplay() {
         let finalWaveCount = this.wave - 1;
+        let finalScore = this.points;
         this.ctx.beginPath();
         this.ctx.fillStyle = "white";
         this.ctx.font = 'bold 50px Arial';
-        this.ctx.fillText(`you survived ${finalWaveCount} waves`, 335, 300);
-        this.ctx.fillText("click anywhere to restart", 325, 400);
+        this.ctx.fillText(`you survived ${finalWaveCount} waves`, 335, 250);
+        this.ctx.fillText(`you achieved ${finalScore} points`, 335, 350);
+        this.ctx.fillText("click anywhere to restart", 315, 450);
         this.ctx.fill();
         this.ctx.closePath();
     }

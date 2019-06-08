@@ -1,5 +1,3 @@
-import { gameOverEvents } from "./game_over";
-
 class Typing {
     constructor(ctx, game, sound) {
         this.ctx = ctx; 
@@ -21,6 +19,7 @@ class Typing {
                         delete this.game.ufos[i];
                         this.laser(ufo.x + 21, ufo.y + 21);
                         ufo.drawExplosion(ufo.x, ufo.y);
+                        ufo.drawPoints(ufo.x + 21, ufo.y + 21);
                         this.updatePoints(1);
                     }
                 });
@@ -42,6 +41,7 @@ class Typing {
                 });
                 this.game.bonuses.forEach((bonus, i) => {
                     if (bonus.word === e.target.value) {
+                        this.updatePoints(10);
                         this.sound.bonusLaserSound.play();
                         delete this.game.bonuses[i];
                         this.sound.bonusSound.pause();
@@ -51,19 +51,16 @@ class Typing {
                             delete this.game.ufos[i];
                             this.bonusLaser(ufo.x + 21, ufo.y + 21);
                             ufo.drawExplosion(ufo.x, ufo.y);
-                            this.updatePoints(1);
                         })
                         this.game.saucers.forEach((ufo, i) => {
                             delete this.game.saucers[i];
                             this.bonusLaser(ufo.x + 21, ufo.y + 21);
                             ufo.drawExplosion(ufo.x, ufo.y);
-                            this.updatePoints(3);
                         })
                         this.game.wings.forEach((ufo, i) => {
                             delete this.game.wings[i];
                             this.bonusLaser(ufo.x + 21, ufo.y + 21);
                             ufo.drawExplosion(ufo.x, ufo.y);
-                            this.updatePoints(5);
                         })
                     }
                 })

@@ -7,7 +7,6 @@ class Sound {
         this.powerUp = new Audio();
         this.powerUp.src = "./audio/power-up.mp3";
         this.powerDown = new Audio();
-        this.powerDown.src = "./audio/power-down.mp3";
         this.laserSound = new Audio();
         this.bonusSound = new Audio();
         this.bonusSound.src = "./audio/big_saucer.mp3";
@@ -28,6 +27,14 @@ class Sound {
             this.laserSound.src = "./audio/laser.mp3";
             this.laserSound.volume = 0.5;
             this.laserSound.play();
+        }
+    }
+
+    poweringDown() {
+        if (this.isPlaying) {
+            this.powerDown = new Audio();
+            this.powerDown.src = "./audio/power-down.mp3";
+            this.powerDown.play();
         }
     }
 

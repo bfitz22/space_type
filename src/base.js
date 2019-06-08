@@ -11,7 +11,6 @@ class Base {
         this.sound = sound;
         this.base = document.createElement('img');
         this.base.src = "images/base.png";
-        // this.rechargeInterval = null; 
         this.rechargeShield = this.rechargeShield.bind(this);
     }
 
@@ -36,28 +35,10 @@ class Base {
             this.ctx.lineWidth = 8;
             this.ctx.closePath();
         }
-        // if (shieldIndex >= 4) {
-        //     gameOver(ctx);
-        //     mainTheme.pause();
-        //     gameOverMusic.play();
-        //     finalWaveCount(ctx, wave);
-        //     finalExplosion(ctx, canvas);
-        //     baseAlive = false;
-        //     paused = true; 
-        // }
     }
 
     rechargeShield() {
         if (this.shieldIndex > 0 && this.baseAlive) {
-            // if (this.rechargeInterval || this.shieldIndex <= 0) {
-            //      clearInterval(this.rechargeInterval); 
-            // } else {
-            //     null;
-            // }
-            // this.rechargeInterval = setInterval(() => {
-            //     this.shieldIndex -= 1;
-            //     this.sound.powerUp.play(); 
-            // }, 10000)
             this.shieldIndex -= 1;
             this.sound.powerUp.play(); 
         }

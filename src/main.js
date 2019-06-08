@@ -11,7 +11,7 @@ let sound = new Sound;
 sound.toggleMusic();
 let base = new Base(ctx, sound);
 let game = new Game(ctx, canvas, sound, base);
-let typing = new Typing(ctx, game, sound);
+let typing = new Typing(ctx, game, sound, base);
 let action = new Action(ctx, canvas, sound, base, game, typing);
 const startScreen = document.getElementById("start");
 

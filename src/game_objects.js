@@ -170,8 +170,8 @@ class Game {
         })
     }
 
-    createBonus() {
-        this.bonuses.push(new BonusSaucer(this.ctx));
+    createBonus(shieldIndex) {
+        this.bonuses.push(new BonusSaucer(this.ctx, shieldIndex));
     }
 }
 

@@ -1,7 +1,7 @@
 
 
 class BonusSaucer {
-    constructor(ctx) {
+    constructor(ctx, shieldIndex) {
         this.bonusWords = 
         ["superintendent",
         "disappointment",
@@ -19,9 +19,10 @@ class BonusSaucer {
         "rehabilitation",
         "extraterrestrial"];
         this.ctx = ctx;
+        this.shieldIndex = shieldIndex;
         this.x = 10;
         this.y = 20;
-        this.word = this.bonusWords[Math.floor(Math.random() * 15)];
+        this.word = this.shieldIndex > 0 ? "recharge" : this.bonusWords[Math.floor(Math.random() * 15)];
         this.bonusImg = new Image();
         this.bonusImg.src = "./images/big_saucer.png";
     }

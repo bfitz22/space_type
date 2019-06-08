@@ -1,10 +1,11 @@
 class Typing {
-    constructor(ctx, game, sound) {
+    constructor(ctx, game, sound, base) {
         this.ctx = ctx; 
         this.game = game;
         this.sound = sound;
         this.typer = document.getElementById("typing-box");
         this.totalPoints = 0;
+        this.base = base;
         this.laser = this.laser.bind(this);
         this.updatePoints = this.updatePoints.bind(this);
         this.bonusLaser = this.bonusLaser.bind(this);
@@ -57,7 +58,17 @@ class Typing {
                 }
             });
             this.game.bonuses.forEach((bonus, i) => {
-                if (bonus.word === e.target.value) {
+                if (bonus.word === "recharge" && bonus.word === e.target.value) {
+                    this.laser(bonus.x + 21, bonus.y + 21);
+                    delete this.game.bonuses[i];
+                    bonus.drawExplosion(bonus.x, bonus.y);
+                    bonus.drawPoints(this.game.combo, bonus.x + 21, bonus.y);
+                    this.sound.bonusSound.pause();
+                    this.base.rechargeShield();
+                    this.updatePoints(this.game.combo * 10);
+                    badEntry = false;
+                    if (this.game.combo < 10) this.game.combo ++;
+                } else if (bonus.word === e.target.value) {
                     this.updatePoints(this.game.combo * 10);
                     badEntry = false;
                     this.sound.bonusLaserSound.play();

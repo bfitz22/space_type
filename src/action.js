@@ -117,10 +117,10 @@ class Action {
             this.waveEvents2();
             this.waveEvents3();
 
-            this.drawEverything = setInterval(() => {this.game.clear(), this.game.drawBonus(); this.base.drawShield(), this.base.drawBase(), this.displayCombo(),
+            this.drawEverything = setInterval(() => {this.game.clear(), this.game.drawBonus(), this.base.drawShield(), this.base.drawBase(), this.displayCombo(),
                 this.displayWave(), this.typing.displayPoints(), this.game.drawUFOs(), this.game.drawSaucers(), this.game.drawWings(), this.baseDestroyed()}, 25);
-            this.theRecharge = setInterval(this.base.rechargeShield, 10000)
-            this.theBonus = setInterval(this.game.createBonus, 30000);
+            // this.theRecharge = setInterval(this.base.rechargeShield, 10000)
+            this.theBonus = setInterval(() => {this.game.createBonus(this.base.shieldIndex)}, 20000);
             this.theFlash = setInterval(this.game.flash, 200);
             this.typing.startTyping();
             this.canvasClick();
@@ -144,7 +144,7 @@ class Action {
         clearInterval(this.gameEnemies);
         clearInterval(this.gameEnemiesTwo);
         clearInterval(this.drawEverything);
-        clearInterval(this.theRecharge);
+        // clearInterval(this.theRecharge);
         clearInterval(this.theBonus);
         clearInterval(this.theFlash); 
     }

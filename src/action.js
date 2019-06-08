@@ -50,6 +50,7 @@ class Action {
 
     baseDestroyed() {
         if (this.base.shieldIndex >= 4) {
+            this.typing.stopTyping();
             this.sound.powerUp.pause();
             this.sound.powerDown.pause();
             this.sound.bonusSound.pause();
@@ -121,7 +122,7 @@ class Action {
             this.theRecharge = setInterval(this.base.rechargeShield, 10000)
             this.theBonus = setInterval(this.game.createBonus, 30000);
             this.theFlash = setInterval(this.game.flash, 200);
-            this.typing.typeWord();
+            this.typing.startTyping();
             this.canvasClick();
         }
     }

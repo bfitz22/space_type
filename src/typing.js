@@ -8,81 +8,88 @@ class Typing {
         this.laser = this.laser.bind(this);
         this.updatePoints = this.updatePoints.bind(this);
         this.bonusLaser = this.bonusLaser.bind(this);
+        this.typeWord = this.typeWord.bind(this);
     }
 
-    typeWord() {
-        this.typer.addEventListener('keypress', (e) => {
-            var key = e.which || e.keyCode;
-            if (key === 13) {
-                let badEntry = true;
-                this.game.ufos.forEach((ufo, i) => {
-                    if (ufo.word === e.target.value) {
-                        delete this.game.ufos[i];
-                        this.laser(ufo.x + 21, ufo.y + 21);
-                        ufo.drawExplosion(ufo.x, ufo.y);
-                        ufo.drawPoints(this.game.combo, ufo.x + 21, ufo.y);
-                        this.updatePoints(this.game.combo * 1);
-                        if (this.game.combo < 10) this.game.combo ++;
-                        badEntry = false;
-                    }
-                });
-                this.game.saucers.forEach((saucer, i) => {
-                    if (saucer.word === e.target.value) {
-                        delete this.game.saucers[i];
-                        this.laser(saucer.x + 21, saucer.y + 21);
-                        saucer.drawExplosion(saucer.x, saucer.y);
-                        saucer.drawPoints(this.game.combo, saucer.x + 21, saucer.y);
-                        this.updatePoints(this.game.combo * 3);
-                        if (this.game.combo < 10) this.game.combo ++;
-                        badEntry = false;
-                    }
-                });
-                this.game.wings.forEach((wing, i) => {
-                    if (wing.word === e.target.value) {
-                        delete this.game.wings[i];
-                        this.laser(wing.x + 21, wing.y + 21);
-                        wing.drawExplosion(wing.x, wing.y);
-                        wing.drawPoints(this.game.combo, wing.x + 21, wing.y);
-                        this.updatePoints(this.game.combo * 5);
-                        if (this.game.combo < 10) this.game.combo ++;
-                        badEntry = false;
-                    }
-                });
-                this.game.bonuses.forEach((bonus, i) => {
-                    if (bonus.word === e.target.value) {
-                        this.updatePoints(this.game.combo * 10);
-                        badEntry = false;
-                        this.sound.bonusLaserSound.play();
-                        delete this.game.bonuses[i];
-                        this.sound.bonusSound.pause();
-                        this.laser(bonus.x + 21, bonus.y + 21);
-                        bonus.drawExplosion(bonus.x, bonus.y);
-                        bonus.drawPoints(this.game.combo, bonus.x + 21, bonus.y);
-                        if (this.game.combo < 10) this.game.combo ++;
-                        this.game.ufos.forEach((ufo, i) => {
-                            delete this.game.ufos[i];
-                            this.bonusLaser(ufo.x + 21, ufo.y + 21);
-                            ufo.drawExplosion(ufo.x, ufo.y);
-                        })
-                        this.game.saucers.forEach((ufo, i) => {
-                            delete this.game.saucers[i];
-                            this.bonusLaser(ufo.x + 21, ufo.y + 21);
-                            ufo.drawExplosion(ufo.x, ufo.y);
-                        })
-                        this.game.wings.forEach((ufo, i) => {
-                            delete this.game.wings[i];
-                            this.bonusLaser(ufo.x + 21, ufo.y + 21);
-                            ufo.drawExplosion(ufo.x, ufo.y);
-                        })
-                    }
-                })
-                if (badEntry) {
-                    this.game.combo = 1;
-                    badEntry = 0;
+    startTyping() {
+        this.typer.addEventListener('keypress', this.typeWord)
+    }
+
+    stopTyping() {
+        this.typer.removeEventListener('keypress', this.typeWord)
+    }
+
+    typeWord(e) {
+        var key = e.which || e.keyCode;
+        if (key === 13) {
+            let badEntry = true;
+            this.game.ufos.forEach((ufo, i) => {
+                if (ufo.word === e.target.value) {
+                    delete this.game.ufos[i];
+                    this.laser(ufo.x + 21, ufo.y + 21);
+                    ufo.drawExplosion(ufo.x, ufo.y);
+                    ufo.drawPoints(this.game.combo, ufo.x + 21, ufo.y);
+                    this.updatePoints(this.game.combo * 1);
+                    if (this.game.combo < 10) this.game.combo ++;
+                    badEntry = false;
                 }
-                e.target.value = "";
+            });
+            this.game.saucers.forEach((saucer, i) => {
+                if (saucer.word === e.target.value) {
+                    delete this.game.saucers[i];
+                    this.laser(saucer.x + 21, saucer.y + 21);
+                    saucer.drawExplosion(saucer.x, saucer.y);
+                    saucer.drawPoints(this.game.combo, saucer.x + 21, saucer.y);
+                    this.updatePoints(this.game.combo * 3);
+                    if (this.game.combo < 10) this.game.combo ++;
+                    badEntry = false;
+                }
+            });
+            this.game.wings.forEach((wing, i) => {
+                if (wing.word === e.target.value) {
+                    delete this.game.wings[i];
+                    this.laser(wing.x + 21, wing.y + 21);
+                    wing.drawExplosion(wing.x, wing.y);
+                    wing.drawPoints(this.game.combo, wing.x + 21, wing.y);
+                    this.updatePoints(this.game.combo * 5);
+                    if (this.game.combo < 10) this.game.combo ++;
+                    badEntry = false;
+                }
+            });
+            this.game.bonuses.forEach((bonus, i) => {
+                if (bonus.word === e.target.value) {
+                    this.updatePoints(this.game.combo * 10);
+                    badEntry = false;
+                    this.sound.bonusLaserSound.play();
+                    delete this.game.bonuses[i];
+                    this.sound.bonusSound.pause();
+                    this.laser(bonus.x + 21, bonus.y + 21);
+                    bonus.drawExplosion(bonus.x, bonus.y);
+                    bonus.drawPoints(this.game.combo, bonus.x + 21, bonus.y);
+                    if (this.game.combo < 10) this.game.combo ++;
+                    this.game.ufos.forEach((ufo, i) => {
+                        delete this.game.ufos[i];
+                        this.bonusLaser(ufo.x + 21, ufo.y + 21);
+                        ufo.drawExplosion(ufo.x, ufo.y);
+                    })
+                    this.game.saucers.forEach((ufo, i) => {
+                        delete this.game.saucers[i];
+                        this.bonusLaser(ufo.x + 21, ufo.y + 21);
+                        ufo.drawExplosion(ufo.x, ufo.y);
+                    })
+                    this.game.wings.forEach((ufo, i) => {
+                        delete this.game.wings[i];
+                        this.bonusLaser(ufo.x + 21, ufo.y + 21);
+                        ufo.drawExplosion(ufo.x, ufo.y);
+                    })
+                }
+            })
+            if (badEntry) {
+                this.game.combo = 1;
+                badEntry = 0;
             }
-        })
+            e.target.value = "";
+        }
     }
     
     laser(x, y) {
@@ -127,7 +134,7 @@ class Typing {
         this.ctx.beginPath();
         this.ctx.fillStyle = "white";
         this.ctx.font = 'bold 30px Arial';
-        this.ctx.fillText(`${this.totalPoints} points`, 1000, 670);
+        this.ctx.fillText(`${this.totalPoints} points`, 1005, 670);
         this.ctx.fill();
         this.ctx.closePath();
     }

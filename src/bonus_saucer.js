@@ -35,6 +35,22 @@ class BonusSaucer {
         this.ctx.closePath();
     }
 
+    drawPoints(combo, x, y) {
+        let i = 1;
+        const pointFlash = setInterval(() => {
+            this.ctx.beginPath();
+            this.ctx.fillStyle = "green";
+            this.ctx.font = 'bold 20px Arial';
+            this.ctx.fillText(`${10 * combo}`, x, y);
+            this.ctx.fill();
+            this.ctx.closePath();
+            i++;
+            if (i % 75 === 0) {
+                clearInterval(pointFlash);
+            }
+        }, 5)
+    }
+
     drawExplosion(x, y) {
         let i = 0;
         let j = 0;
@@ -43,13 +59,13 @@ class BonusSaucer {
         const explosion = setInterval(() => {
             this.ctx.drawImage(boomImg, 0, i, 32, 32, x, y, 42, 42);
             j++;
-            if (j % 3 === 0) {
+            if (j % 4 === 0) {
             i += 32 
             }
             if (i > 64) {
                 clearInterval(explosion);
             }
-        }, 25)
+        }, 20)
     }
 }
 

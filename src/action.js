@@ -14,7 +14,7 @@ class Action {
         this.gameOver = false;
         this.paused = true; 
         this.wave = 1;
-        this.waveInterval = 3000;
+        this.waveInterval = 4000;
         this.ctx = ctx;
         this.canvas = canvas;
         this.sound = sound;
@@ -29,7 +29,16 @@ class Action {
         this.ctx.beginPath();
         this.ctx.fillStyle = "white";
         this.ctx.font = 'bold 30px Arial';
-        this.ctx.fillText(`Wave ${this.wave}`, 1000, 670);
+        this.ctx.fillText(`Wave ${this.wave}`, 800, 670);
+        this.ctx.fill();
+        this.ctx.closePath();
+    }
+
+    displayCombo() {
+        this.ctx.beginPath();
+        this.ctx.fillStyle = "white";
+        this.ctx.font = 'bold 30px Arial';
+        this.ctx.fillText(`${this.game.combo}x combo`, 1000, 600);
         this.ctx.fill();
         this.ctx.closePath();
     }
@@ -107,7 +116,7 @@ class Action {
             this.waveEvents2();
             this.waveEvents3();
 
-            this.drawEverything = setInterval(() => {this.game.clear(), this.game.drawBonus(); this.base.drawShield(), this.base.drawBase(),
+            this.drawEverything = setInterval(() => {this.game.clear(), this.game.drawBonus(); this.base.drawShield(), this.base.drawBase(), this.displayCombo(),
                 this.displayWave(), this.typing.displayPoints(), this.game.drawUFOs(), this.game.drawSaucers(), this.game.drawWings(), this.baseDestroyed()}, 25);
             this.theRecharge = setInterval(this.base.rechargeShield, 10000)
             this.theBonus = setInterval(this.game.createBonus, 30000);
@@ -118,11 +127,11 @@ class Action {
     }
 
     waveEvents1() {
-        this.gameEvents = setInterval(() => {this.game.spawnUFOs(), this.updateWave(), clearInterval(this.gameEvents), this.waveEvents1()}, this.waveInterval);
+        this.gameEvents = setInterval(() => {this.updateWave(), clearInterval(this.gameEvents), this.waveEvents1()}, this.waveInterval);
     }
 
     waveEvents2() {
-        this.gameEnemies = setInterval(() => {this.game.spawnSaucers(), this.game.spawnWings(), clearInterval(this.gameEnemies), this.waveEvents2()}, this.waveInterval);
+        this.gameEnemies = setInterval(() => {this.game.spawnUFOs(), this.game.spawnSaucers(), this.game.spawnWings(), clearInterval(this.gameEnemies), this.waveEvents2()}, this.waveInterval + 500);
     }
 
     waveEvents3() {

@@ -19,20 +19,20 @@ class UFO {
         this.ctx.closePath();
     }
 
-    drawPoints(x, y) {
-        let i = 0;
+    drawPoints(combo, x, y) {
+        let i = 1;
         const pointFlash = setInterval(() => {
             this.ctx.beginPath();
             this.ctx.fillStyle = "green";
-            this.ctx.font = 'bold 10px Arial';
-            this.ctx.fillText('1', x, y);
+            this.ctx.font = 'bold 20px Arial';
+            this.ctx.fillText(`${1 * combo}`, x, y);
             this.ctx.fill();
             this.ctx.closePath();
             i++;
-            if (i % 9 === 0) {
+            if (i % 75 === 0) {
                 clearInterval(pointFlash);
             }
-        }, 25)
+        }, 5)
     }
 
     drawExplosion(x, y) {
@@ -43,13 +43,13 @@ class UFO {
         const explosion = setInterval(() => {
             this.ctx.drawImage(boomImg, 0, i, 32, 32, x, y, 42, 42);
             j++;
-            if (j % 3 === 0) {
+            if (j % 4 === 0) {
                 i += 32 
             }
             if (i > 64) {
                 clearInterval(explosion);
             }
-        }, 25)
+        }, 20)
     }
 }
 

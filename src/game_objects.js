@@ -20,6 +20,7 @@ class Game {
         this.createBonus = this.createBonus.bind(this);
         this.flash = this.flash.bind(this);
         this.drawUFOs = this.drawUFOs.bind(this);
+        this.combo = 1;
     }
 
     clear() {
@@ -70,6 +71,7 @@ class Game {
                     ufo.drawExplosion(ufo.x, ufo.y);
                     delete this.ufos[i];
                     this.base.shieldIndex++;
+                    this.combo = 1;
                 }
         });
     }
@@ -106,6 +108,7 @@ class Game {
                 saucer.drawExplosion(saucer.x, saucer.y);
                 delete this.saucers[i];
                 this.base.shieldIndex++;
+                this.combo = 1;
             }
         });
     }
@@ -142,6 +145,7 @@ class Game {
                 wing.drawExplosion(wing.x, wing.y);
                 delete this.wings[i];
                 this.base.shieldIndex++;
+                this.combo = 1;
             }
         });
     }

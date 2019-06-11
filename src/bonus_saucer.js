@@ -1,28 +1,30 @@
-
-
 class BonusSaucer {
     constructor(ctx, shieldIndex) {
         this.bonusWords = 
-        ["superintendent",
-        "disappointment",
-        "comprehensive",
-        "short circuit",
-        "correspondence",
-        "demonstration",
-        "entertainment",
-        "identification",
-        "supplementary",
-        "embarrassment",
-        "infrastructure",
-        "communication",
-        "preoccupation",
-        "rehabilitation",
-        "extraterrestrial"];
+        [
+            "superintendent",
+            "disappointment",
+            "comprehensive",
+            "short circuit",
+            "correspondence",
+            "demonstration",
+            "entertainment",
+            "identification",
+            "supplementary",
+            "embarrassment",
+            "infrastructure",
+            "communication",
+            "preoccupation",
+            "rehabilitation",
+            "extraterrestrial"
+        ];
         this.ctx = ctx;
         this.shieldIndex = shieldIndex;
         this.x = 10;
         this.y = 20;
-        this.word = this.shieldIndex > 0 ? "recharge" : this.bonusWords[Math.floor(Math.random() * 15)];
+        this.word = this.shieldIndex > 0 ? 
+            "recharge" : 
+            this.bonusWords[Math.floor(Math.random() * 15)];
         this.bonusImg = new Image();
         this.bonusImg.src = "./images/big_saucer.png";
     }

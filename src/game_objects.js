@@ -39,11 +39,11 @@ class Game {
         let i = 0;
         let squadSize = this.ufoForce.length;
         const spawnInterval = setInterval(() => {
-            this.ufos.push(new UFO(this.ctx));
-            i++;
-            if (i > squadSize) {
+            if (i >= squadSize) {
                 clearInterval(spawnInterval);
             }
+            this.ufos.push(new UFO(this.ctx));
+            i++;
         }, 1000)
     }
     
@@ -84,12 +84,12 @@ class Game {
         let i = 0;
         let squadSize = this.saucerForce.length;
         const spawnInterval = setInterval(() => {
-            this.saucers.push(new Saucer(this.ctx));
-            i++;
-            if (i > squadSize) {
+            if (i >= squadSize) {
                 clearInterval(spawnInterval);
             }
-        }, 2000)
+            this.saucers.push(new Saucer(this.ctx));
+            i++;
+        }, 2500)
     }
     
     drawSaucers() {
@@ -121,11 +121,11 @@ class Game {
         let i = 0;
         let squadSize = this.wingForce.length;
         const spawnInterval = setInterval(() => {
-            this.wings.push(new Wing(this.ctx));
-            i++;
-            if (i > squadSize) {
+            if (i >= squadSize) {
                 clearInterval(spawnInterval);
             }
+            this.wings.push(new Wing(this.ctx));
+            i++;
         }, 3000)
     }
     
@@ -171,7 +171,7 @@ class Game {
     }
 
     createBonus(shieldIndex) {
-        this.bonuses.push(new BonusSaucer(this.ctx, shieldIndex));
+            this.bonuses.push(new BonusSaucer(this.ctx, shieldIndex));
     }
 }
 

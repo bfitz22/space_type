@@ -3,18 +3,10 @@ import Game from './game_objects';
 
 class Action {
     constructor(ctx, canvas, sound, base, game, typing) {
-        this.gameEvents; 
-        this.gameEnemies; 
-        this.gameEnemiesTwo; 
-        this.drawEverything; 
-        this.theRecharge; 
-        this.theBonus; 
-        this.theFlash;
-
         this.gameOver = false;
         this.paused = true; 
         this.wave = 1;
-        this.waveInterval = 4000;
+        this.waveInterval = 7000;
         this.ctx = ctx;
         this.canvas = canvas;
         this.sound = sound;
@@ -45,7 +37,7 @@ class Action {
 
     updateWave() {
         this.wave ++;
-        this.waveInterval += 3000;
+        this.waveInterval += 1500;
     }
 
     baseDestroyed() {
@@ -67,6 +59,7 @@ class Action {
         this.wave = 1;
         this.waveInterval = 6000;
         this.typing.resetPoints();
+        this.typer.value = "";
     
         this.sound.mainTheme.currentTime = 0;
         this.sound.mainTheme.play();
@@ -116,11 +109,11 @@ class Action {
             this.waveEvents1();
             this.waveEvents2();
             this.waveEvents3();
+            this.waveEvents4();
+            this.waveEvents5();
 
             this.drawEverything = setInterval(() => {this.game.clear(), this.game.drawBonus(), this.base.drawShield(), this.base.drawBase(), this.displayCombo(),
                 this.displayWave(), this.typing.displayPoints(), this.game.drawUFOs(), this.game.drawSaucers(), this.game.drawWings(), this.baseDestroyed()}, 25);
-            // this.theRecharge = setInterval(this.base.rechargeShield, 10000)
-            this.theBonus = setInterval(() => {this.game.createBonus(this.base.shieldIndex)}, 20000);
             this.theFlash = setInterval(this.game.flash, 200);
             this.typing.startTyping();
             this.canvasClick();
@@ -128,23 +121,32 @@ class Action {
     }
 
     waveEvents1() {
-        this.gameEvents = setInterval(() => {this.updateWave(), clearInterval(this.gameEvents), this.waveEvents1()}, this.waveInterval);
+        this.gameEvents = setInterval(() => {this.updateWave(), this.game.spawnUFOs(), this.game.spawnSaucers(), this.game.spawnWings(), clearInterval(this.gameEvents), this.waveEvents1()}, this.waveInterval);
     }
 
     waveEvents2() {
-        this.gameEnemies = setInterval(() => {this.game.spawnUFOs(), this.game.spawnSaucers(), this.game.spawnWings(), clearInterval(this.gameEnemies), this.waveEvents2()}, this.waveInterval + 500);
+        this.gameEnemies = setInterval(() => {this.game.addUFOs(), clearInterval(this.gameEnemies), this.waveEvents2()}, this.waveInterval * 3);
     }
 
     waveEvents3() {
-        this.gameEnemiesTwo = setInterval(() => {this.game.addUFOs(), this.game.addSaucers(), this.game.addWings(), clearInterval(this.gameEnemiesTwo), this.waveEvents3()}, this.waveInterval * 2);
+        this.gameEnemiesTwo = setInterval(() => {this.game.addSaucers(), this.game.addWings(), clearInterval(this.gameEnemiesTwo), this.waveEvents3()}, this.waveInterval * 4);
+    }
+
+    waveEvents4() {
+        this.gameEnemiesThree = setInterval(() => {this.game.addWings(), clearInterval(this.gameEnemiesThree), this.waveEvents4()}, this.waveInterval * 5);
+    }
+
+    waveEvents5() {
+        let interval = this.base.shieldIndex > 0 ? 10000 : this.waveInterval * 3 + 2000;
+        this.theBonus = setInterval(() => {this.game.createBonus(this.base.shieldIndex), clearInterval(this.theBonus), this.waveEvents5()}, interval);
     }
 
     stopGame() {
         clearInterval(this.gameEvents);
         clearInterval(this.gameEnemies);
         clearInterval(this.gameEnemiesTwo);
+        clearInterval(this.gameEnemiesThree);
         clearInterval(this.drawEverything);
-        // clearInterval(this.theRecharge);
         clearInterval(this.theBonus);
         clearInterval(this.theFlash); 
     }

@@ -145,7 +145,7 @@ class Typing {
         this.ctx.beginPath();
         this.ctx.fillStyle = "white";
         this.ctx.font = 'bold 30px Arial';
-        this.ctx.fillText(`${this.totalPoints} points`, 1005, 670);
+        this.ctx.fillText(`${this.totalPoints} points`, 1000, 670);
         this.ctx.fill();
         this.ctx.closePath();
     }

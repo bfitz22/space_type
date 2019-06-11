@@ -38,8 +38,8 @@ class GameOver {
         this.ctx.beginPath();
         this.ctx.fillStyle = "white";
         this.ctx.font = 'bold 50px Arial';
-        this.ctx.fillText(`you survived ${finalWaveCount} waves`, 325, 250);
-        this.ctx.fillText(`you achieved ${finalScore} points`, 315, 350);
+        this.ctx.fillText(`you survived ${finalWaveCount} waves`, 335, 250);
+        this.ctx.fillText(`you achieved ${finalScore} points`, 335, 350);
         this.ctx.fillText("click anywhere to restart", 315, 450);
         this.ctx.fill();
         this.ctx.closePath();
@@ -66,11 +66,3 @@ class GameOver {
 
 
 export default GameOver;
-
-            // this.game.ufos.length = 0;
-            // this.game.ufoForce.lenght = 0;
-            // this.game.saucers.lenght = 0;
-            // this.game.saucerForce.length = 0;
-            // this.game.wings.length = 0;
-            // this.game.wingForce.length = 0;
-            // this.game.bonuses.length = 0;

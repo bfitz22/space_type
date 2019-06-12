@@ -72,7 +72,9 @@ class Game {
                     delete this.ufos[i];
                     this.base.shieldIndex++;
                     this.combo = 1;
-                }
+                    setTimeout(() => {
+                        this.createBonus(this.base.shieldIndex)
+                    }, 5000)                }
         });
     }
     
@@ -109,6 +111,9 @@ class Game {
                 delete this.saucers[i];
                 this.base.shieldIndex++;
                 this.combo = 1;
+                setTimeout(() => {
+                    this.createBonus(this.base.shieldIndex)
+                }, 5000)
             }
         });
     }
@@ -146,7 +151,9 @@ class Game {
                 delete this.wings[i];
                 this.base.shieldIndex++;
                 this.combo = 1;
-            }
+                setTimeout(() => {
+                    this.createBonus(this.base.shieldIndex)
+                }, 10000)            }
         });
     }
     
@@ -171,7 +178,9 @@ class Game {
     }
 
     createBonus(shieldIndex) {
+        if (!this.bonuses.some((bonus) => bonus instanceof BonusSaucer)) {
             this.bonuses.push(new BonusSaucer(this.ctx, shieldIndex));
+        }
     }
 }
 

@@ -71,28 +71,30 @@ class Typing {
                 } else if (bonus.word === e.target.value) {
                     this.updatePoints(this.game.combo * 10);
                     badEntry = false;
-                    this.sound.bonusLaserSound.play();
                     delete this.game.bonuses[i];
                     this.sound.bonusSound.pause();
                     this.laser(bonus.x + 21, bonus.y + 21);
                     bonus.drawExplosion(bonus.x, bonus.y);
                     bonus.drawPoints(this.game.combo, bonus.x + 21, bonus.y);
                     if (this.game.combo < 10) this.game.combo ++;
-                    this.game.ufos.forEach((ufo, i) => {
-                        delete this.game.ufos[i];
-                        this.bonusLaser(ufo.x + 21, ufo.y + 21);
-                        ufo.drawExplosion(ufo.x, ufo.y);
-                    })
-                    this.game.saucers.forEach((ufo, i) => {
-                        delete this.game.saucers[i];
-                        this.bonusLaser(ufo.x + 21, ufo.y + 21);
-                        ufo.drawExplosion(ufo.x, ufo.y);
-                    })
-                    this.game.wings.forEach((ufo, i) => {
-                        delete this.game.wings[i];
-                        this.bonusLaser(ufo.x + 21, ufo.y + 21);
-                        ufo.drawExplosion(ufo.x, ufo.y);
-                    })
+                    setTimeout(() => {
+                        this.sound.bonusLaserSound.play();
+                        this.game.ufos.forEach((ufo, i) => {
+                            delete this.game.ufos[i];
+                            this.bonusLaser(ufo.x + 21, ufo.y + 21);
+                            ufo.drawExplosion(ufo.x, ufo.y);
+                        })
+                        this.game.saucers.forEach((ufo, i) => {
+                            delete this.game.saucers[i];
+                            this.bonusLaser(ufo.x + 21, ufo.y + 21);
+                            ufo.drawExplosion(ufo.x, ufo.y);
+                        })
+                        this.game.wings.forEach((ufo, i) => {
+                            delete this.game.wings[i];
+                            this.bonusLaser(ufo.x + 21, ufo.y + 21);
+                            ufo.drawExplosion(ufo.x, ufo.y);
+                        })
+                    }, 500);
                 }
             })
             if (badEntry) {

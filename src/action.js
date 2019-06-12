@@ -37,7 +37,7 @@ class Action {
 
     updateWave() {
         this.wave ++;
-        this.waveInterval += 1500;
+        this.waveInterval += 1000;
     }
 
     baseDestroyed() {
@@ -46,7 +46,8 @@ class Action {
             this.sound.powerUp.pause();
             this.sound.powerDown.pause();
             this.sound.bonusSound.pause();
-            let ending = new GameOver(this.ctx, this.game, this.canvas, this.sound, this.base, this.wave, this.typing.totalPoints);
+            let ending = new GameOver(this.ctx, this.game, this.canvas, this.sound,
+                this.base, this.wave, this.typing.totalPoints);
             ending.endScreen();
             this.paused = true;
             this.stopGame();
@@ -66,8 +67,8 @@ class Action {
         this.sound.mainTheme.loop = true; 
         this.typing.typer.focus();
         this.base.baseAlive = true; 
-        const startInt = setInterval(() => {this.game.clear(), this.base.drawShield(), this.base.drawBase() 
-        }, 40);
+        const startInt = setInterval(() => {this.game.clear(), this.base.drawShield(),
+            this.base.drawBase() }, 40);
 
         setTimeout(() => {
             this.base.shieldIndex -= 1;
@@ -112,8 +113,10 @@ class Action {
             this.waveEvents4();
             this.waveEvents5();
 
-            this.drawEverything = setInterval(() => {this.game.clear(), this.game.drawBonus(), this.base.drawShield(), this.base.drawBase(), this.displayCombo(),
-                this.displayWave(), this.typing.displayPoints(), this.game.drawUFOs(), this.game.drawSaucers(), this.game.drawWings(), this.baseDestroyed()}, 25);
+            this.drawEverything = setInterval(() => {this.game.clear(), this.game.drawBonus(),
+                this.base.drawShield(), this.base.drawBase(), this.displayCombo(),
+                this.displayWave(), this.typing.displayPoints(), this.game.drawUFOs(),
+                this.game.drawSaucers(), this.game.drawWings(), this.baseDestroyed()}, 25);
             this.theFlash = setInterval(this.game.flash, 200);
             this.typing.startTyping();
             this.canvasClick();
@@ -121,23 +124,29 @@ class Action {
     }
 
     waveEvents1() {
-        this.gameEvents = setInterval(() => {this.updateWave(), this.game.spawnUFOs(), this.game.spawnSaucers(), this.game.spawnWings(), clearInterval(this.gameEvents), this.waveEvents1()}, this.waveInterval);
+        this.gameEvents = setInterval(() => {this.updateWave(), this.game.spawnUFOs(),
+            this.game.spawnSaucers(), this.game.spawnWings(), clearInterval(this.gameEvents),
+            this.waveEvents1()}, this.waveInterval);
     }
 
     waveEvents2() {
-        this.gameEnemies = setInterval(() => {this.game.addUFOs(), clearInterval(this.gameEnemies), this.waveEvents2()}, this.waveInterval * 3);
+        this.gameEnemies = setInterval(() => {this.game.addUFOs(), clearInterval(this.gameEnemies),
+            this.waveEvents2()}, this.waveInterval * 2);
     }
 
     waveEvents3() {
-        this.gameEnemiesTwo = setInterval(() => {this.game.addSaucers(), this.game.addWings(), clearInterval(this.gameEnemiesTwo), this.waveEvents3()}, this.waveInterval * 4);
+        this.gameEnemiesTwo = setInterval(() => {this.game.addSaucers(), clearInterval(this.gameEnemiesTwo),
+            this.waveEvents3()}, this.waveInterval * 4);
     }
 
     waveEvents4() {
-        this.gameEnemiesThree = setInterval(() => {this.game.addWings(), clearInterval(this.gameEnemiesThree), this.waveEvents4()}, this.waveInterval * 5);
+        this.gameEnemiesThree = setInterval(() => {this.game.addWings(),
+            clearInterval(this.gameEnemiesThree), this.waveEvents4()}, this.waveInterval * 5);
     }
 
     waveEvents5() {
-        this.theBonus = setInterval(() => {this.game.createBonus(this.base.shieldIndex), clearInterval(this.theBonus), this.waveEvents5()}, this.waveInterval * 2 + 5000);
+        this.theBonus = setInterval(() => {this.game.createBonus(this.base.shieldIndex),
+            clearInterval(this.theBonus), this.waveEvents5()}, this.waveInterval * 3);
     }
 
     stopGame() {

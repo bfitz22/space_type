@@ -137,7 +137,7 @@ class Action {
     }
 
     waveEvents5() {
-        this.theBonus = setInterval(() => {this.game.createBonus(this.base.shieldIndex), clearInterval(this.theBonus), this.waveEvents5()}, this.waveInterval * 3 + 2000);
+        this.theBonus = setInterval(() => {this.game.createBonus(this.base.shieldIndex), clearInterval(this.theBonus), this.waveEvents5()}, this.waveInterval * 2 + 5000);
     }
 
     stopGame() {

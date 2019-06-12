@@ -7,7 +7,7 @@ class UFO {
         this.y = 1;
         this.width = 42;
         this.height = 42;
-        this.word = ufoWords[Math.floor(Math.random() * 63)];
+        this.word = ufoWords[Math.floor(Math.random() * 100)];
     }
 
     drawText() {

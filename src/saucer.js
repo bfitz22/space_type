@@ -7,7 +7,7 @@ class Saucer {
         this.y = 1;
         this.width = 42;
         this.height = 42;
-        this.word = saucerWords[Math.floor(Math.random() * 50)];
+        this.word = saucerWords[Math.floor(Math.random() * 100)];
         this.type = "saucer";
     }
 

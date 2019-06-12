@@ -74,7 +74,8 @@ class Game {
                     this.combo = 1;
                     setTimeout(() => {
                         this.createBonus(this.base.shieldIndex)
-                    }, 5000)                }
+                    }, 12000)                
+                }
         });
     }
     
@@ -113,7 +114,7 @@ class Game {
                 this.combo = 1;
                 setTimeout(() => {
                     this.createBonus(this.base.shieldIndex)
-                }, 5000)
+                }, 12000)
             }
         });
     }
@@ -153,7 +154,8 @@ class Game {
                 this.combo = 1;
                 setTimeout(() => {
                     this.createBonus(this.base.shieldIndex)
-                }, 10000)            }
+                }, 12000)            
+            }
         });
     }
     

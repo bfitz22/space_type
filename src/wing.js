@@ -8,7 +8,7 @@ class Wing {
         this.scaledSize = 64;
         this.width = 42;
         this.height = 42;
-        this.word = wingWords[Math.floor(Math.random() * 50)];
+        this.word = wingWords[Math.floor(Math.random() * 99)];
     }
 
     drawText() {

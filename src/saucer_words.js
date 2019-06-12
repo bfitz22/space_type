@@ -1,11 +1,16 @@
-export const saucerWords = [
-    "basic", "theft", "close", "brink", "block", "ghost", 
-    "flash", "rider", "touch", "stand", "crash", "elect", 
-    "equip", "think", "amuse", "final", "clock", "outer", 
-    "cover","pluck", "solid", "frame", "giant", "voter", 
-    "strip", "lesson", "memory", "pledge", "facade", "borrow",
-    "cinema", "useful", "suffer", "square", "hiccup", "rotate",
-    "excess", "misery", "proper", "access", "trench", "settle",
-    "filter", "suntan", "factor", "profit", "snatch", "outfit",
-    "unique", "hunter"
+export const saucerWords = ["thick", "sleep", "glory", "still",
+"agile", "spoil", "evoke", "grief", "ferry", "track", "feign",
+"swipe", "pluck", "vague", "visit", "wheat", "laser", "panel",
+"wound", "habit", "entry", "motif", "linen", "dance", "float",
+"peace", "coast", "dress", "flash", "miner", "layer", "amber",
+"cycle", "block", "budge", "solid", "rugby", "pitch", "round",
+"fence", "greet", "route", "green", "blame", "breed", "bland",
+"steam", "craft", "scale", "means", "social", "pigeon", "regard",
+"island", "crouch", "tissue", "glance", "cousin", "import", "profit",
+"honest", "snatch", "pardon", "outlet", "sister", "decide", "rocket",
+"advice", "squash", "flight", "proper", "seller", "sleeve", "shower",
+"revoke", "tablet", "escape", "battle", "misery", "census", "factor",
+"forbid", "prefer", "settle", "decade", "mature", "review", "clique",
+"marble", "double", "extent", "unrest", "kidney", "grudge", "polish",
+"poetry", "doctor", "bridge", "summer", "behave"
 ]

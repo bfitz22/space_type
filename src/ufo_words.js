@@ -1,9 +1,13 @@
-export const ufoWords = [
-    "art", "vat", "sea", "pot", "add", "owe", "era", "raw", "bad", "sum",
-    "van", "low", "put", "cry", "bed", "oil", "sit", "gap", "job", "way",
-    "rib", "row", "lot", "rub", "end", "top", "aid", "pin", "fit", "mud",
-    "god", "mug", "bus", "nun", "cut", "tax", "mix", "pen", "bold", "cage",
-    "call", "sign", "roof", "loan", "last", "dead", "back", "lane", "lily",
-    "hold", "wood", "lock", "leak", "hang", "week", "fade", "cell", "harm",
-    "bush", "rain", "sigh", "loot", "work"
-]
+export const ufoWords = ["ant", "sip", "nun", "owe", "shy", "top",
+"far", "ear", "lid", "flu", "act", "key", "fog", "gun", "nut",
+"log", "see", "tip", "tap", "hay", "ash", "mix", "use", "fat",
+"ton", "jam", "sow", "way", "due", "cup", "beg", "job", "art",
+"dry", "dip", "hen", "pay", "jet", "lot", "cow", "get", "bat",
+"bus", "few", "bow", "tax", "hot", "pop", "spy", "sum", "west",
+"rest", "dash", "tape", "crew", "heat", "leak", "lump", "turn",
+"raid", "late", "pump", "note", "mist", "dawn", "rate", "page",
+"host", "cope", "toll", "tone", "dark", "tube", "plan", "rice",
+"gene", "rich", "pest", "mine", "loop", "test", "slot", "pick",
+"corn", "kill", "load", "wine", "bill", "hike", "fuss", "fuel",
+"wall", "heir", "food", "gift", "loan", "joke", "vain", "ward",
+"sock"]

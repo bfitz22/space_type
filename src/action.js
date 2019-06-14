@@ -36,8 +36,10 @@ class Action {
     }
 
     updateWave() {
-        this.wave ++;
-        this.waveInterval += 1000;
+        if (this.game.ufos.length === 0 && this.game.saucers.length === 0 && this.game.wings.length === 0) {
+            this.wave ++;
+            this.waveInterval += 1000;
+        }
     }
 
     baseDestroyed() {

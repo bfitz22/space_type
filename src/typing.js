@@ -27,6 +27,7 @@ class Typing {
             this.game.ufos.forEach((ufo, i) => {
                 if (ufo.word === e.target.value) {
                     delete this.game.ufos[i];
+                    this.game.ufos = this.game.ufos.filter(Boolean);
                     this.laser(ufo.x + 21, ufo.y + 21);
                     ufo.drawExplosion(ufo.x, ufo.y);
                     ufo.drawPoints(this.game.combo, ufo.x + 21, ufo.y);
@@ -38,6 +39,7 @@ class Typing {
             this.game.saucers.forEach((saucer, i) => {
                 if (saucer.word === e.target.value) {
                     delete this.game.saucers[i];
+                    this.game.saucers = this.game.saucers.filter(Boolean);
                     this.laser(saucer.x + 21, saucer.y + 21);
                     saucer.drawExplosion(saucer.x, saucer.y);
                     saucer.drawPoints(this.game.combo, saucer.x + 21, saucer.y);
@@ -49,6 +51,7 @@ class Typing {
             this.game.wings.forEach((wing, i) => {
                 if (wing.word === e.target.value) {
                     delete this.game.wings[i];
+                    this.game.wings = this.game.wings.filter(Boolean);
                     this.laser(wing.x + 21, wing.y + 21);
                     wing.drawExplosion(wing.x, wing.y);
                     wing.drawPoints(this.game.combo, wing.x + 21, wing.y);

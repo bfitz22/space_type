@@ -47,3 +47,4 @@ const startup = () => {
 
 
 startScreen.addEventListener("click", startup); 
+ 

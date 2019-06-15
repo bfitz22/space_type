@@ -14,7 +14,9 @@ class Action {
         this.game = game; 
         this.typing = typing;
         this.typer = document.getElementById("typing-box");
-        this.clickToRestart = this.clickToRestart.bind(this);    
+        this.clickToRestart = this.clickToRestart.bind(this); 
+        this.updateWave = this.updateWave.bind(this);   
+        this.spawnNextWave = this.spawnNextWave.bind(this);
     }
 
     displayWave() {
@@ -33,13 +35,6 @@ class Action {
         this.ctx.fillText(`${this.game.combo}x combo`, 1000, 600);
         this.ctx.fill();
         this.ctx.closePath();
-    }
-
-    updateWave() {
-        if (this.game.ufos.length === 0 && this.game.saucers.length === 0 && this.game.wings.length === 0) {
-            this.wave ++;
-            this.waveInterval += 1000;
-        }
     }
 
     baseDestroyed() {
@@ -107,6 +102,40 @@ class Action {
         }
     }
 
+    recyleBonus() {
+        if (this.game.bonuses.length > 0) {
+            delete this.game.bonuses[0];
+            this.game.createBonus(this.base.shieldIndex);
+        }
+    }
+
+    updateWave() {
+        if (this.game.ufos.length === 0 && this.game.saucers.length === 0 && this.game.wings.length === 0) {
+            clearInterval(this.drawEverything);
+            
+            setTimeout(() => {this.game.clear(), this.base.drawShield(), this.base.drawBase(),
+                this.typing.displayPoints(), this.displayCombo(), this.displayWave(), clearInterval(this.gameEvents),
+                this.recyleBonus(), this.sound.bonusSound.pause(), this.spawnNextWave()}, 500);
+        }
+    }
+
+    spawnNextWave() {
+        this.wave++;
+        this.waveInterval += 1000;
+        this.ctx.beginPath();
+        this.ctx.fillStyle = "white";
+        this.ctx.font = 'bold 50px Arial';
+        this.ctx.fillText(`Wave ${this.wave}`, 510, 250);
+        this.ctx.fill();
+        setTimeout(() => {
+            this.draw();
+            this.game.spawnUFOs();
+            this.game.spawnSaucers();
+            this.game.spawnWings();
+            this.waveEvents1();
+        }, 1500);
+    }
+
     renderGame() {
         if (!this.paused) { 
             this.waveEvents1();
@@ -114,21 +143,22 @@ class Action {
             this.waveEvents3();
             this.waveEvents4();
             this.waveEvents5();
-
-            this.drawEverything = setInterval(() => {this.game.clear(), this.game.drawBonus(),
-                this.base.drawShield(), this.base.drawBase(), this.displayCombo(),
-                this.displayWave(), this.typing.displayPoints(), this.game.drawUFOs(),
-                this.game.drawSaucers(), this.game.drawWings(), this.baseDestroyed()}, 25);
+            this.draw();
             this.theFlash = setInterval(this.game.flash, 200);
             this.typing.startTyping();
             this.canvasClick();
         }
     }
 
+    draw() {
+        this.drawEverything = setInterval(() => {this.game.clear(), this.game.drawBonus(),
+            this.base.drawShield(), this.base.drawBase(), this.displayCombo(),
+            this.displayWave(), this.typing.displayPoints(), this.game.drawUFOs(),
+            this.game.drawSaucers(), this.game.drawWings(), this.baseDestroyed()}, 25);
+        }
+
     waveEvents1() {
-        this.gameEvents = setInterval(() => {this.updateWave(), this.game.spawnUFOs(),
-            this.game.spawnSaucers(), this.game.spawnWings(), clearInterval(this.gameEvents),
-            this.waveEvents1()}, this.waveInterval);
+        this.gameEvents = setInterval(this.updateWave, 2200);
     }
 
     waveEvents2() {

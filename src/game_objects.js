@@ -71,6 +71,7 @@ class Game {
                     this.sound.poweringDown();
                     ufo.drawExplosion(ufo.x, ufo.y);
                     delete this.ufos[i];
+                    this.ufos = this.ufos.filter(Boolean);
                     this.base.shieldIndex++;
                     this.combo = 1;
                     setTimeout(() => {
@@ -114,6 +115,7 @@ class Game {
                 delete this.saucers[i];
                 this.base.shieldIndex++;
                 this.combo = 1;
+                this.saucers = this.saucers.filter(Boolean);
                 setTimeout(() => {
                     this.createBonus(this.base.shieldIndex)
                 }, 12000)
@@ -155,6 +157,7 @@ class Game {
                 delete this.wings[i];
                 this.base.shieldIndex++;
                 this.combo = 1;
+                this.wings = this.wings.filter(Boolean);
                 setTimeout(() => {
                     this.createBonus(this.base.shieldIndex)
                 }, 12000)            

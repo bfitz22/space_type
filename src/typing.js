@@ -106,7 +106,6 @@ class Typing {
             this.game.wings = this.game.wings.filter(Boolean);
             this.game.bonuses = this.game.bonuses.filter(Boolean);
             this.typer.value = '';
-            this.typer.value = '';
         }
     }
     

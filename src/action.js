@@ -15,7 +15,8 @@ class Action {
         this.typing = typing;
         this.typer = document.getElementById("typing-box");
         this.clickToRestart = this.clickToRestart.bind(this); 
-        this.updateWave = this.updateWave.bind(this);   
+        this.updateWave = this.updateWave.bind(this);
+        this.nextWave = this.nextWave.bind(this);   
         this.spawnNextWave = this.spawnNextWave.bind(this);
     }
 
@@ -111,11 +112,17 @@ class Action {
 
     updateWave() {
         if (this.game.ufos.length === 0 && this.game.saucers.length === 0 && this.game.wings.length === 0) {
+            setTimeout(this.nextWave, 1000);
+        }
+    }
+
+    nextWave() {
+        if (this.game.ufos.length === 0 && this.game.saucers.length === 0 && this.game.wings.length === 0) {
             clearInterval(this.drawEverything);
-            
-            setTimeout(() => {this.game.clear(), this.base.drawShield(), this.base.drawBase(),
-                this.typing.displayPoints(), this.displayCombo(), this.displayWave(), clearInterval(this.gameEvents),
-                this.recyleBonus(), this.sound.bonusSound.pause(), this.spawnNextWave()}, 500);
+                
+            this.game.clear(), this.base.drawShield(), this.base.drawBase(), this.typing.displayPoints(), 
+            this.displayCombo(), this.displayWave(), clearInterval(this.gameEvents), this.recyleBonus(), 
+            this.sound.bonusSound.pause(), this.spawnNextWave()
         }
     }
 
@@ -158,7 +165,7 @@ class Action {
         }
 
     waveEvents1() {
-        this.gameEvents = setInterval(this.updateWave, 2200);
+        this.gameEvents = setInterval(this.updateWave, 1500);
     }
 
     waveEvents2() {

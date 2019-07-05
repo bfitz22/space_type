@@ -5,6 +5,7 @@ class Typing {
         this.sound = sound;
         this.typer = document.getElementById("typing-box");
         this.totalPoints = 0;
+        this.extras = 0;
         this.base = base;
         this.laser = this.laser.bind(this);
         this.updatePoints = this.updatePoints.bind(this);
@@ -61,7 +62,6 @@ class Typing {
                 if (bonus.word === "recharge" && bonus.word === e.target.value) {
                     this.laser(bonus.x + 21, bonus.y + 21);
                     bonus.drawExplosion(bonus.x, bonus.y);
-                    bonus.drawPoints(this.game.combo, bonus.x + 21, bonus.y);
                     delete this.game.bonuses[i];
                     this.sound.bonusSound.pause();
                     this.base.rechargeShield();
@@ -69,7 +69,7 @@ class Typing {
                     badEntry = false;
                     if (this.game.combo < 10) this.game.combo ++;
                 } else if (bonus.word === e.target.value) {
-                    this.updatePoints(this.game.combo * 10);
+                    this.extras = 0;
                     badEntry = false;
                     delete this.game.bonuses[i];
                     this.sound.bonusSound.pause();
@@ -83,19 +83,24 @@ class Typing {
                         delete this.game.ufos[i];
                         this.bonusLaser(ufo.x + 21, ufo.y + 21);
                         ufo.drawExplosion(ufo.x, ufo.y);
+                        this.extras += 1;
                     })
                     this.game.saucers.forEach((ufo, i) => {
                         delete this.game.saucers[i];
                         this.bonusLaser(ufo.x + 21, ufo.y + 21);
                         ufo.drawExplosion(ufo.x, ufo.y);
+                        this.extras += 3;
                     })
                     this.game.wings.forEach((ufo, i) => {
                         delete this.game.wings[i];
                         this.bonusLaser(ufo.x + 21, ufo.y + 21);
                         ufo.drawExplosion(ufo.x, ufo.y);
+                        this.extras += 5;
                     })
 
                 }
+                this.updatePoints(this.game.combo * 10 + this.extras);
+                bonus.drawPoints(this.game.combo, this.extras, bonus.x + 21, bonus.y);
             })
             if (badEntry) {
                 this.game.combo = 1;

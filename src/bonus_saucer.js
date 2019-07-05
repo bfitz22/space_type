@@ -38,13 +38,13 @@ class BonusSaucer {
         this.ctx.closePath();
     }
 
-    drawPoints(combo, x, y) {
+    drawPoints(combo, extras, x, y) {
         let i = 1;
         const pointFlash = setInterval(() => {
             this.ctx.beginPath();
             this.ctx.fillStyle = "green";
             this.ctx.font = 'bold 20px Arial';
-            this.ctx.fillText(`${10 * combo}`, x, y);
+            this.ctx.fillText(`${10 * combo + extras}`, x, y);
             this.ctx.fill();
             this.ctx.closePath();
             i++;

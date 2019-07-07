@@ -83,19 +83,19 @@ class Typing {
                         delete this.game.ufos[i];
                         this.bonusLaser(ufo.x + 21, ufo.y + 21);
                         ufo.drawExplosion(ufo.x, ufo.y);
-                        this.extras += 1;
+                        this.extras += 1 * this.game.combo;
                     })
                     this.game.saucers.forEach((ufo, i) => {
                         delete this.game.saucers[i];
                         this.bonusLaser(ufo.x + 21, ufo.y + 21);
                         ufo.drawExplosion(ufo.x, ufo.y);
-                        this.extras += 3;
+                        this.extras += 3 * this.game.combo;
                     })
                     this.game.wings.forEach((ufo, i) => {
                         delete this.game.wings[i];
                         this.bonusLaser(ufo.x + 21, ufo.y + 21);
                         ufo.drawExplosion(ufo.x, ufo.y);
-                        this.extras += 5;
+                        this.extras += 5 * this.game.combo;
                     })
 
                 }

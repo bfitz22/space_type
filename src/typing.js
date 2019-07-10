@@ -23,7 +23,7 @@ class Typing {
 
     typeWord(e) {
         var key = e.which || e.keyCode;
-        if (key === 13) {
+        if (key === 13 || key === 32) {
             let badEntry = true;
             this.game.ufos.forEach((ufo, i) => {
                 if (ufo.word === e.target.value) {

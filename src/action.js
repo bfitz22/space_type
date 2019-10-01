@@ -143,19 +143,19 @@ class Action {
         }, 1500);
     }
 
-    renderGame() {
-        if (!this.paused) { 
-            this.waveEvents1();
-            this.waveEvents2();
-            this.waveEvents3();
-            this.waveEvents4();
-            this.waveEvents5();
-            this.draw();
-            this.theFlash = setInterval(this.game.flash, 200);
-            this.typing.startTyping();
-            this.canvasClick();
-        }
-    }
+    // renderGame() {
+    //     if (!this.paused) { 
+    //         this.waveEvents1();
+    //         this.waveEvents2();
+    //         this.waveEvents3();
+    //         this.waveEvents4();
+    //         this.waveEvents5();
+    //         this.draw();
+    //         this.theFlash = setInterval(this.game.flash, 200);
+    //         this.typing.startTyping();
+    //         this.canvasClick();
+    //     }
+    // }
 
     draw() {
         this.drawEverything = setInterval(() => {this.game.clear(), this.game.drawBonus(),
